@@ -55,11 +55,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="view\tuyendung\deletePage.xaml.cs">
+      <DependentUpon>deletePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\tuyendung\updatePage.xaml.cs">
+      <DependentUpon>updatePage.xaml</DependentUpon>
+    </Compile>
     <Page Include="view\MainWindow\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="view\Sidebar\SideBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\tuyendung\createRecruitment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\tuyendung\deletePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\tuyendung\detailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -72,8 +90,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="domain\Recruitment.cs" />
+    <Compile Include="repository\DepartmentRepository.cs" />
     <Compile Include="repository\RecruimentRepository.cs" />
     <Compile Include="repository\MssSQLConnection.cs" />
+    <Compile Include="service\DepartmentService.cs" />
     <Compile Include="service\RecruitmentService.cs" />
     <Compile Include="view\MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -81,10 +101,20 @@
     <Compile Include="view\Sidebar\SideBar.xaml.cs">
       <DependentUpon>SideBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="view\tuyendung\createRecruitment.xaml.cs">
+      <DependentUpon>createRecruitment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\tuyendung\detailPage.xaml.cs">
+      <DependentUpon>detailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\tuyendung\Tuyendung.xaml.cs">
       <DependentUpon>Tuyendung.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="view\tuyendung\updatePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

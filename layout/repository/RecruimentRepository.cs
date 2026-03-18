@@ -28,6 +28,7 @@ namespace layout.repository
                 cmd.Parameters.AddWithValue("@deadline", recruitment.subDeadline);
                 cmd.Parameters.AddWithValue("@quantity", recruitment.quantity);
                 cmd.Parameters.AddWithValue("@status", recruitment.status);
+                cmd.ExecuteNonQuery();
             }
         }
         public DataTable getAllRecruitment()
@@ -39,6 +40,48 @@ namespace layout.repository
                 DataTable data = new DataTable();
                 adapter.Fill(data);
                 return data;
+            }
+        }
+        public DataTable findById(int id)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                string sql = $"select * from recruitment where id = {id}";
+                SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
+                DataTable data = new DataTable();
+                adapter.Fill(data);
+                return data;
+            }
+        }
+        public void deleteRecruitment(int id)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                string sql = "Delete from recruitment where id = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+        public void updateRecruitment(Recruitment recruitment)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                string sql = "update recruitment set departmentId = @department, position = @position, estimateIncome = @income," +
+                    "condition = @condition, sub_deadline = @deadline, quantity = @quantity, status = @status " +
+                    "where id = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@department", recruitment.departmentId);
+                cmd.Parameters.AddWithValue("@position", recruitment.position);
+                cmd.Parameters.AddWithValue("@income", recruitment.estimateIncome);
+                cmd.Parameters.AddWithValue("@condition", recruitment.condition);
+                cmd.Parameters.AddWithValue("@deadline", recruitment.subDeadline);
+                cmd.Parameters.AddWithValue("@quantity", recruitment.quantity);
+                cmd.Parameters.AddWithValue("@status", recruitment.status);
+                cmd.Parameters.AddWithValue("@id", recruitment.id);
+                cmd.ExecuteNonQuery();
             }
         }
     }

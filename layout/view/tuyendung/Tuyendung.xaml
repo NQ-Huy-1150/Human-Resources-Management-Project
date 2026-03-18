@@ -23,7 +23,7 @@
                 
                 <StackPanel Orientation="Vertical" Margin="10,90,10,10"  VerticalAlignment="Top" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10" VerticalAlignment="Top" HorizontalAlignment="Right">
-                        <Button Content="Tạo đơn Tuyển dụng" Margin="500,0,0,0"/>
+                        <Button Content="Tạo đơn Tuyển dụng" Margin="500,0,0,0" Click="CreateBtn"/>
                     </StackPanel>
                     <DataGrid x:Name="table" AutoGenerateColumns="False">
                         <DataGrid.Columns>
@@ -37,9 +37,9 @@
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button Content="Xem" Click="BtnChiTiet" Padding="1,1,1,1"/>
-                                            <Button Content="Sửa" Click="BtnChiTiet" Padding="1,1,1,1"/>
-                                            <Button Content="Xóa" Click="BtnChiTiet" Padding="1,1,1,1"/>
+                                            <Button Content="Xem" Click="btnDetail" Padding="5,1" Margin="10,0,0,0"/>
+                                            <Button Content="Cập nhật" Click="updateBnt" Padding="5,1" Margin="10,0,0,0"/>
+                                            <Button Content="Xóa" Click="deleteBnt" Padding="5,1" Margin="10,0,0,0"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

@@ -14,29 +14,35 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace layout.view.Side_bar
+namespace layout.view.tuyendung
 {
     /// <summary>
-    /// Interaction logic for SideBar.xaml
+    /// Interaction logic for detailPage.xaml
     /// </summary>
-    public partial class SideBar : UserControl
+    public partial class detailPage : Page
     {
-        public SideBar()
+        public detailPage(Recruitment recruitment)
         {
             InitializeComponent();
+            recruitId.Text = Convert.ToString(recruitment.id);
+            departmentId.Text = recruitment.departmentId;
+            position.Text = recruitment.position;
+            income.Text = Convert.ToString(recruitment.estimateIncome);
+            condition.Text = recruitment.condition;
+            dateShow.Text = Convert.ToString(recruitment.subDeadline);
+            quantity.Text = Convert.ToString(Convert.ToString(recruitment.quantity));
+            status.Text = recruitment.status;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
         }
-
-        private void TuyenDungPage(object sender, RoutedEventArgs e)
+        private void backToParentBtn(object sender, RoutedEventArgs e)
         {
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
-                btnRecruit.Background = Brushes.YellowGreen;
                 mainWindow.MainFrame.Navigate(new Tuyendung());
             }
         }

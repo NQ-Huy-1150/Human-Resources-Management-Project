@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Deployment.Internal;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,18 @@ namespace layout.service
         public DataTable fetchAllRecruitment()
         {
             return repo.getAllRecruitment();
+        }
+        public DataTable fetchById(int id)
+        {
+            return repo.findById(id);
+        }
+        public void getDelete(int id)
+        {
+            repo.deleteRecruitment(id);
+        }
+        public void getUpdate(Recruitment re)
+        {
+            repo.updateRecruitment(re);
         }
     }
 }

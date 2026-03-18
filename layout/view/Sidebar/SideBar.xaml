@@ -16,7 +16,7 @@
                 <Button Content="Trang chủ" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" />
                 <Button Content="Người dùng" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" />
                 <Button Content="Phòng ban" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14"/>
-                <Button Content="Tuyển dụng" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14"/>
+                <Button x:Name="btnRecruit" Content="Tuyển dụng" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="TuyenDungPage"/>
                 <Button Content="Lương" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14"/>
                 <Button Content="Chấm công" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14"/>
             </StackPanel>
