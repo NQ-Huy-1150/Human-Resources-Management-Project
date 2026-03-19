@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace layout.repository
 {
@@ -83,6 +84,27 @@ namespace layout.repository
                 cmd.Parameters.AddWithValue("@id", recruitment.id);
                 cmd.ExecuteNonQuery();
             }
+        }
+        public string getPositionByRecruitmentId(int id)
+        {
+            string position = "";
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                string sql = "Select position from recruitment where id = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@id", id);
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    position = Convert.ToString(rs);
+                }
+            }
+            if (position.Equals(""))
+            {
+                return "None";
+            }
+            return position;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using layout.service;
+using layout.view.CandidateView.HRView;
 using layout.view.Main_Window;
 using layout.view.tuyendung;
 using System;
@@ -123,5 +124,14 @@ namespace layout
             return rec;
         }
 
+        private void viewCandidate(object sender, RoutedEventArgs e)
+        {
+            int id = getIdFromSelectedRow();
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainFrame.Navigate(new CandidatePage(id));
+            }
+        }
     }
 }

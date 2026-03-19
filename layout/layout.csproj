@@ -55,12 +55,36 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="domain\Candidate.cs" />
+    <Compile Include="repository\RecruitmentDetailRepository.cs" />
+    <Compile Include="service\RecruitmentDetailService.cs" />
+    <Compile Include="view\CandidateView\HRView\CandidatePage.xaml.cs">
+      <DependentUpon>CandidatePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\CandidateView\HRView\DetailCandidate.xaml.cs">
+      <DependentUpon>DetailCandidate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\CandidateView\HRView\UpdateCandidate.xaml.cs">
+      <DependentUpon>UpdateCandidate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\tuyendung\deletePage.xaml.cs">
       <DependentUpon>deletePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\tuyendung\updatePage.xaml.cs">
       <DependentUpon>updatePage.xaml</DependentUpon>
     </Compile>
+    <Page Include="view\CandidateView\HRView\CandidatePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\CandidateView\HRView\DetailCandidate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\CandidateView\HRView\UpdateCandidate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="view\MainWindow\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -142,6 +166,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="view\CandidateView\UserView\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

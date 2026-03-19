@@ -32,5 +32,9 @@ namespace layout.service
         {
             repo.updateRecruitment(re);
         }
+        public string getPosition(int id)
+        {
+            return repo.getPositionByRecruitmentId(id);
+        }
     }
 }
