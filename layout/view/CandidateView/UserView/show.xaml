@@ -7,11 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <!-- VÙNG NỘI DUNG CHÍNH -->
-    <Border Background="#F8F9FA">
+    <Border Background="#F8F9FA" BorderBrush="Black" BorderThickness="1" Padding="10">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <Grid>
                 <StackPanel Orientation="Vertical" Margin="10">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock x:Name="id" Text="{Binding id}" Visibility="Hidden" IsEnabled="False"/>
                         <TextBlock Text="Vị trí tuyển dụng : " FontSize="14" Width="150" />
                         <TextBlock Text="{Binding position}"  Width="150" FontSize="14"/>
                     </StackPanel>

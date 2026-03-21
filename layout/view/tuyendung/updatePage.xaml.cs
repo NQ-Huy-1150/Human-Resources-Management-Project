@@ -78,6 +78,7 @@ namespace layout.view.tuyendung
             date.Text = Convert.ToString(recruitment.subDeadline);
             quantityInput.Text = Convert.ToString(Convert.ToString(recruitment.quantity));
             statusCBX.SelectedItem = recruitment.status;
+            descInput.Text = recruitment.description;
         }
         private void updateRecruit()
         {
@@ -95,6 +96,7 @@ namespace layout.view.tuyendung
             re.condition = conditionInput.Text;
             re.status = statusCBX.Text;
             re.quantity = Convert.ToInt32(quantityInput.Text);
+            re.description = descInput.Text;
             reService.getUpdate(re);
         }
 

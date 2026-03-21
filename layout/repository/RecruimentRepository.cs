@@ -18,8 +18,8 @@ namespace layout.repository
             using (SqlConnection connection = conn.dbConnection())
             {
                 string sql = "Insert into recruitment (departmentId, position, " +
-                    "estimateIncome, condition, sub_deadline, quantity, status)  " +
-                    "values (@department, @position, @income, @condition, @deadline, @quantity, @status)";
+                    "estimateIncome, condition, sub_deadline, quantity, status, description)  " +
+                    "values (@department, @position, @income, @condition, @deadline, @quantity, @status, @desc)";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@department", recruitment.departmentId);
@@ -29,6 +29,7 @@ namespace layout.repository
                 cmd.Parameters.AddWithValue("@deadline", recruitment.subDeadline);
                 cmd.Parameters.AddWithValue("@quantity", recruitment.quantity);
                 cmd.Parameters.AddWithValue("@status", recruitment.status);
+                cmd.Parameters.AddWithValue("@desc", recruitment.description);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -70,7 +71,7 @@ namespace layout.repository
             using (SqlConnection connection = conn.dbConnection())
             {
                 string sql = "update recruitment set departmentId = @department, position = @position, estimateIncome = @income," +
-                    "condition = @condition, sub_deadline = @deadline, quantity = @quantity, status = @status " +
+                    "condition = @condition, sub_deadline = @deadline, quantity = @quantity, status = @status, description  = @desc " +
                     "where id = @id";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
@@ -81,6 +82,7 @@ namespace layout.repository
                 cmd.Parameters.AddWithValue("@deadline", recruitment.subDeadline);
                 cmd.Parameters.AddWithValue("@quantity", recruitment.quantity);
                 cmd.Parameters.AddWithValue("@status", recruitment.status);
+                cmd.Parameters.AddWithValue("@desc", recruitment.description);
                 cmd.Parameters.AddWithValue("@id", recruitment.id);
                 cmd.ExecuteNonQuery();
             }
@@ -110,7 +112,7 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "select pb.ten_phongban, r.position, r.estimateIncome\r\nfrom recruitment r \r\njoin phongban pb on r.departmentId = pb.ma_phongban;";
+                string sql = "select r.id, pb.ten_phongban, r.position, r.estimateIncome\r\nfrom recruitment r \r\njoin phongban pb on r.departmentId = pb.ma_phongban;";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 DataTable data = new DataTable();
                 adapter.Fill(data);

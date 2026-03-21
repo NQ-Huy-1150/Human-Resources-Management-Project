@@ -23,7 +23,7 @@
                 <!-- Template chi tiết cho từng phần tử sẽ dùng UserControl "show" -->
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <userView:show />
+                        <userView:show Margin="0,15,15,15"/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

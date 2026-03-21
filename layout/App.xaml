@@ -2,7 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:layout"
-             StartupUri="view/MainWindow/HomePageWindow.xaml">
+             StartupUri="view/MainWindow/HomePageWindow.xaml"
+             >
+    <!--StartupUri="view/MainWindow/HomePageWindow.xaml" -->
+    <!--StartupUri="view/MainWindow/MainWindow.xaml"-->
     <Application.Resources>
          
     </Application.Resources>

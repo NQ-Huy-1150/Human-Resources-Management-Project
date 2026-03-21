@@ -45,6 +45,13 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,0,0">
                         <TextBlock Text="Điều kiện tuyển dụng :" FontSize="14" Width="160" VerticalAlignment="Top"/>
                         <TextBox x:Name="conditionInput" Width="200" AutomationProperties.Name="multi-line TextBox"
+                 TextWrapping="Wrap" AcceptsReturn="True" MinLines="3" />
+                    </StackPanel>
+
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,0,0">
+                        <TextBlock Text="Mô tả công việc :" FontSize="14" Width="160" VerticalAlignment="Top"/>
+                        <TextBox x:Name="descInput" Width="200" AutomationProperties.Name="multi-line TextBox"
                  TextWrapping="Wrap" AcceptsReturn="True" MinLines="4" />
                     </StackPanel>
 

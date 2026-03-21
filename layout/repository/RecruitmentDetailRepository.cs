@@ -17,8 +17,8 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "Insert into recruitment_detail (recruit_id,full_name,email,address,phone_number,edu_level,year_of_exp,recruit_status)" +
-                    "values (@id,@name,@email,@address,@phone,@edu,@year,@status)";
+                string sql = "Insert into recruitment_detail (recruit_id,full_name,email,address,phone_number,edu_level,year_of_exp,recruit_status, lookup_id)" +
+                    "values (@id,@name,@email,@address,@phone,@edu,@year,@status, @lookup)";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@id", candidate.recruitId);
@@ -29,6 +29,7 @@ namespace layout.repository
                 cmd.Parameters.AddWithValue("@edu", candidate.edu_level);
                 cmd.Parameters.AddWithValue("@year", candidate.yearOfExp);
                 cmd.Parameters.AddWithValue("@status", candidate.status);
+                cmd.Parameters.AddWithValue("@lookup", candidate.lookupId);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -95,6 +96,23 @@ namespace layout.repository
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
             }
+        }
+        public string getStatusFromLookUpId(string id)
+        {
+            string temp = "";
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                string sql = "Select recruit_status from recruitment_detail where lookup_id = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@id", id);
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    temp = Convert.ToString(rs);
+                }
+            }
+            return temp;
         }
     }
 }

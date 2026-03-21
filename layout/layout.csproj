@@ -70,11 +70,23 @@
     <Compile Include="view\CandidateView\HRView\UpdateCandidate.xaml.cs">
       <DependentUpon>UpdateCandidate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="view\CandidateView\UserView\CreateCandidate.xaml.cs">
+      <DependentUpon>CreateCandidate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\CandidateView\UserView\jobDetail.xaml.cs">
+      <DependentUpon>jobDetail.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\CandidateView\UserView\JobLitstPage.xaml.cs">
       <DependentUpon>JobLitstPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="view\CandidateView\UserView\LookUpPage.xaml.cs">
+      <DependentUpon>LookUpPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\CandidateView\UserView\show.xaml.cs">
       <DependentUpon>show.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\CandidateView\UserView\ThankYouPage.xaml.cs">
+      <DependentUpon>ThankYouPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\MainWindow\HomePageWindow.xaml.cs">
       <DependentUpon>HomePageWindow.xaml</DependentUpon>
@@ -101,11 +113,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="view\CandidateView\UserView\CreateCandidate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\CandidateView\UserView\jobDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="view\CandidateView\UserView\JobLitstPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="view\CandidateView\UserView\LookUpPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="view\CandidateView\UserView\show.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\CandidateView\UserView\ThankYouPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

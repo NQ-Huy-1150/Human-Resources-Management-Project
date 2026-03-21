@@ -77,6 +77,7 @@ namespace layout.view.tuyendung
             re.condition = conditionInput.Text;
             re.status = "Đang hoạt động";
             re.quantity = Convert.ToInt32(quantityInput.Text);
+            re.description = descInput.Text;
             reService.getCreateRecruitment(re);
         }
 

@@ -18,5 +18,6 @@ namespace layout.domain
         public string edu_level { get; set; }
         public int yearOfExp { get; set; }
         public string status { get; set; }
+        public string lookupId { get; set; }
     }
 }

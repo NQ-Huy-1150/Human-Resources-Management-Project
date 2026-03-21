@@ -1,5 +1,4 @@
-﻿using layout.view.CandidateView.UserView;
-using layout.view.Main_Window;
+﻿using layout.view.Main_Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,33 +14,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace layout.view.Bars
+namespace layout.view.CandidateView.UserView
 {
     /// <summary>
-    /// Interaction logic for TopBar.xaml
+    /// Interaction logic for ThankYouPage.xaml
     /// </summary>
-    public partial class TopBar : UserControl
+    public partial class ThankYouPage : Page
     {
-        public TopBar()
+        public ThankYouPage(string value)
         {
             InitializeComponent();
+            lookup.Text = value;
         }
-
-        private void jobListBtn(object sender, RoutedEventArgs e)
+        private void backToParentBtn(object sender, RoutedEventArgs e)
         {
             var mainWindow = Window.GetWindow(this) as HomePageWindow;
             if (mainWindow != null)
             {
                 mainWindow.HomeFrame.Navigate(new JobLitstPage());
-            }
-        }
-
-        private void lookUpBtn(object sender, RoutedEventArgs e)
-        {
-            var mainWindow = Window.GetWindow(this) as HomePageWindow;
-            if (mainWindow != null)
-            {
-                mainWindow.HomeFrame.Navigate(new LookUpPage());
             }
         }
     }

@@ -14,7 +14,7 @@
                 <!-- Tiêu đề Menu -->
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xE721;" FontSize="16" Foreground="White" VerticalAlignment="Center" Margin="390,0,2,0" />
-                    <Button Content="Tra cứu" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Padding="10" />
+                    <Button Content="Tra cứu" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Padding="10" Click="lookUpBtn" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEA37;" FontSize="16" Foreground="White" VerticalAlignment="Center" Margin="50,0,0,0" />

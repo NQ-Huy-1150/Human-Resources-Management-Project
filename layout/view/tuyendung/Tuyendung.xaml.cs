@@ -120,6 +120,7 @@ namespace layout
                 rec.condition = row["condition"].ToString();
                 rec.subDeadline = Convert.ToDateTime(row["sub_deadline"].ToString());
                 rec.quantity = Convert.ToInt32(row["quantity"].ToString());
+                rec.description = Convert.ToString(row["description"].ToString());
             }
             return rec;
         }

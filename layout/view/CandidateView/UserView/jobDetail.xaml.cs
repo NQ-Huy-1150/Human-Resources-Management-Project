@@ -1,4 +1,5 @@
-﻿using layout.view.Main_Window;
+﻿using layout.domain;
+using layout.view.Main_Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,17 +15,19 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace layout.view.tuyendung
+namespace layout.view.CandidateView.UserView
 {
     /// <summary>
-    /// Interaction logic for detailPage.xaml
+    /// Interaction logic for jobDetail.xaml
     /// </summary>
-    public partial class detailPage : Page
+    public partial class jobDetail : Page
     {
-        public detailPage(Recruitment recruitment)
+        Recruitment recruitment = new Recruitment();
+        public jobDetail(Recruitment recruitment)
         {
             InitializeComponent();
-            recruitId.Text = Convert.ToString(recruitment.id);
+            this.recruitment = recruitment;
+            hiddenId.Text = Convert.ToString(recruitment.id);
             departmentId.Text = recruitment.departmentId;
             position.Text = recruitment.position;
             income.Text = Convert.ToString(recruitment.estimateIncome);
@@ -34,18 +37,23 @@ namespace layout.view.tuyendung
             status.Text = recruitment.status;
             desc.Text = recruitment.description;
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
         private void backToParentBtn(object sender, RoutedEventArgs e)
         {
-            var mainWindow = Window.GetWindow(this) as MainWindow;
+            var mainWindow = Window.GetWindow(this) as HomePageWindow;
             if (mainWindow != null)
             {
-                mainWindow.MainFrame.Navigate(new Tuyendung());
+                mainWindow.HomeFrame.Navigate(new JobLitstPage());
             }
         }
+
+        private void createBtn(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as HomePageWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.HomeFrame.Navigate(new CreateCandidate(Convert.ToInt32(hiddenId.Text),position.Text));
+            }
+        }
+
     }
 }

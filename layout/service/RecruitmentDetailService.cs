@@ -36,5 +36,9 @@ namespace layout.service
         {
             repo.updateRecruitmentDetailStatus(id, status);
         }
+        public string findByLookupId(string id)
+        {
+            return repo.getStatusFromLookUpId(id);
+        }
     }
 }

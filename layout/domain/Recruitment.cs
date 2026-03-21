@@ -16,5 +16,6 @@ namespace layout
         public DateTime subDeadline { get; set; }
         public int quantity { get; set; }
         public string status { get; set; }
+        public string description { get; set; }
     }
 }
