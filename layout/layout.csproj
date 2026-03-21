@@ -58,6 +58,9 @@
     <Compile Include="domain\Candidate.cs" />
     <Compile Include="repository\RecruitmentDetailRepository.cs" />
     <Compile Include="service\RecruitmentDetailService.cs" />
+    <Compile Include="view\Bars\TopBar.xaml.cs">
+      <DependentUpon>TopBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\CandidateView\HRView\CandidatePage.xaml.cs">
       <DependentUpon>CandidatePage.xaml</DependentUpon>
     </Compile>
@@ -67,12 +70,25 @@
     <Compile Include="view\CandidateView\HRView\UpdateCandidate.xaml.cs">
       <DependentUpon>UpdateCandidate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="view\CandidateView\UserView\JobLitstPage.xaml.cs">
+      <DependentUpon>JobLitstPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\CandidateView\UserView\show.xaml.cs">
+      <DependentUpon>show.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\MainWindow\HomePageWindow.xaml.cs">
+      <DependentUpon>HomePageWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\tuyendung\deletePage.xaml.cs">
       <DependentUpon>deletePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\tuyendung\updatePage.xaml.cs">
       <DependentUpon>updatePage.xaml</DependentUpon>
     </Compile>
+    <Page Include="view\Bars\TopBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="view\CandidateView\HRView\CandidatePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -85,11 +101,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="view\CandidateView\UserView\JobLitstPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\CandidateView\UserView\show.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\MainWindow\HomePageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="view\MainWindow\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="view\Sidebar\SideBar.xaml">
+    <Page Include="view\Bars\SideBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -122,7 +150,7 @@
     <Compile Include="view\MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="view\Sidebar\SideBar.xaml.cs">
+    <Compile Include="view\Bars\SideBar.xaml.cs">
       <DependentUpon>SideBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\tuyendung\createRecruitment.xaml.cs">
@@ -166,8 +194,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="view\CandidateView\UserView\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

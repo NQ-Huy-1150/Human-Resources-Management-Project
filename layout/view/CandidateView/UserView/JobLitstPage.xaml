@@ -1,0 +1,32 @@
+﻿<Page x:Class="layout.view.CandidateView.UserView.JobLitstPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:layout.view.CandidateView.UserView"
+      xmlns:userView="clr-namespace:layout.view.CandidateView.UserView"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="JobLitstPage">
+
+    <!-- VÙNG NỘI DUNG CHÍNH -->
+    <Border Background="#F8F9FA">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl x:Name="jobList">
+                <!-- WrapPanel giúp các item xếp ngang, hết chỗ tự xuống dòng -->
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <!-- Template chi tiết cho từng phần tử sẽ dùng UserControl "show" -->
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <userView:show />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Border>
+</Page>

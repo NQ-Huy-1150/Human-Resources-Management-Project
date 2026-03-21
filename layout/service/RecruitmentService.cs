@@ -36,5 +36,9 @@ namespace layout.service
         {
             return repo.getPositionByRecruitmentId(id);
         }
+        public DataTable fetchAllJobs()
+        {
+            return repo.getAllJobs();
+        }
     }
 }

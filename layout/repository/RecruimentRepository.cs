@@ -106,5 +106,16 @@ namespace layout.repository
             }
             return position;
         }
+        public DataTable getAllJobs()
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                string sql = "select pb.ten_phongban, r.position, r.estimateIncome\r\nfrom recruitment r \r\njoin phongban pb on r.departmentId = pb.ma_phongban;";
+                SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
+                DataTable data = new DataTable();
+                adapter.Fill(data);
+                return data;
+            }
+        }
     }
 }

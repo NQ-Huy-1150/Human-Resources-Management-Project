@@ -1,5 +1,4 @@
-﻿using layout.view.Main_Window;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace layout.view.Side_bar
+namespace layout.view.CandidateView.UserView
 {
     /// <summary>
-    /// Interaction logic for SideBar.xaml
+    /// Interaction logic for show.xaml
     /// </summary>
-    public partial class SideBar : UserControl
+    public partial class show : UserControl
     {
-        public SideBar()
+        public show()
         {
             InitializeComponent();
         }
@@ -29,16 +28,6 @@ namespace layout.view.Side_bar
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private void TuyenDungPage(object sender, RoutedEventArgs e)
-        {
-            var mainWindow = Window.GetWindow(this) as MainWindow;
-            if (mainWindow != null)
-            {
-                btnRecruit.Background = Brushes.YellowGreen;
-                mainWindow.MainFrame.Navigate(new Tuyendung());
-            }
         }
     }
 }
