@@ -19,6 +19,9 @@
                 <Button x:Name="btnRecruit" Content="Tuyển dụng" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="TuyenDungPage"/>
                 <Button Content="Lương" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14"/>
                 <Button Content="Chấm công" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click"/>
+                <Button Content="Tuyển dụng" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14"/>
+                <Button Content="Lương" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click_1"/>
+                <Button Content="Chấm công" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14"/>
             </StackPanel>
         </Border>
         <!-- TASK BAR END -->
