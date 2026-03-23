@@ -55,6 +55,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="view\luong\Luong.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\luong\NhanvienInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="view\MainWindow\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -72,8 +80,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="domain\Recruitment.cs" />
+    <Compile Include="Employee.cs" />
+    <Compile Include="view\luong\Luong.xaml.cs">
+      <DependentUpon>Luong.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\luong\NhanvienInfo.xaml.cs">
+      <DependentUpon>NhanvienInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\luong\SalaryDay.cs" />
     <Compile Include="repository\RecruimentRepository.cs" />
     <Compile Include="repository\MssSQLConnection.cs" />
+    <Compile Include="repository\SalaryRepository.cs" />
     <Compile Include="service\RecruitmentService.cs" />
     <Compile Include="view\MainWindow\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

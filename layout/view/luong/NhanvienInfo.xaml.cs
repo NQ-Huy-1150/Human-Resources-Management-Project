@@ -1,0 +1,106 @@
+﻿using layout;
+using layout.repository;
+using layout.view.Main_Window;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace layout.luong
+{
+    /// <summary>
+    /// Interaction logic for NhanvienInfo.xaml
+    /// </summary>
+    public partial class NhanvienInfo : Page
+    {
+        private SalaryDay.Luong _currentSalary;
+
+        public NhanvienInfo()
+        {
+            InitializeComponent();
+        }
+
+        public NhanvienInfo(SalaryDay.Luong salary) : this()
+        {
+            _currentSalary = salary;
+            LoadData();
+        }
+
+        private void LoadData()
+        {
+            if (_currentSalary == null) return;
+
+            // Thông tin nhân viên
+            TbId.Text = _currentSalary.NvId.ToString();
+            TbTenNV.Text = _currentSalary.Name;
+
+            // Thông tin lương
+            TbIdLuong.Text = _currentSalary.Id.ToString();
+            TbLuongCoBan.Text = _currentSalary.LuongCoBan.ToString("N0");
+            TbTroCap.Text = _currentSalary.TroCap.ToString("N0");
+            TbThuong.Text = _currentSalary.Thuong.ToString("N0");
+            TbMuon.Text = _currentSalary.Muon.ToString();
+            TbKhoanTru.Text = _currentSalary.KhoanTru.ToString("N0");
+            TbThangNam.Text = $"{_currentSalary.Thang}/{_currentSalary.Nam}";
+            TbThucLinh.Text = _currentSalary.ThucLinh.ToString("N0");
+        }
+
+        private void BtnBangLuong_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Luong());
+        }
+
+        private void BtnUpd_Click(object sender, RoutedEventArgs e)
+        {
+            if (_currentSalary == null)
+            {
+                MessageBox.Show("Không có dữ liệu lương để sửa", "Sửa Lương",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Validate input
+            if (!double.TryParse(TbLuongCoBan.Text.Replace(",", ""), out double luongCoBan) ||
+                !double.TryParse(TbTroCap.Text.Replace(",", ""), out double troCap) ||
+                !double.TryParse(TbThuong.Text.Replace(",", ""), out double thuong) ||
+                !double.TryParse(TbKhoanTru.Text.Replace(",", ""), out double khoanTru))
+            {
+                MessageBox.Show("Vui lòng nhập số hợp lệ.", "Lỗi",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Xác nhận trước khi lưu
+            MessageBoxResult confirm = MessageBox.Show(
+                "Bạn có chắc chắn muốn cập nhật thông tin lương?", "Xác Nhận",
+                MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (confirm != MessageBoxResult.Yes) return;
+
+            SalaryRepository repo = new SalaryRepository();
+            if (repo.UpdateSalary(_currentSalary.Id, luongCoBan, troCap, thuong, khoanTru))
+            {
+                // Cập nhật lại model
+                _currentSalary.LuongCoBan = luongCoBan;
+                _currentSalary.TroCap = troCap;
+                _currentSalary.Thuong = thuong;
+
+                // Cập nhật lại Thực Lĩnh
+                TbThucLinh.Text = _currentSalary.ThucLinh.ToString("N0");
+
+                MessageBox.Show("Cập nhật thành công!", "Thành Công",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+    }
+}

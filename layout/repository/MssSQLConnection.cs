@@ -17,14 +17,12 @@ namespace LaptopShopApplication.Repository
             {
                 // sửa lại tên phiên local database nếu xung đột
                 // : vd SQLEXPRESS thay cho SQLEXPRESS02
-                string connectionString = "Server=localhost\\SQLEXPRESS02;" +
+                string connectionString = "Server=localhost\\SQLEXPRESS;" +
                                          "Database=QuanLyNhanSu;" +
                                          "Integrated Security=true;" +
                                          "TrustServerCertificate=true;";
 
-                connection = new SqlConnection(connectionString);
-                connection.Open();
-                Console.WriteLine("Connected to SQL Server successfully!");
+                return new SqlConnection(connectionString);
 
             }
             catch (Exception e)

@@ -23,5 +23,9 @@ namespace layout.view.Main_Window
         {
             InitializeComponent();
         }
+        public void SideBar_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
