@@ -1,5 +1,6 @@
 ﻿using layout.view.chamcong;
 using layout.view.Main_Window;
+using layout.view.nguoidung;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,12 @@ namespace layout.view.Bars
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                btnRecruit.Background = Brushes.YellowGreen;
+                mainWindow.MainFrame.Navigate(new nguoidungPage());
+            }
         }
     }
 }

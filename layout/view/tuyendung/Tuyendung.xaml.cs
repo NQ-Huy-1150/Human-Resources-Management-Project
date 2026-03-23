@@ -106,6 +106,22 @@ namespace layout
             }
             return id;
         }
+        private string getDepartmentIdFromSelectedRow()
+        {
+            string text = "";
+
+            // Ép kiểu SelectedItem về DataRowView
+            DataRowView selectedRow = table.SelectedItem as DataRowView;
+
+            if (selectedRow != null)
+            {
+                // Lấy giá trị theo Tên cột
+                text = Convert.ToString(selectedRow["departmentId"]);
+
+                Debug.WriteLine(">>>>>>>>>>>>> " + text);
+            }
+            return text;
+        }
         private Recruitment convertDataTableToObject(int id)
         {
             Recruitment rec = new Recruitment();
@@ -128,10 +144,11 @@ namespace layout
         private void viewCandidate(object sender, RoutedEventArgs e)
         {
             int recruitId = getIdFromSelectedRow();
+            string departmentId = getDepartmentIdFromSelectedRow();
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
-                mainWindow.MainFrame.Navigate(new CandidatePage(recruitId));
+                mainWindow.MainFrame.Navigate(new CandidatePage(recruitId, departmentId));
             }
         }
     }

@@ -32,7 +32,7 @@ namespace layout.view.Main_Window
             string email1 = "admin";
             string username = "admin bla bla";
             string pass1 = "123";
-            string role1 = "user";
+            string role1 = "admin";
 
             if (txtEmail.Text.Equals(email1) && txtPassword.Password.Equals(pass1))
             {

@@ -29,11 +29,13 @@ namespace layout.view.CandidateView.HRView
     public partial class CandidatePage : Page
     {
         int recruitId = 0;
+        string departId = "";
         RecruitmentDetailService detailService = new RecruitmentDetailService();
-        public CandidatePage(int recruitId)
+        public CandidatePage(int recruitId, string departId)
         {
             InitializeComponent();
             this.recruitId = recruitId;
+            this.departId = departId;
             tableData.ItemsSource = detailService.fetchAllRecruitment(recruitId).DefaultView;
         }
         
@@ -82,7 +84,7 @@ namespace layout.view.CandidateView.HRView
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
-                mainWindow.MainFrame.Navigate(new UpdateCandidate(candidate.id, candidate.recruitId, candidate.status));
+                mainWindow.MainFrame.Navigate(new UpdateCandidate(candidate.id, candidate.recruitId, candidate.status, departId));
             }
         }
 
@@ -97,7 +99,7 @@ namespace layout.view.CandidateView.HRView
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
-                mainWindow.MainFrame.Navigate(new DetailCandidate(candidate));
+                mainWindow.MainFrame.Navigate(new DetailCandidate(candidate, departId));
             }
 
         }

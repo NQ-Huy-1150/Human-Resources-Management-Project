@@ -56,9 +56,14 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="domain\Candidate.cs" />
+    <Compile Include="domain\Nguoidung.cs" />
     <Compile Include="repository\EmployeeRepository.cs" />
+    <Compile Include="repository\NguoidungRepository.cs" />
     <Compile Include="repository\RecruitmentDetailRepository.cs" />
+    <Compile Include="repository\RoleRepository.cs" />
+    <Compile Include="service\Nguoidungservice.cs" />
     <Compile Include="service\RecruitmentDetailService.cs" />
+    <Compile Include="service\RoleService.cs" />
     <Compile Include="view\Bars\TopBar.xaml.cs">
       <DependentUpon>TopBar.xaml</DependentUpon>
     </Compile>
@@ -100,6 +105,12 @@
     </Compile>
     <Compile Include="view\MainWindow\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\nguoidung\nguoidungPage.xaml.cs">
+      <DependentUpon>nguoidungPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\nguoidung\Themnguoidung.xaml.cs">
+      <DependentUpon>Themnguoidung.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\tuyendung\deletePage.xaml.cs">
       <DependentUpon>deletePage.xaml</DependentUpon>
@@ -170,6 +181,14 @@
     <Page Include="view\Bars\SideBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\nguoidung\nguoidungPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="view\nguoidung\Themnguoidung.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="view\tuyendung\createRecruitment.xaml">
       <SubType>Designer</SubType>

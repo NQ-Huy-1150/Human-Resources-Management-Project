@@ -25,10 +25,12 @@ namespace layout.view.CandidateView.HRView
     {
         Candidate candidate = new Candidate();
         RecruitmentService service = new RecruitmentService();
-        public DetailCandidate(Candidate candidate)
+        string departId = "";
+        public DetailCandidate(Candidate candidate, string departId)
         {
             InitializeComponent();
             this.candidate = candidate;
+            this.departId = departId;
             id.Text = Convert.ToString(candidate.id);
             recruitId.Text = Convert.ToString(candidate.recruitId);
             name.Text = candidate.fullName;
@@ -51,7 +53,7 @@ namespace layout.view.CandidateView.HRView
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
-                mainWindow.MainFrame.Navigate(new CandidatePage(candidate.recruitId));
+                mainWindow.MainFrame.Navigate(new CandidatePage(candidate.recruitId,departId));
             }
         }
     }
