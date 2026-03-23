@@ -29,8 +29,8 @@ namespace layout.view.Main_Window
         }
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            string email1 = "admin@gmail.com";
-            string username = "admin";
+            string email1 = "admin";
+            string username = "admin bla bla";
             string pass1 = "123";
             string role1 = "user";
 

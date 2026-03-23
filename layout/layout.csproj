@@ -56,6 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="domain\Candidate.cs" />
+    <Compile Include="repository\EmployeeRepository.cs" />
     <Compile Include="repository\RecruitmentDetailRepository.cs" />
     <Compile Include="service\RecruitmentDetailService.cs" />
     <Compile Include="view\Bars\TopBar.xaml.cs">
@@ -87,6 +88,12 @@
     </Compile>
     <Compile Include="view\CandidateView\UserView\ThankYouPage.xaml.cs">
       <DependentUpon>ThankYouPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\chamcong\AdminView.xaml.cs">
+      <DependentUpon>AdminView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\chamcong\UserView.xaml.cs">
+      <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\MainWindow\HomePageWindow.xaml.cs">
       <DependentUpon>HomePageWindow.xaml</DependentUpon>
@@ -137,6 +144,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="view\CandidateView\UserView\ThankYouPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\chamcong\AdminView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\chamcong\UserView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

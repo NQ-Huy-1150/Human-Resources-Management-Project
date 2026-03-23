@@ -1,4 +1,5 @@
-﻿using layout.view.Main_Window;
+﻿using layout.view.chamcong;
+using layout.view.Main_Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,11 @@ namespace layout.view.Bars
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-           
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainFrame.Navigate(new AdminPage());
+            }
         }
 
         private void TuyenDungPage(object sender, RoutedEventArgs e)
@@ -39,6 +44,10 @@ namespace layout.view.Bars
                 btnRecruit.Background = Brushes.YellowGreen;
                 mainWindow.MainFrame.Navigate(new Tuyendung());
             }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

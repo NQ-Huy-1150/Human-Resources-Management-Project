@@ -1,4 +1,5 @@
 ﻿using layout.view.CandidateView.UserView;
+using layout.view.chamcong;
 using layout.view.Main_Window;
 using System;
 using System.Collections.Generic;
@@ -57,12 +58,42 @@ namespace layout.view.Bars
             show.Text = name;
             show.Visibility = Visibility.Visible;
             tk.Visibility = Visibility.Visible;
-            lookupSP.Margin = new Thickness(10, 0, 2, 0);
+            tkBtn.Visibility = Visibility.Visible;
+            tk.Margin = new Thickness(50, 0, 2, 0);
+            lookupSP.Margin = new Thickness(50, 0, 2, 0);
+            logoutBtn.Visibility = Visibility.Visible;
         }
         public void nonLoginPage()
         {
             tk.Visibility = Visibility.Collapsed;
-            lookupSP.Margin = new Thickness(330, 0, 2, 0);
+            tkBtn.Visibility = Visibility.Collapsed;
+            logoutBtn.Visibility = Visibility.Collapsed;
+            lookupSP.Margin = new Thickness(350, 0, 2, 0);
+        }
+
+        private void logoutBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+            HomePageWindow home = new HomePageWindow();
+            home.Show();
+            // Đóng window đã login
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is HomePageWindow && window != home)
+                {
+                    window.Close();
+                }
+            }
+            
+        }
+
+        private void tkBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as HomePageWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.HomeFrame.Navigate(new UserView());
+            }
         }
     }
 }
