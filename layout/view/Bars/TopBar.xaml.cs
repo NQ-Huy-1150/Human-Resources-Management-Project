@@ -44,5 +44,25 @@ namespace layout.view.Bars
                 mainWindow.HomeFrame.Navigate(new LookUpPage());
             }
         }
+
+        private void login(object sender, RoutedEventArgs e)
+        {
+            LoginWindow lg = new LoginWindow();
+            lg.Owner = Window.GetWindow(this); // Đặt cửa sổ cha là HomePageWindow hiện tại
+            lg.ShowDialog(); // Dùng ShowDialog thay vì Show
+        }
+        public void updateLoginStatus(string name)
+        {
+            logBtn.Visibility = Visibility.Collapsed;
+            show.Text = name;
+            show.Visibility = Visibility.Visible;
+            tk.Visibility = Visibility.Visible;
+            lookupSP.Margin = new Thickness(10, 0, 2, 0);
+        }
+        public void nonLoginPage()
+        {
+            tk.Visibility = Visibility.Collapsed;
+            lookupSP.Margin = new Thickness(330, 0, 2, 0);
+        }
     }
 }

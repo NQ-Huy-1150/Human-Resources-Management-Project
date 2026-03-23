@@ -91,6 +91,9 @@
     <Compile Include="view\MainWindow\HomePageWindow.xaml.cs">
       <DependentUpon>HomePageWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="view\MainWindow\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\tuyendung\deletePage.xaml.cs">
       <DependentUpon>deletePage.xaml</DependentUpon>
     </Compile>
@@ -138,6 +141,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="view\MainWindow\HomePageWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\MainWindow\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

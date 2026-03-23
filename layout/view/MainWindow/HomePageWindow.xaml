@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <!-- Gọi UserControl TopBar -->
-        <topbar:TopBar VerticalAlignment="Center" Height="102"/>
+        <topbar:TopBar VerticalAlignment="Center" Height="102" x:Name="topBar"/>
 
         <!-- Frame chứa các page nội dung -->
         <Frame x:Name="HomeFrame" Grid.Row="1" NavigationUIVisibility="Hidden"/>

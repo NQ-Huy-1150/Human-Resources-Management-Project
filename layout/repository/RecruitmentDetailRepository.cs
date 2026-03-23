@@ -33,11 +33,11 @@ namespace layout.repository
                 cmd.ExecuteNonQuery();
             }
         }
-        public DataTable getAllRecruitmentDetail(int id)
+        public DataTable getAllRecruitmentDetailByRecruitId(int recruitId)
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = $"select id, full_name, email, recruit_status from recruitment_detail where id = {id}";
+                string sql = $"select id, full_name, email, recruit_status from recruitment_detail where recruit_id = {recruitId}";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 DataTable data = new DataTable();
                 adapter.Fill(data);
@@ -60,7 +60,6 @@ namespace layout.repository
             using (SqlConnection connection = conn.dbConnection())
             {
                 string sql = "Delete from recruitment_detail where id = @id";
-
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();

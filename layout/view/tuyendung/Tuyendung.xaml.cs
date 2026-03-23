@@ -127,11 +127,11 @@ namespace layout
 
         private void viewCandidate(object sender, RoutedEventArgs e)
         {
-            int id = getIdFromSelectedRow();
+            int recruitId = getIdFromSelectedRow();
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
-                mainWindow.MainFrame.Navigate(new CandidatePage(id));
+                mainWindow.MainFrame.Navigate(new CandidatePage(recruitId));
             }
         }
     }

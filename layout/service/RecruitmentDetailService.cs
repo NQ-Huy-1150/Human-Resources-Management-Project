@@ -18,7 +18,7 @@ namespace layout.service
         }
         public DataTable fetchAllRecruitment(int id)
         {
-            return repo.getAllRecruitmentDetail(id);
+            return repo.getAllRecruitmentDetailByRecruitId(id);
         }
         public DataTable fetchById(int id)
         {

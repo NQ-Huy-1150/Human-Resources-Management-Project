@@ -1,4 +1,5 @@
-﻿using System;
+﻿using layout.view.Bars;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,23 @@ namespace layout.view.Main_Window
     /// </summary>
     public partial class HomePageWindow : Window
     {
+        string userName = "";
         public HomePageWindow()
         {
             InitializeComponent();
+            topBar.nonLoginPage();
+        }
+        
+        public HomePageWindow(string userName)
+        {
+            InitializeComponent();
+            
+        }
+
+        public void UpdateUser(string newUserName)
+        {
+            this.userName = newUserName;
+            topBar.updateLoginStatus(userName);
         }
     }
 }

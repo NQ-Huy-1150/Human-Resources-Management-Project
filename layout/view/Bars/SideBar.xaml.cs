@@ -28,7 +28,7 @@ namespace layout.view.Bars
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+           
         }
 
         private void TuyenDungPage(object sender, RoutedEventArgs e)
