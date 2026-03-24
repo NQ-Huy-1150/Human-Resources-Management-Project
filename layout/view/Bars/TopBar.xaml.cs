@@ -1,6 +1,7 @@
 ﻿using layout.view.CandidateView.UserView;
 using layout.view.chamcong;
 using layout.view.Main_Window;
+using layout.service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,8 @@ namespace layout.view.Bars
     /// </summary>
     public partial class TopBar : UserControl
     {
-        string username = "";
+        private int currentUserId = -1;
+        private readonly Nguoidungservice service = new Nguoidungservice();
         public TopBar()
         {
             InitializeComponent();
@@ -53,11 +55,11 @@ namespace layout.view.Bars
             lg.Owner = Window.GetWindow(this); // Đặt cửa sổ cha là HomePageWindow hiện tại
             lg.ShowDialog(); // Dùng ShowDialog thay vì Show
         }
-        public void updateLoginStatus(string name)
+        public void updateLoginStatus(int userId)
         {
             logBtn.Visibility = Visibility.Collapsed;
-            show.Text = name;
-            username = name;
+            currentUserId = userId;
+            show.Text = service.getUserNameById(userId);
             show.Visibility = Visibility.Visible;
             tk.Visibility = Visibility.Visible;
             tkBtn.Visibility = Visibility.Visible;
@@ -70,7 +72,9 @@ namespace layout.view.Bars
             tk.Visibility = Visibility.Collapsed;
             tkBtn.Visibility = Visibility.Collapsed;
             logoutBtn.Visibility = Visibility.Collapsed;
-            lookupSP.Margin = new Thickness(350, 0, 2, 0);
+            lookupSP.Margin = new Thickness(450, 0, 2, 0);
+            admin.Visibility = Visibility.Collapsed;
+            adminBtn.Visibility = Visibility.Collapsed;
         }
 
         private void logoutBtn_Click(object sender, RoutedEventArgs e)
@@ -92,9 +96,9 @@ namespace layout.view.Bars
         private void tkBtn_Click(object sender, RoutedEventArgs e)
         {
             var mainWindow = Window.GetWindow(this) as HomePageWindow;
-            if (mainWindow != null)
+            if (mainWindow != null && currentUserId != -1)
             {
-                mainWindow.HomeFrame.Navigate(new UserView(username));
+                mainWindow.HomeFrame.Navigate(new UserView(currentUserId));
             }
         }
     }

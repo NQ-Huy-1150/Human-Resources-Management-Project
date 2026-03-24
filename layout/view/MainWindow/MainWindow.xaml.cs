@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using layout.service;
 
 namespace layout.view.Main_Window
 {
@@ -19,16 +20,17 @@ namespace layout.view.Main_Window
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string username;
+        private readonly Nguoidungservice service = new Nguoidungservice();
+        private int userId;
         public MainWindow()
         {
             InitializeComponent();
         }
-        public MainWindow(string username)
+        public MainWindow(int userId)
         {
             InitializeComponent();
-            this.username = username;
-            sideBar.getUserNameForAdminPage(this.username);
+            this.userId = userId;
+            sideBar.getUserNameForAdminPage(service.getUserNameById(this.userId));
         }
     }
 }

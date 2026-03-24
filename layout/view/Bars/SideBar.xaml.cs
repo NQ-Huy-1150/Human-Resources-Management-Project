@@ -74,7 +74,16 @@ namespace layout.view.Bars
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
         {
-            
+            HomePageWindow home = new HomePageWindow();
+            home.Show();
+            // Đóng window đã login
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is MainWindow && window != home)
+                {
+                    window.Close();
+                }
+            }
         }
 
         public void getUserNameForAdminPage(string name)

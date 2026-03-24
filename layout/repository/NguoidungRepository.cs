@@ -225,5 +225,24 @@ namespace layout.repository
             }
             return id;
         }
+
+        public string getUserNameFromId(int userId)
+        {
+            string name = string.Empty;
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "Select full_name from users where user_id = @userId";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@userId", userId);
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    name = rs.ToString();
+                }
+            }
+            return name;
+        }
     }
 }

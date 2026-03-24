@@ -9,14 +9,11 @@ namespace layout.view.chamcong
     {
         private readonly AttendanceService attendanceService = new AttendanceService();
         private int currentUserId = -1;
-        string username = "";
-        Nguoidungservice service = new Nguoidungservice();
-        public UserView(string username)
+        public UserView(int userId)
         {
             InitializeComponent();
+            currentUserId = userId;
             LoadData();
-            this.username = username;
-            currentUserId = service.getUserIdByName(this.username);
         }
 
         private void LoadData()

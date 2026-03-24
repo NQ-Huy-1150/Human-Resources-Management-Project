@@ -20,7 +20,7 @@ namespace layout.view.Main_Window
     /// </summary>
     public partial class HomePageWindow : Window
     {
-        string userName = "";
+        int userId = -1;
 
         public HomePageWindow()
         {
@@ -34,10 +34,10 @@ namespace layout.view.Main_Window
             
         }
 
-        public void UpdateUser(string newUserName)
+        public void UpdateUser(int newUserId)
         {
-            this.userName = newUserName;
-            topBar.updateLoginStatus(userName);
+            this.userId = newUserId;
+            topBar.updateLoginStatus(userId);
         }
     }
 }

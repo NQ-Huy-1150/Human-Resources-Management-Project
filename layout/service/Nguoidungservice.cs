@@ -43,5 +43,10 @@ namespace layout.service
         {
             return repository.getUserIdFromName(name);
         }
+
+        public string getUserNameById(int userId)
+        {
+            return repository.getUserNameFromId(userId);
+        }
     }
 }
