@@ -17,7 +17,8 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "Insert into recruitment (departmentId, position, " +
+                connection.Open();
+                string sql = "Insert into recruitments (departmentId, position, " +
                     "estimateIncome, condition, sub_deadline, quantity, status, description)  " +
                     "values (@department, @position, @income, @condition, @deadline, @quantity, @status, @desc)";
 
@@ -37,7 +38,7 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "select id, departmentId, position, sub_deadline, quantity, status from recruitment";
+                string sql = "select id, departmentId, position, sub_deadline, quantity, status from recruitments";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 DataTable data = new DataTable();
                 adapter.Fill(data);
@@ -48,8 +49,9 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = $"select * from recruitment where id = {id}";
+                string sql = "select * from recruitments where id = @id";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
+                adapter.SelectCommand.Parameters.AddWithValue("@id", id);
                 DataTable data = new DataTable();
                 adapter.Fill(data);
                 return data;
@@ -59,7 +61,8 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "Delete from recruitment where id = @id";
+                connection.Open();
+                string sql = "Delete from recruitments where id = @id";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@id", id);
@@ -70,7 +73,8 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "update recruitment set departmentId = @department, position = @position, estimateIncome = @income," +
+                connection.Open();
+                string sql = "update recruitments set departmentId = @department, position = @position, estimateIncome = @income," +
                     "condition = @condition, sub_deadline = @deadline, quantity = @quantity, status = @status, description  = @desc " +
                     "where id = @id";
 
@@ -92,7 +96,8 @@ namespace layout.repository
             string position = "";
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "Select position from recruitment where id = @id";
+                connection.Open();
+                string sql = "Select position from recruitments where id = @id";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@id", id);
@@ -101,7 +106,7 @@ namespace layout.repository
                 {
                     position = Convert.ToString(rs);
                 }
-            }
+            }   
             if (position.Equals(""))
             {
                 return "None";
@@ -112,7 +117,7 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "select r.id, pb.ten_phongban, r.position, r.estimateIncome\r\nfrom recruitment r \r\njoin phongban pb on r.departmentId = pb.ma_phongban;";
+                string sql = "select r.id, d.department_name as ten_phongban, r.position, r.estimateIncome from recruitments r join departments d on r.departmentId = d.department_id";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 DataTable data = new DataTable();
                 adapter.Fill(data);

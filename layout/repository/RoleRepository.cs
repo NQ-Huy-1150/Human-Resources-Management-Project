@@ -17,7 +17,8 @@ namespace layout.repository
             int id = 0;
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "Select ma_vaitro from vaitro where ten_vaitro = @name";
+                connection.Open();
+                string sql = "Select role_id from roles where role_name = @name";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@name",name);
@@ -28,6 +29,24 @@ namespace layout.repository
                 }
             }
             return id;
+        }
+        public string findById(int id)
+        {
+            string name = "";
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "Select role_name from roles where role_id = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@id", id);
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    name = Convert.ToString(rs);
+                }
+            }
+            return name;
         }
     }
 }

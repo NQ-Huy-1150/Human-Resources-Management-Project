@@ -41,18 +41,18 @@ namespace layout.luong
             if (_currentSalary == null) return;
 
             // Thông tin nhân viên
-            TbId.Text = _currentSalary.NvId.ToString();
-            TbTenNV.Text = _currentSalary.Name;
+            TbId.Text = _currentSalary.UserId.ToString();
+            TbTenNV.Text = _currentSalary.FullName;
 
             // Thông tin lương
-            TbIdLuong.Text = _currentSalary.Id.ToString();
-            TbLuongCoBan.Text = _currentSalary.LuongCoBan.ToString("N0");
-            TbTroCap.Text = _currentSalary.TroCap.ToString("N0");
-            TbThuong.Text = _currentSalary.Thuong.ToString("N0");
-            TbMuon.Text = _currentSalary.Muon.ToString();
-            TbKhoanTru.Text = _currentSalary.KhoanTru.ToString("N0");
-            TbThangNam.Text = $"{_currentSalary.Thang}/{_currentSalary.Nam}";
-            TbThucLinh.Text = _currentSalary.ThucLinh.ToString("N0");
+            TbIdLuong.Text = _currentSalary.PayrollId.ToString();
+            TbLuongCoBan.Text = _currentSalary.BaseSalary.ToString("N0");
+            TbTroCap.Text = _currentSalary.Allowance.ToString("N0");
+            TbThuong.Text = _currentSalary.Bonus.ToString("N0");
+            TbMuon.Text = "0";
+            TbKhoanTru.Text = _currentSalary.Deduction.ToString("N0");
+            TbThangNam.Text = $"{_currentSalary.Month}/{_currentSalary.Year}";
+            TbThucLinh.Text = _currentSalary.NetSalary.ToString("N0");
         }
 
         private void BtnBangLuong_Click(object sender, RoutedEventArgs e)
@@ -88,15 +88,17 @@ namespace layout.luong
             if (confirm != MessageBoxResult.Yes) return;
 
             SalaryRepository repo = new SalaryRepository();
-            if (repo.UpdateSalary(_currentSalary.Id, luongCoBan, troCap, thuong, khoanTru))
+            if (repo.UpdateSalary(_currentSalary.PayrollId, luongCoBan, troCap, thuong, khoanTru))
             {
                 // Cập nhật lại model
-                _currentSalary.LuongCoBan = luongCoBan;
-                _currentSalary.TroCap = troCap;
-                _currentSalary.Thuong = thuong;
+                _currentSalary.BaseSalary = luongCoBan;
+                _currentSalary.Allowance = troCap;
+                _currentSalary.Bonus = thuong;
+                _currentSalary.Deduction = khoanTru;
+                _currentSalary.NetSalary = luongCoBan + troCap + thuong - khoanTru;
 
                 // Cập nhật lại Thực Lĩnh
-                TbThucLinh.Text = _currentSalary.ThucLinh.ToString("N0");
+                TbThucLinh.Text = _currentSalary.NetSalary.ToString("N0");
 
                 MessageBox.Show("Cập nhật thành công!", "Thành Công",
                     MessageBoxButton.OK, MessageBoxImage.Information);

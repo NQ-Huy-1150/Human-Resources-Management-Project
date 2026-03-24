@@ -25,17 +25,19 @@ namespace layout.repository
                     connection.Open();
                     string sql = @"
                 SELECT 
-                    l.id           AS Id,
-                    l.nv_id        AS NvId,
-                    nd.name        AS Name,
-                    l.luong_co_ban AS LuongCoBan,
-                    l.tro_cap      AS TroCap,
-                    l.thuong       AS Thuong,
-                    l.thang        AS Thang,
-                    l.nam          AS Nam
-                FROM luong l
-                INNER JOIN nguoidung nd ON nd.id = l.nv_id
-                ORDER BY l.id ASC";
+                    p.payroll_id   AS PayrollId,
+                    p.user_id      AS UserId,
+                    u.full_name    AS FullName,
+                    p.base_salary  AS BaseSalary,
+                    p.allowance    AS Allowance,
+                    p.bonus        AS Bonus,
+                    p.deduction    AS Deduction,
+                    p.month        AS Month,
+                    p.year         AS Year,
+                    p.net_salary   AS NetSalary
+                FROM payroll p
+                INNER JOIN users u ON u.user_id = p.user_id
+                ORDER BY p.payroll_id ASC";
 
                     SqlCommand cmd = new SqlCommand(sql, connection);
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -44,15 +46,16 @@ namespace layout.repository
                     {
                         SalaryDay.Luong salary = new SalaryDay.Luong
                         {
-                            Id = reader["Id"] != DBNull.Value ? Convert.ToInt32(reader["Id"]) : 0,
-                            NvId = reader["NvId"] != DBNull.Value ? Convert.ToInt32(reader["NvId"]) : 0,
-                            Name = reader["Name"] != DBNull.Value ? reader["Name"].ToString() : "N/A",
-                            LuongCoBan = reader["LuongCoBan"] != DBNull.Value ? Convert.ToDouble(reader["LuongCoBan"]) : 0,
-                            TroCap = reader["TroCap"] != DBNull.Value ? Convert.ToDouble(reader["TroCap"]) : 0,
-                            Thuong = reader["Thuong"] != DBNull.Value ? Convert.ToDouble(reader["Thuong"]) : 0,
-                            Thang = reader["Thang"] != DBNull.Value ? Convert.ToInt32(reader["Thang"]) : 0,
-                            Nam = reader["Nam"] != DBNull.Value ? Convert.ToInt32(reader["Nam"]) : 0,
-                            Muon = 0
+                            PayrollId = reader["PayrollId"] != DBNull.Value ? Convert.ToInt32(reader["PayrollId"]) : 0,
+                            UserId = reader["UserId"] != DBNull.Value ? Convert.ToInt32(reader["UserId"]) : 0,
+                            FullName = reader["FullName"] != DBNull.Value ? reader["FullName"].ToString() : "N/A",
+                            BaseSalary = reader["BaseSalary"] != DBNull.Value ? Convert.ToDouble(reader["BaseSalary"]) : 0,
+                            Allowance = reader["Allowance"] != DBNull.Value ? Convert.ToDouble(reader["Allowance"]) : 0,
+                            Bonus = reader["Bonus"] != DBNull.Value ? Convert.ToDouble(reader["Bonus"]) : 0,
+                            Deduction = reader["Deduction"] != DBNull.Value ? Convert.ToDouble(reader["Deduction"]) : 0,
+                            Month = reader["Month"] != DBNull.Value ? Convert.ToInt32(reader["Month"]) : 0,
+                            Year = reader["Year"] != DBNull.Value ? Convert.ToInt32(reader["Year"]) : 0,
+                            NetSalary = reader["NetSalary"] != DBNull.Value ? Convert.ToDouble(reader["NetSalary"]) : 0
                         };
                         salaryList.Add(salary);
                     }
@@ -73,16 +76,18 @@ namespace layout.repository
                 using (SqlConnection connection = conn.dbConnection())
                 {
                     connection.Open();
-                    string sql = @"UPDATE luong 
-                           SET luong_co_ban = @LuongCoBan, 
-                               tro_cap      = @TroCap, 
-                               thuong       = @Thuong
-                           WHERE id = @Id";
+                    string sql = @"UPDATE payroll 
+                           SET base_salary = @LuongCoBan, 
+                               allowance   = @TroCap, 
+                               bonus       = @Thuong,
+                               deduction   = @KhoanTru
+                           WHERE payroll_id = @Id";
 
                     SqlCommand cmd = new SqlCommand(sql, connection);
                     cmd.Parameters.AddWithValue("@LuongCoBan", luongCoBan);
                     cmd.Parameters.AddWithValue("@TroCap", troCap);
                     cmd.Parameters.AddWithValue("@Thuong", thuong);
+                    cmd.Parameters.AddWithValue("@KhoanTru", khoanTru);
                     cmd.Parameters.AddWithValue("@Id", id);
                     cmd.ExecuteNonQuery();
                     return true;

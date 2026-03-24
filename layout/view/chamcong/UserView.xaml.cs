@@ -1,28 +1,60 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using layout.service;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace layout.view.chamcong
 {
-    /// <summary>
-    /// Interaction logic for ChamCongView.xaml
-    /// </summary>
     public partial class UserView : Page
     {
-        public UserView()
+        private readonly AttendanceService attendanceService = new AttendanceService();
+        private int currentUserId = -1;
+        string username = "";
+        Nguoidungservice service = new Nguoidungservice();
+        public UserView(string username)
         {
             InitializeComponent();
+            LoadData();
+            this.username = username;
+            currentUserId = service.getUserIdByName(this.username);
+        }
+
+        private void LoadData()
+        {
+            try
+            {
+                var list = attendanceService.getTodayAttendanceByUser(currentUserId);
+                dgLichSu.ItemsSource = list;
+            }
+            catch (Exception ex) { MessageBox.Show("Lỗi hiển thị: " + ex.Message); }
+        }
+
+        private void btnVao_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if(currentUserId != -1)
+                {
+                    attendanceService.checkIn(currentUserId);
+                    LoadData();
+                    MessageBox.Show("Đã ghi nhận giờ vào!");
+                }
+            }
+            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
+        }
+
+        private void btnRa_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (currentUserId != -1)
+                {
+                    if (attendanceService.checkOut(currentUserId)) MessageBox.Show("Đã ghi nhận giờ ra!");
+                    else MessageBox.Show("Không tìm thấy ca đang hoạt động!");
+                    LoadData();
+                }
+            }
+            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
         }
     }
 }

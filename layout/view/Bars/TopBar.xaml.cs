@@ -23,6 +23,7 @@ namespace layout.view.Bars
     /// </summary>
     public partial class TopBar : UserControl
     {
+        string username = "";
         public TopBar()
         {
             InitializeComponent();
@@ -56,6 +57,7 @@ namespace layout.view.Bars
         {
             logBtn.Visibility = Visibility.Collapsed;
             show.Text = name;
+            username = name;
             show.Visibility = Visibility.Visible;
             tk.Visibility = Visibility.Visible;
             tkBtn.Visibility = Visibility.Visible;
@@ -92,7 +94,7 @@ namespace layout.view.Bars
             var mainWindow = Window.GetWindow(this) as HomePageWindow;
             if (mainWindow != null)
             {
-                mainWindow.HomeFrame.Navigate(new UserView());
+                mainWindow.HomeFrame.Navigate(new UserView(username));
             }
         }
     }

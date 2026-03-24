@@ -14,5 +14,9 @@ namespace layout.service
         {
             return repo.findByName(name);
         }
+        public string getRoleName(int id)
+        {
+            return repo.findById(id);
+        } 
     }
 }

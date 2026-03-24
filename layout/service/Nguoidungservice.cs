@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,18 @@ namespace layout.service
         {
             return repository.deleteNguoidung(id);
         }
-        
+        public bool verifyUser(string email, string pass)
+        {
+            return repository.isEmailAndPasswordExisted(email,pass);
+        }
+
+        public DataTable getUserRoleAndIdByEmail(string email)
+        {
+            return repository.getUserByEmail(email);
+        }
+        public int getUserIdByName(string name)
+        {
+            return repository.getUserIdFromName(name);
+        }
     }
 }

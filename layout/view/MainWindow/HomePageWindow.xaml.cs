@@ -21,6 +21,7 @@ namespace layout.view.Main_Window
     public partial class HomePageWindow : Window
     {
         string userName = "";
+
         public HomePageWindow()
         {
             InitializeComponent();

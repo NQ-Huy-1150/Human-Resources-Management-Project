@@ -1,4 +1,6 @@
-﻿using layout.view.Bars;
+﻿using layout.domain;
+using layout.service;
+using layout.view.Bars;
 using layout.view.Main_Window;
 using System;
 using System.Collections.Generic;
@@ -23,41 +25,57 @@ namespace layout.view.Main_Window
     /// </summary>
     public partial class LoginWindow : Window
     {
+        Nguoidungservice service = new Nguoidungservice();
+        RoleService roleService = new RoleService();
         public LoginWindow()
         {
             InitializeComponent();
         }
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            string email1 = "admin";
-            string username = "admin bla bla";
-            string pass1 = "123";
-            string role1 = "admin";
+            getLogin();
+        }
 
-            if (txtEmail.Text.Equals(email1) && txtPassword.Password.Equals(pass1))
+        private void hlForgotPassword_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Vui lòng liên hệ Admin để lấy lại mật khẩu.");
+        }
+        private void getLogin()
+        {
+            
+            if (service.verifyUser(txtEmail.Text,txtPassword.Password))
             {
-                if (role1.Equals("admin"))
+                NguoiDung nguoi = convertDataTableToObject(txtEmail.Text);
+                string roleName = roleService.getRoleName(nguoi.ma_vaitro);
+                if (roleName.Equals("Quản trị viên"))
                 {
                     MainWindow mw = new MainWindow();
                     mw.Show();
                     this.Close();
                 }
-                if (role1.Equals("user"))
+                if (roleName.Equals("Nhân viên"))
                 {
                     // Lấy cửa sổ cha và ép kiểu về HomePageWindow
                     if (this.Owner is HomePageWindow hp)
                     {
-                        hp.UpdateUser(username); // Cập nhật tên user lên TopBar
+                        hp.UpdateUser(nguoi.ho_ten); // Cập nhật tên user lên TopBar
                     }
 
                     this.Close(); // Đóng LoginWindow và cập nhật HomePageWindow đang mở
                 }
             }
         }
-
-        private void hlForgotPassword_Click(object sender, RoutedEventArgs e)
+        private NguoiDung convertDataTableToObject(string email)
         {
-            MessageBox.Show("Vui lòng liên hệ Admin để lấy lại mật khẩu.");
+            NguoiDung nguoi = new NguoiDung();
+            DataTable data = service.getUserRoleAndIdByEmail(email);
+            foreach (DataRow row in data.Rows)
+            {
+                nguoi.ma_nguoidung = Convert.ToInt32(row["user_id"].ToString());
+                nguoi.ma_vaitro = Convert.ToInt32(row["role_id"].ToString());
+                nguoi.ho_ten = Convert.ToString(row["full_name"].ToString());
+            }
+            return nguoi;
         }
     }
 }

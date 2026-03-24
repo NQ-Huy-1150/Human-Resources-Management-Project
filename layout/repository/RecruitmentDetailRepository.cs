@@ -13,12 +13,13 @@ namespace layout.repository
     public class RecruitmentDetailRepository
     {
         MssSQLConnection conn = new MssSQLConnection();
-        public void createRecruitmentDetail(Candidate candidate)
+        public int createRecruitmentDetail(Candidate candidate)
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "Insert into recruitment_detail (recruit_id,full_name,email,address,phone_number,edu_level,year_of_exp,recruit_status, lookup_id)" +
-                    "values (@id,@name,@email,@address,@phone,@edu,@year,@status, @lookup)";
+                connection.Open();
+                string sql = "Insert into recruitment_details (recruit_id,full_name,email,address,phone_number,edu_level,year_of_exp,recruit_status)" +
+                    "values (@id,@name,@email,@address,@phone,@edu,@year,@status); SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@id", candidate.recruitId);
@@ -29,16 +30,17 @@ namespace layout.repository
                 cmd.Parameters.AddWithValue("@edu", candidate.edu_level);
                 cmd.Parameters.AddWithValue("@year", candidate.yearOfExp);
                 cmd.Parameters.AddWithValue("@status", candidate.status);
-                cmd.Parameters.AddWithValue("@lookup", candidate.lookupId);
-                cmd.ExecuteNonQuery();
+                object result = cmd.ExecuteScalar();
+                return result != null ? Convert.ToInt32(result) : 0;
             }
         }
         public DataTable getAllRecruitmentDetailByRecruitId(int recruitId)
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = $"select id, full_name, email, recruit_status from recruitment_detail where recruit_id = {recruitId}";
+                string sql = "select id, full_name, email, recruit_status from recruitment_details where recruit_id = @recruitId";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
+                adapter.SelectCommand.Parameters.AddWithValue("@recruitId", recruitId);
                 DataTable data = new DataTable();
                 adapter.Fill(data);
                 return data;
@@ -48,8 +50,9 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = $"select * from recruitment_detail where id = {id}";
+                string sql = "select * from recruitment_details where id = @id";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
+                adapter.SelectCommand.Parameters.AddWithValue("@id", id);
                 DataTable data = new DataTable();
                 adapter.Fill(data);
                 return data;
@@ -59,7 +62,8 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "Delete from recruitment_detail where id = @id";
+                connection.Open();
+                string sql = "Delete from recruitment_details where id = @id";
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
@@ -69,9 +73,10 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "update recruitment_detail set recruit_id = @recruitId, full_name = @name, email = @email," +
+                connection.Open();
+                string sql = "update recruitment_details set recruit_id = @recruitId, full_name = @name, email = @email," +
                     "address = @address, phone_number = @phone, edu_level = @edu, year_of_exp = @year" +
-                    "where id = @id";
+                    " where id = @id";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@recruitId", candidate.recruitId);
@@ -89,7 +94,8 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "update recruitment_detail set recruit_status = @status where id = @id";
+                connection.Open();
+                string sql = "update recruitment_details set recruit_status = @status where id = @id";
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@status", status);
                 cmd.Parameters.AddWithValue("@id", id);
@@ -99,12 +105,29 @@ namespace layout.repository
         public string getStatusFromLookUpId(string id)
         {
             string temp = "";
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                return temp;
+            }
+
+            string normalizedId = id.Trim();
+            if (normalizedId.StartsWith("UV-", StringComparison.OrdinalIgnoreCase))
+            {
+                normalizedId = normalizedId.Substring(3);
+            }
+
+            if (!int.TryParse(normalizedId, out int candidateId))
+            {
+                return temp;
+            }
+
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "Select recruit_status from recruitment_detail where lookup_id = @id";
+                connection.Open();
+                string sql = "Select recruit_status from recruitment_details where id = @id";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.Parameters.AddWithValue("@id", id);
+                cmd.Parameters.AddWithValue("@id", candidateId);
                 object rs = cmd.ExecuteScalar();
                 if (rs != null)
                 {

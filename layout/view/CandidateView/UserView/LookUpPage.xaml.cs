@@ -31,7 +31,8 @@ namespace layout.view.CandidateView.UserView
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            status.Text = service.findByLookupId(id.Text);
+            string lookupStatus = service.findByLookupId(id.Text);
+            status.Text = string.IsNullOrEmpty(lookupStatus) ? "Không tìm thấy hồ sơ." : lookupStatus;
         }
         private void backToParentBtn(object sender, RoutedEventArgs e)
         {

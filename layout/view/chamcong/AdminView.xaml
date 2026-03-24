@@ -3,57 +3,58 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:layout.view.chamcong"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="ChamCongPage">
+      Title="AdminPage">
 
-    <!-- VÙNG NỘI DUNG CHÍNH -->
     <Border Background="#F8F9FA">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <Grid>
-                <!-- Breadcrumb start -->
-                <StackPanel Orientation="Horizontal" Margin="10,10,0,0" VerticalAlignment="Top">
-                    <Button Content="Quản lý nhân sự" Height="25"  BorderThickness="0" Background="Transparent" FontStyle="Italic"/>
-                    <TextBlock Text="/" Margin="5,4,5,0" FontSize="14" Foreground="Gray"/>
-                    <Button Content="Tuyển dụng" Height="25"  BorderThickness="0" Background="Transparent" FontStyle="Italic"/>
-                    <TextBlock Text="/" Margin="5,4,5,0" FontSize="14" Foreground="Gray"/>
-                    <TextBlock Text="Xoá đơn" Margin="5,4,5,0" FontStyle="Italic" />
-                </StackPanel>
-                <!-- Breadcrumb end -->
-                <!-- Content start-->
-                <Rectangle Height="2" Margin="10,40,10,0" Fill="LightGray" VerticalAlignment="Top"/>
-                <StackPanel Orientation="Vertical" Margin="10,80,10,10" VerticalAlignment="Top" HorizontalAlignment="Center">
-                    <DataGrid x:Name="dgAdmin" Grid.Row="1" Margin="15" AutoGenerateColumns="False" IsReadOnly="True" RowHeight="35">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Nhân Viên" Binding="{Binding ho_ten}" Width="1.5*"/>
-                            <DataGridTextColumn Header="Ngày" Binding="{Binding thoi_diem_vao, StringFormat='dd/MM/yyyy'}" Width="*"/>
-                            <DataGridTextColumn Header="Tổng Giờ" Binding="{Binding ThoiGianChiTiet}" Width="*"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-                            <DataGridTextColumn Header="Ca Thường (Phút)" Binding="{Binding CaBinhThuong}" Width="*">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#27AE60"/>
-                                        <Setter Property="FontWeight" Value="Bold"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,15,0,10">
+                <Button Content="Quản lý nhân sự" Height="25" BorderThickness="0" Background="Transparent" FontStyle="Italic" Foreground="#7F8C8D"/>
+                <TextBlock Text="/" Margin="5,4,5,0" FontSize="14" Foreground="Gray"/>
+                <TextBlock Text="Lịch sử chấm công toàn hệ thống" Margin="5,4,5,0" FontStyle="Italic" Foreground="#2C3E50" FontWeight="SemiBold"/>
+            </StackPanel>
 
-                            <DataGridTextColumn Header="Tăng Ca (Phút)" Binding="{Binding TangCa}" Width="*">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Foreground" Value="#E74C3C"/>
-                                        <Setter Property="FontWeight" Value="Bold"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
+            <Rectangle Grid.Row="1" Fill="#D1D9E0" Margin="20,0"/>
 
-                            <DataGridTextColumn Header="Ghi Chú" Binding="{Binding ghi_chu}" Width="2*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-                <!-- Content end-->
-            </Grid>
-        </ScrollViewer>
+            <DataGrid x:Name="dgAdmin" Grid.Row="2" Margin="20" AutoGenerateColumns="False" 
+                      IsReadOnly="True" RowHeight="40" Background="White" BorderBrush="#D1D9E0" 
+                      GridLinesVisibility="Horizontal">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nhân Viên" Binding="{Binding full_name}" Width="1.5*"/>
+                    <DataGridTextColumn Header="Ngày" Binding="{Binding check_in, StringFormat='dd/MM/yyyy'}" Width="*"/>
+                    <DataGridTextColumn Header="Thời gian" Binding="{Binding TimeRange}" Width="1.2*"/>
+
+                    <DataGridTextColumn Header="Ca Thường (Phút)" Binding="{Binding StandardMinutes}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#27AE60"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Tăng Ca (Phút)" Binding="{Binding OvertimeMinutes}" Width="*">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Foreground" Value="#E74C3C"/>
+                                <Setter Property="FontWeight" Value="Bold"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Loại Ca" Binding="{Binding loai_ca}" Width="*"/>
+                    <DataGridTextColumn Header="Ghi Chú" Binding="{Binding ghi_chu}" Width="1.5*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </Border>
 </Page>

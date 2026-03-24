@@ -39,6 +39,11 @@ namespace layout.view.CandidateView.UserView
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             create();
+            if (string.IsNullOrEmpty(value))
+            {
+                MessageBox.Show("Tạo hồ sơ ứng tuyển thất bại.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             var mainWindow = Window.GetWindow(this) as HomePageWindow;
             if (mainWindow != null)
             {
@@ -56,12 +61,10 @@ namespace layout.view.CandidateView.UserView
             candidate.yearOfExp = Convert.ToInt32(exp.Text);
             candidate.edu_level = edu.Text;
             candidate.recruitId = Convert.ToInt32(recruitId.Text);
-            string temp = GenCodeForTrackingPurposeOnly();
-            value = temp;
-            candidate.lookupId = value;
             // default value
             candidate.status = "Chờ xét duyệt";
-            service.getCreateRecruitment(candidate);
+            int candidateId = service.getCreateRecruitment(candidate);
+            value = candidateId > 0 ? ("UV-" + candidateId) : "";
         }
         private void backToParentBtn(object sender, RoutedEventArgs e)
         {
@@ -72,18 +75,6 @@ namespace layout.view.CandidateView.UserView
             }
         }
 
-        private string GenCodeForTrackingPurposeOnly()
-        {
-            Random res = new Random();
-            string str = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            int size = 5;
-            string code = "UV-";
-            for (int i = 0; i < size; i++)
-            {
-                int x = res.Next(str.Length);
-                code += str[x];
-            }
-            return code; // Ví dụ: UV-X7R2B
-        }
+
     }
 }

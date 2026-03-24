@@ -3,66 +3,61 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:layout.view.chamcong"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
       Title="ChamCongView">
 
-    <!-- VÙNG NỘI DUNG CHÍNH -->
-    <Border Background="#F8F9FA">
-        <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <Grid Background="#F4F7F9">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="60"/>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
+    <Grid Background="#F4F7F9">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-                <Border Background="#2C3E50">
-                    <DockPanel LastChildFill="False">
-                        <TextBlock Text="BẢNG CHẤM CÔNG NHÂN VIÊN" Foreground="White" VerticalAlignment="Center" 
-                       Margin="20,0" FontWeight="Bold" FontSize="16"/>
-                        <TextBlock x:Name="txtUserName" Foreground="#ECF0F1" VerticalAlignment="Center" 
-                       DockPanel.Dock="Right" Margin="20,0" FontSize="14" FontStyle="Italic"/>
-                    </DockPanel>
-                </Border>
+        <Border Grid.Row="0" Background="#2C3E50" VerticalAlignment="Top" Height="60">
+            <DockPanel LastChildFill="False">
+                <TextBlock Text="BẢNG CHẤM CÔNG NHÂN VIÊN" Foreground="White" VerticalAlignment="Center" 
+                           Margin="20,0" FontWeight="Bold" FontSize="16"/>
+                <TextBlock x:Name="txtUserName" Foreground="#ECF0F1" VerticalAlignment="Center" 
+                           DockPanel.Dock="Right" Margin="20,0" FontSize="14" FontStyle="Italic" Text="Nhân viên: Admin"/>
+            </DockPanel>
+        </Border>
 
-                <StackPanel Grid.Row="1" Margin="25">
-                    <GroupBox Header="Thao tác chấm công" Padding="20" BorderBrush="#D1D9E0">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Button Content="VÀO CA"  Width="140" Height="45" 
-                        Background="#27AE60" Foreground="White" FontSize="14" FontWeight="Bold" Margin="10"/>
-                            <Button Content="RA CA"  Width="140" Height="45" 
-                        Background="#E67E22" Foreground="White" FontSize="14" FontWeight="Bold" Margin="10"/>
-                        </StackPanel>
-                    </GroupBox>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20,10,20,20">
+                <GroupBox Header="Thao tác chấm công" Padding="15" BorderBrush="#D1D9E0" Background="White">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button x:Name="btnVao" Content="VÀO CA" Click="btnVao_Click" Width="140" Height="45" 
+                                Background="#27AE60" Foreground="White" FontSize="14" FontWeight="Bold" Margin="10"/>
+                        <Button x:Name="btnRa" Content="RA CA" Click="btnRa_Click" Width="140" Height="45" 
+                                Background="#E67E22" Foreground="White" FontSize="14" FontWeight="Bold" Margin="10"/>
+                    </StackPanel>
+                </GroupBox>
 
-                    <TextBlock Text="Lịch sử làm việc hôm nay" Margin="5,25,0,10" FontWeight="Bold" FontSize="15" Foreground="#2C3E50"/>
+                <TextBlock Text="Lịch sử làm việc hôm nay" Margin="5,20,0,10" FontWeight="Bold" FontSize="15" Foreground="#2C3E50"/>
 
-                    <DataGrid x:Name="dgLichSu" Height="280" AutoGenerateColumns="False" IsReadOnly="True" 
-                  Background="White" BorderBrush="#D1D9E0" GridLinesVisibility="Horizontal" RowHeight="38">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Giờ vào" Binding="{Binding thoi_diem_vao, StringFormat='HH:mm:ss'}" Width="*"/>
-                            <DataGridTextColumn Header="Giờ ra" Binding="{Binding thoi_diem_ra, StringFormat='HH:mm:ss'}" Width="*"/>
-                            <DataGridTextColumn Header="Trạng thái" Binding="{Binding TrangThaiHienThi}" Width="*">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                        <Setter Property="FontWeight" Value="Bold"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding TrangThaiHienThi}" Value="Đang làm việc">
-                                                <Setter Property="Foreground" Value="#27AE60"/>
-                                            </DataTrigger>
-                                            <DataTrigger Binding="{Binding TrangThaiHienThi}" Value="Nghỉ">
-                                                <Setter Property="Foreground" Value="#7F8C8D"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </Grid>
+                <DataGrid x:Name="dgLichSu" Height="300" AutoGenerateColumns="False" IsReadOnly="True" 
+                          Background="White" BorderBrush="#D1D9E0" GridLinesVisibility="Horizontal" RowHeight="38">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Giờ vào" Binding="{Binding check_in, StringFormat='HH:mm:ss'}" Width="*"/>
+                        <DataGridTextColumn Header="Giờ ra" Binding="{Binding check_out, StringFormat='HH:mm:ss'}" Width="*"/>
+                        <DataGridTextColumn Header="Trạng thái" Binding="{Binding Status}" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status}" Value="Đang làm việc">
+                                            <Setter Property="Foreground" Value="#27AE60"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="Đã xong ca">
+                                            <Setter Property="Foreground" Value="#7F8C8D"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
         </ScrollViewer>
-    </Border>
+    </Grid>
 </Page>

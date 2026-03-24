@@ -10,39 +10,16 @@ namespace layout.luong
     {
         public class Luong
         {
-            public int Id { get; set; }
-            public int NvId { get; set; }
-
-            public string Name { get; set; }
-            public double LuongCoBan { get; set; }
-            public double TroCap { get; set; }
-            public double Thuong { get; set; }
-            public int Thang { get; set; }
-            public int Nam { get; set; }
-            public int Muon { get; set; }
-            public double KhoanTru
-            {
-                get
-                {
-                    if (Muon < 30)
-                    {
-                        return Muon * 1000;
-                    }
-                    if (Muon <= 60)
-                    {
-                        return 100000;
-                    }
-                    return 200000;
-                }
-            }
-
-            public double ThucLinh
-            {
-                get
-                {
-                    return ((LuongCoBan+TroCap) * Thang) - KhoanTru;
-                }
-            }
+            public int PayrollId { get; set; }
+            public int UserId { get; set; }
+            public string FullName { get; set; }
+            public double BaseSalary { get; set; }
+            public double Allowance { get; set; }
+            public double Bonus { get; set; }
+            public double Deduction { get; set; }
+            public int Month { get; set; }
+            public int Year { get; set; }
+            public double NetSalary { get; set; }
         }
     }
 }

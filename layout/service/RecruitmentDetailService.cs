@@ -12,9 +12,9 @@ namespace layout.service
     public class RecruitmentDetailService
     {
         RecruitmentDetailRepository repo = new RecruitmentDetailRepository();
-        public void getCreateRecruitment(Candidate candidate)
+        public int getCreateRecruitment(Candidate candidate)
         {
-            repo.createRecruitmentDetail(candidate);
+            return repo.createRecruitmentDetail(candidate);
         }
         public DataTable fetchAllRecruitment(int id)
         {

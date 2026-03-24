@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -21,17 +22,17 @@ namespace layout.repository
             {
                 string sql = @"
             SELECT 
-                n.ma_nguoidung,
-                n.ho_ten,
-                n.thu_dien_tu,
-                n.mat_khau,
-                n.dia_chi,
-                n.so_dien_thoai,
-                v.ten_vaitro AS vai_tro,
-                n.ma_phongban
-            FROM nguoidung n
-            INNER JOIN vaitro v ON n.ma_vaitro = v.ma_vaitro
-            ORDER BY n.ma_nguoidung";
+                n.user_id AS ma_nguoidung,
+                n.full_name AS ho_ten,
+                n.email AS thu_dien_tu,
+                n.password AS mat_khau,
+                n.address AS dia_chi,
+                n.phone_number AS so_dien_thoai,
+                r.role_name AS vai_tro,
+                n.department_id AS ma_phongban
+            FROM users n
+            INNER JOIN roles r ON n.role_id = r.role_id
+            ORDER BY n.user_id";
 
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 DataTable data = new DataTable();
@@ -45,18 +46,18 @@ namespace layout.repository
             {
                 string sql = @"
         SELECT 
-            n.ma_nguoidung,
-            n.ho_ten,
-            n.thu_dien_tu,
-            n.mat_khau,
-            n.dia_chi,
-            n.so_dien_thoai,
-            v.ten_vaitro AS vai_tro,
-            n.ma_phongban
-        FROM nguoidung n
-        INNER JOIN vaitro v ON n.ma_vaitro = v.ma_vaitro
-        WHERE n.ho_ten LIKE @hoten
-        ORDER BY n.ma_nguoidung";
+            n.user_id AS ma_nguoidung,
+            n.full_name AS ho_ten,
+            n.email AS thu_dien_tu,
+            n.password AS mat_khau,
+            n.address AS dia_chi,
+            n.phone_number AS so_dien_thoai,
+            r.role_name AS vai_tro,
+            n.department_id AS ma_phongban
+        FROM users n
+        INNER JOIN roles r ON n.role_id = r.role_id
+        WHERE n.full_name LIKE @hoten
+        ORDER BY n.user_id";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@hoten", "%" + hoten + "%");
@@ -71,8 +72,9 @@ namespace layout.repository
         public bool deleteNguoidung(int id)
         {
             using (SqlConnection connection = conn.dbConnection())
-            using (SqlCommand cmd = new SqlCommand("DELETE FROM nguoidung WHERE ma_nguoidung=@id", connection))
+            using (SqlCommand cmd = new SqlCommand("DELETE FROM users WHERE user_id=@id", connection))
             {
+                connection.Open();
                 cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
 
                 return cmd.ExecuteNonQuery() > 0;
@@ -83,14 +85,15 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = @"UPDATE nguoidung
-                       SET ho_ten=@hoten,
-                           thu_dien_tu=@email,
-                           mat_khau=@matkhau,
-                           dia_chi=@diachi,
-                           so_dien_thoai=@sodienthoai,
-                           ma_phongban=@maphong
-                       WHERE ma_nguoidung=@id";
+                connection.Open();
+                string sql = @"UPDATE users
+                       SET full_name=@hoten,
+                           email=@email,
+                           password=@matkhau,
+                           address=@diachi,
+                           phone_number=@sodienthoai,
+                           department_id=@maphong
+                       WHERE user_id=@id";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
 
@@ -114,8 +117,9 @@ namespace layout.repository
 
             using (SqlConnection connection = conn.dbConnection())
             {
+                connection.Open();
                 // Check email tồn tại
-                string checkEmailSql = "SELECT COUNT(*) FROM nguoidung WHERE thu_dien_tu = @email";
+                string checkEmailSql = "SELECT COUNT(*) FROM users WHERE email = @email";
                 SqlCommand checkEmailCmd = new SqlCommand(checkEmailSql, connection);
                 checkEmailCmd.Parameters.AddWithValue("@email", obj.thu_dien_tu);
                 int emailCount = (int)checkEmailCmd.ExecuteScalar();
@@ -126,7 +130,7 @@ namespace layout.repository
                 }
 
                 // Check số điện thoại tồn tại
-                string checkPhoneSql = "SELECT COUNT(*) FROM nguoidung WHERE so_dien_thoai = @sodienthoai";
+                string checkPhoneSql = "SELECT COUNT(*) FROM users WHERE phone_number = @sodienthoai";
                 SqlCommand checkPhoneCmd = new SqlCommand(checkPhoneSql, connection);
                 checkPhoneCmd.Parameters.AddWithValue("@sodienthoai", obj.so_dien_thoai);
                 int phoneCount = (int)checkPhoneCmd.ExecuteScalar();
@@ -137,8 +141,8 @@ namespace layout.repository
                 }
 
                 // Thêm người dùng
-                string sql = @"INSERT INTO nguoidung
-            (ho_ten, thu_dien_tu, mat_khau, dia_chi, so_dien_thoai, ma_vaitro, ma_phongban)
+                string sql = @"INSERT INTO users
+            (full_name, email, password, address, phone_number, role_id, department_id)
             VALUES
             (@hoten, @email, @matkhau, @diachi, @sodienthoai, @vaitro, @phongban)";
 
@@ -164,6 +168,62 @@ namespace layout.repository
                     return false;
                 }
             }
+            
+        }
+        public bool isEmailAndPasswordExisted(string email, string pass)
+        {
+            bool flag = false;
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "Select email, password from users where email=@email and password=@pass";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@pass", pass);
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    flag = true;
+                }
+            }
+            return flag;
+        }
+        public DataTable getUserByEmail(string email)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                const string sql = "SELECT user_id, role_id, full_name FROM users WHERE email = @email";
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.Add("@email", SqlDbType.NVarChar, 255).Value = email;
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        DataTable data = new DataTable();
+                        adapter.Fill(data);
+                        return data;
+                    }
+                }
+            }
+        }
+        public int getUserIdFromName(string name)
+        {
+            int id = 0;
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "Select user_id from users where full_name = @name";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@name", name);
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    id = Convert.ToInt32(rs);
+                }
+            }
+            return id;
         }
     }
 }

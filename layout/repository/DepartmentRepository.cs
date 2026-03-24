@@ -17,7 +17,7 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "select ten_phongban from phongban ";
+                string sql = "select department_name AS ten_phongban from departments";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 DataTable data = new DataTable();
                 adapter.Fill(data);
@@ -29,7 +29,8 @@ namespace layout.repository
             string departId = "";
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "Select ma_phongban from phongban where ten_phongban = @name";
+                connection.Open();
+                string sql = "Select department_id from departments where department_name = @name";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@name", name);
@@ -50,7 +51,8 @@ namespace layout.repository
             string departName = "";
             using (SqlConnection connection = conn.dbConnection())
             {
-                string sql = "Select ten_phongban from phongban where ma_phongban = @id";
+                connection.Open();
+                string sql = "Select department_name from departments where department_id = @id";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@id", id);

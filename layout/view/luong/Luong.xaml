@@ -17,10 +17,10 @@
             <TextBlock Height="23" TextWrapping="Wrap" Width="180" HorizontalAlignment="Center" Background="White" FontSize="16" Foreground="#FFCF2F2F"><Run FontWeight="Bold" Text="Bảng Lương Nhân Viên"/></TextBlock>
             <DataGrid x:Name="DgNhanVien" AutoGenerateColumns="False" RowHeight="40" CanUserAddRows="False" CanUserDeleteRows="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Mã NV" Binding="{Binding NvId}" Width="150" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Tên NV" Binding="{Binding Name}" Width="250" IsReadOnly="True"/>
-                    <DataGridTextColumn Header="Thực Lĩnh" Binding="{Binding ThucLinh, StringFormat=N0}" Width="300" IsReadOnly="True" Foreground="#1B5E20" FontWeight="Bold"/>
+                    <DataGridTextColumn Header="ID" Binding="{Binding PayrollId}" Width="60" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Mã NV" Binding="{Binding UserId}" Width="150" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Tên NV" Binding="{Binding FullName}" Width="250" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Thực Lĩnh" Binding="{Binding NetSalary, StringFormat=N0}" Width="300" IsReadOnly="True" Foreground="#1B5E20" FontWeight="Bold"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

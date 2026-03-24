@@ -1,6 +1,7 @@
 ﻿using layout.view.chamcong;
 using layout.view.Main_Window;
 using layout.view.nguoidung;
+using layout.luong;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,6 +55,16 @@ namespace layout.view.Bars
             {
                 btnRecruit.Background = Brushes.YellowGreen;
                 mainWindow.MainFrame.Navigate(new nguoidungPage());
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                btnRecruit.Background = Brushes.YellowGreen;
+                mainWindow.MainFrame.Navigate(new Luong());
             }
         }
     }

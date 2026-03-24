@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -17,8 +17,8 @@ namespace LaptopShopApplication.Repository
             {
                 // sửa lại tên phiên local database nếu xung đột
                 // : vd SQLEXPRESS thay cho SQLEXPRESS02
-                string connectionString = "Server=localhost\\SQLEXPRESS;" +
-                                         "Database=QuanLyNhanSu;" +
+                string connectionString = "Server=localhost\\SQLEXPRESS02;" +
+                                         "Database=HumanResourceManagement;" +
                                          "Integrated Security=true;" +
                                          "TrustServerCertificate=true;";
 
