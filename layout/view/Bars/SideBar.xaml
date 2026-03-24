@@ -13,9 +13,9 @@
             <StackPanel Margin="0,20,0,0">
                 <!-- Tiêu đề Menu -->
                 <Button Content="Quản lý nhân sự" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="18" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,0,0,30" Click="Button_Click"/>
-                <Button Content="Trang chủ" x:Name="homeBtn" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" />
+                <Button Content="Trang chủ" x:Name="homeBtn" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="homeBtn_Click" />
                 <Button Content="Người dùng" Height="40" x:Name="usersBtn" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click_1"/>
-                <Button Content="Phòng ban" Height="40" x:Name="departBtn" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14"/>
+                <Button Content="Phòng ban" Height="40" x:Name="departBtn" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="departBtn_Click"/>
                 <Button x:Name="btnRecruit" Content="Tuyển dụng" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="TuyenDungPage"/>
                 <Button Content="Lương" x:Name="salaryBtn" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click_2"/>
                 <Button Content="Chấm công" x:Name="attenBtn" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click"/>

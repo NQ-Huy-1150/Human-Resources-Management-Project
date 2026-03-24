@@ -244,5 +244,24 @@ namespace layout.repository
             }
             return name;
         }
+
+        public int getUserRoleId(int userId)
+        {
+            int roleId = -1;
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "Select role_id from users where user_id = @userId";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@userId", userId);
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    roleId = Convert.ToInt32(rs);
+                }
+            }
+            return roleId;
+        }
     }
 }

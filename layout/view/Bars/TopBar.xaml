@@ -14,7 +14,7 @@
                 <!-- Tiêu đề Menu -->
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="admin" FontFamily="Segoe MDL2 Assets" Text="&#xE7EF;" FontSize="16" Foreground="White" VerticalAlignment="Center" Margin="150,0,2,0"/>
-                    <Button Content="Quản lý" x:Name="adminBtn" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Padding="10" Click="tkBtn_Click" />
+                    <Button Content="Quản lý" x:Name="adminBtn" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Padding="10" Click="adminBtn_Click" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="tk" FontFamily="Segoe MDL2 Assets" Text="&#xE7E7;" FontSize="16" Foreground="White" VerticalAlignment="Center" Margin="50,0,2,0"/>

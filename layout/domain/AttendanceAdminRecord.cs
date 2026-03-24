@@ -10,31 +10,23 @@ namespace layout.domain
         public string loai_ca { get; set; }
         public string ghi_chu { get; set; }
 
-        public string TimeRange
-        {
-            get
-            {
-                return $"{check_in:HH:mm} - {(check_out.HasValue ? check_out.Value.ToString("HH:mm") : "...")}";
-            }
-        }
+        public string TimeRange =>
+            $"{check_in:HH:mm} - {(check_out.HasValue ? check_out.Value.ToString("HH:mm") : "...")}";
 
-        public int StandardMinutes
-        {
-            get
-            {
-                if (!check_out.HasValue) return 0;
-                double total = (check_out.Value - check_in).TotalMinutes;
-                return total > 480 ? 480 : (int)total;
-            }
-        }
+        private double TotalMinutes => check_out.HasValue ? (check_out.Value - check_in).TotalMinutes : 0;
 
-        public int OvertimeMinutes
+        public int StandardMinutes => TotalMinutes > 2 ? 2 : (int)TotalMinutes;
+
+        // 4. Tăng ca (Phần dư trên 480 phút)
+        public int OvertimeMinutes => TotalMinutes > 2 ? (int)(TotalMinutes - 2) : 0;
+
+        // 5. Trạng thái để hiển thị chữ "Tăng ca" hoặc "Bình thường"
+        public string StatusDisplay
         {
             get
             {
-                if (!check_out.HasValue) return 0;
-                double total = (check_out.Value - check_in).TotalMinutes;
-                return total > 480 ? (int)(total - 480) : 0;
+                if (!check_out.HasValue) return "Đang làm việc";
+                return OvertimeMinutes > 0 ? "Tăng ca" : "Bình thường";
             }
         }
     }

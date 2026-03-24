@@ -25,12 +25,15 @@ namespace layout.view.Main_Window
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Navigate(new AdminDashboardPage());
         }
         public MainWindow(int userId)
         {
             InitializeComponent();
             this.userId = userId;
             sideBar.getUserNameForAdminPage(service.getUserNameById(this.userId));
+            sideBar.setUserId(this.userId);
+            MainFrame.Navigate(new AdminDashboardPage());
         }
     }
 }

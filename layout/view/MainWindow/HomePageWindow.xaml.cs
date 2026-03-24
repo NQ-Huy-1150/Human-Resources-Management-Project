@@ -1,4 +1,5 @@
 ﻿using layout.view.Bars;
+using layout.view.tuyendung;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,12 @@ namespace layout.view.Main_Window
         {
             InitializeComponent();
             topBar.nonLoginPage();
+        }
+        public HomePageWindow(int userId)
+        {
+            InitializeComponent();
+            this.userId = userId;
+            UpdateUser(this.userId);
         }
         
         public HomePageWindow(string userName)

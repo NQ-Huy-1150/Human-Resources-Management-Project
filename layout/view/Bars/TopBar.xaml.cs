@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using layout.domain;
 
 namespace layout.view.Bars
 {
@@ -26,6 +27,7 @@ namespace layout.view.Bars
     {
         private int currentUserId = -1;
         private readonly Nguoidungservice service = new Nguoidungservice();
+        private RoleService roleService = new RoleService();
         public TopBar()
         {
             InitializeComponent();
@@ -63,9 +65,21 @@ namespace layout.view.Bars
             show.Visibility = Visibility.Visible;
             tk.Visibility = Visibility.Visible;
             tkBtn.Visibility = Visibility.Visible;
-            tk.Margin = new Thickness(50, 0, 2, 0);
+            tk.Margin = new Thickness(200, 0, 2, 0);
             lookupSP.Margin = new Thickness(50, 0, 2, 0);
             logoutBtn.Visibility = Visibility.Visible;
+            int roleId = service.getRoleId(currentUserId);
+            if (roleId != -1)
+            {
+                if (roleService.getRoleName(roleId).Equals("Quản trị viên"))
+                {
+                    admin.Visibility = Visibility.Visible;
+                    adminBtn.Visibility = Visibility.Visible;
+                    tk.Margin = new Thickness(50, 0, 2, 0);
+                    admin.Margin = new Thickness(120, 0, 2, 0);
+                }
+            }
+            
         }
         public void nonLoginPage()
         {
@@ -99,6 +113,20 @@ namespace layout.view.Bars
             if (mainWindow != null && currentUserId != -1)
             {
                 mainWindow.HomeFrame.Navigate(new UserView(currentUserId));
+            }
+        }
+
+        private void adminBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow mainWindow = new MainWindow(currentUserId);
+            mainWindow.Show();
+            // Đóng window đã login
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is HomePageWindow && window != mainWindow)
+                {
+                    window.Close();
+                }
             }
         }
     }

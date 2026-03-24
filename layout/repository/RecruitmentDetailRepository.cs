@@ -46,6 +46,22 @@ namespace layout.repository
                 return data;
             }
         }
+        public int getTotalRecruitmentProfileCount()
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "select count(*) from recruitment_details";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    return Convert.ToInt32(rs);
+                }
+            }
+            return 0;
+        }
         public DataTable findById(int id)
         {
             using (SqlConnection connection = conn.dbConnection())

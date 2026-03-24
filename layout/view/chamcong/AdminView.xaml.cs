@@ -1,7 +1,9 @@
-﻿using layout.service;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using layout.service;
+using layout.domain;
 
 namespace layout.view.chamcong
 {
@@ -19,14 +21,13 @@ namespace layout.view.chamcong
         {
             try
             {
-                var list = attendanceService.getAllAttendanceForAdmin();
+                List<AttendanceAdminRecord> list = attendanceService.getAllAttendanceForAdmin();
                 dgAdmin.ItemsSource = list;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi Admin: " + ex.Message);
+                MessageBox.Show("Lỗi hiển thị dữ liệu: " + ex.Message);
             }
         }
     }
-
 }

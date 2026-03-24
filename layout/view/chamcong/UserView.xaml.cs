@@ -1,18 +1,22 @@
 ﻿using System;
-using layout.service;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using layout.service;
+using layout.domain;
 
 namespace layout.view.chamcong
 {
     public partial class UserView : Page
     {
         private readonly AttendanceService attendanceService = new AttendanceService();
-        private int currentUserId = -1;
+        private int currentUserId;
+
         public UserView(int userId)
         {
             InitializeComponent();
-            currentUserId = userId;
+            this.currentUserId = userId;
             LoadData();
         }
 
@@ -22,36 +26,51 @@ namespace layout.view.chamcong
             {
                 var list = attendanceService.getTodayAttendanceByUser(currentUserId);
                 dgLichSu.ItemsSource = list;
+
+                var lastRecord = list.FirstOrDefault();
+
+                if (lastRecord == null)
+                {
+                    ToggleButtons(canVao: true, canRa: false);
+                    txtNotify.Visibility = Visibility.Collapsed;
+                }
+                else if (lastRecord.check_out == null)
+                {
+                    ToggleButtons(canVao: false, canRa: true);
+                    txtNotify.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    ToggleButtons(canVao: false, canRa: false);
+                    txtNotify.Text = "Hôm nay bạn đã hoàn thành chấm công. Hẹn gặp lại ngày mai!";
+                    txtNotify.Visibility = Visibility.Visible;
+                }
             }
-            catch (Exception ex) { MessageBox.Show("Lỗi hiển thị: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
+        }
+
+        private void ToggleButtons(bool canVao, bool canRa)
+        {
+            btnVao.IsEnabled = canVao;
+            btnRa.IsEnabled = canRa;
+            btnVao.Opacity = canVao ? 1.0 : 0.4;
+            btnRa.Opacity = canRa ? 1.0 : 0.4;
         }
 
         private void btnVao_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if(currentUserId != -1)
-                {
-                    attendanceService.checkIn(currentUserId);
-                    LoadData();
-                    MessageBox.Show("Đã ghi nhận giờ vào!");
-                }
-            }
-            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
+            attendanceService.checkIn(currentUserId);
+            LoadData();
+            MessageBox.Show("Vào ca thành công!");
         }
 
         private void btnRa_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (attendanceService.checkOut(currentUserId))
             {
-                if (currentUserId != -1)
-                {
-                    if (attendanceService.checkOut(currentUserId)) MessageBox.Show("Đã ghi nhận giờ ra!");
-                    else MessageBox.Show("Không tìm thấy ca đang hoạt động!");
-                    LoadData();
-                }
+                LoadData();
+                MessageBox.Show("Ra ca thành công!");
             }
-            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
         }
     }
 }

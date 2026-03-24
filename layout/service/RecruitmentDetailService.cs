@@ -20,6 +20,10 @@ namespace layout.service
         {
             return repo.getAllRecruitmentDetailByRecruitId(id);
         }
+        public int getTotalRecruitmentProfileCount()
+        {
+            return repo.getTotalRecruitmentProfileCount();
+        }
         public DataTable fetchById(int id)
         {
             return repo.findById(id);
