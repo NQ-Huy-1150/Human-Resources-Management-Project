@@ -2,20 +2,9 @@
 using layout.view.Main_Window;
 using layout.view.nguoidung;
 using layout.luong;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace layout.view.Bars
 {
@@ -29,11 +18,26 @@ namespace layout.view.Bars
             InitializeComponent();
         }
 
+        private void ResetMenuButtonBackground()
+        {
+            attenBtn.Background = Brushes.Transparent;
+            btnRecruit.Background = Brushes.Transparent;
+            usersBtn.Background = Brushes.Transparent;
+            salaryBtn.Background = Brushes.Transparent;
+        }
+
+        private void SetActiveButton(Button activeButton)
+        {
+            ResetMenuButtonBackground();
+            activeButton.Background = Brushes.YellowGreen;
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
+                SetActiveButton(attenBtn);
                 mainWindow.MainFrame.Navigate(new AdminPage());
             }
         }
@@ -43,7 +47,7 @@ namespace layout.view.Bars
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
-                btnRecruit.Background = Brushes.YellowGreen;
+                SetActiveButton(btnRecruit);
                 mainWindow.MainFrame.Navigate(new Tuyendung());
             }
         }
@@ -53,7 +57,7 @@ namespace layout.view.Bars
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
-                btnRecruit.Background = Brushes.YellowGreen;
+                SetActiveButton(usersBtn);
                 mainWindow.MainFrame.Navigate(new nguoidungPage());
             }
         }
@@ -63,9 +67,19 @@ namespace layout.view.Bars
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
-                btnRecruit.Background = Brushes.YellowGreen;
+                SetActiveButton(salaryBtn);
                 mainWindow.MainFrame.Navigate(new Luong());
             }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        public void getUserNameForAdminPage(string name)
+        {
+            username.Text = $"@{name}";
         }
     }
 }

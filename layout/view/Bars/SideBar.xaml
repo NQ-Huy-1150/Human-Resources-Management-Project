@@ -13,12 +13,18 @@
             <StackPanel Margin="0,20,0,0">
                 <!-- Tiêu đề Menu -->
                 <Button Content="Quản lý nhân sự" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="18" HorizontalAlignment="Center" FontWeight="Bold" Margin="0,0,0,30" Click="Button_Click"/>
-                <Button Content="Trang chủ" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" />
-                <Button Content="Người dùng" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click_1"/>
-                <Button Content="Phòng ban" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14"/>
+                <Button Content="Trang chủ" x:Name="homeBtn" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" />
+                <Button Content="Người dùng" Height="40" x:Name="usersBtn" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click_1"/>
+                <Button Content="Phòng ban" Height="40" x:Name="departBtn" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14"/>
                 <Button x:Name="btnRecruit" Content="Tuyển dụng" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="TuyenDungPage"/>
-                <Button Content="Lương" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click_2"/>
-                <Button Content="Chấm công" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click"/>
+                <Button Content="Lương" x:Name="salaryBtn" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click_2"/>
+                <Button Content="Chấm công" x:Name="attenBtn" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click"/>
+
+                <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
+                    <Rectangle Height="2" Margin="10,40,10,0" Fill="LightGray" VerticalAlignment="Top"/>
+                    <TextBlock x:Name="username" HorizontalAlignment="Center" FontSize="16" Foreground="White" VerticalAlignment="Center"/>
+                    <Button Content="Đăng xuất" Height="40" BorderThickness="0" Background="Transparent" Foreground="White" FontSize="14" Click="Button_Click_3"/>
+                </StackPanel>
             </StackPanel>
         </Border>
         <!-- TASK BAR END -->

@@ -19,13 +19,16 @@ namespace layout.view.Main_Window
     /// </summary>
     public partial class MainWindow : Window
     {
+        private string username;
         public MainWindow()
         {
             InitializeComponent();
         }
-        public void SideBar_Loaded(object sender, RoutedEventArgs e)
+        public MainWindow(string username)
         {
-
+            InitializeComponent();
+            this.username = username;
+            sideBar.getUserNameForAdminPage(this.username);
         }
     }
 }

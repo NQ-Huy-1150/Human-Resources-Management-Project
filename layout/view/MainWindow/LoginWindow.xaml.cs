@@ -27,6 +27,7 @@ namespace layout.view.Main_Window
     {
         Nguoidungservice service = new Nguoidungservice();
         RoleService roleService = new RoleService();
+        string username = "";
         public LoginWindow()
         {
             InitializeComponent();
@@ -47,11 +48,16 @@ namespace layout.view.Main_Window
             {
                 NguoiDung nguoi = convertDataTableToObject(txtEmail.Text);
                 string roleName = roleService.getRoleName(nguoi.ma_vaitro);
+                username = nguoi.ho_ten;
                 if (roleName.Equals("Quản trị viên"))
                 {
-                    MainWindow mw = new MainWindow();
+                    MainWindow mw = new MainWindow(username);
                     mw.Show();
-                    this.Close();
+                    if (this.Owner is HomePageWindow hp)
+                    {
+                        hp.Close();
+                        this.Close();
+                    }
                 }
                 if (roleName.Equals("Nhân viên"))
                 {

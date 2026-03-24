@@ -15,7 +15,7 @@
         </Grid.ColumnDefinitions>
         
         <!-- Gọi UserControl SideBar -->
-        <sidebar:SideBar Grid.Column="0" Loaded="SideBar_Loaded"/>
+        <sidebar:SideBar Grid.Column="0" x:Name="sideBar"/>
         
         <!-- Frame chứa các page nội dung -->
         <Frame x:Name="MainFrame" Grid.Column="1" NavigationUIVisibility="Hidden"/>
