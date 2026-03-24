@@ -18,7 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using static layout.luong.SalaryDay;
+using static layout.luong.SalaryCal;
 
 namespace layout.luong
 {
@@ -37,7 +37,7 @@ namespace layout.luong
             try
             {
                 SalaryRepository salaryRepository = new SalaryRepository();
-                List<SalaryDay.Luong> salaryList = salaryRepository.getAllSalary();
+                List<SalaryCal.Luong> salaryList = salaryRepository.getAllSalary();
 
                 DgNhanVien.ItemsSource = salaryList;
 
@@ -59,7 +59,7 @@ namespace layout.luong
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            SalaryDay.Luong selected = DgNhanVien.SelectedItem as SalaryDay.Luong;
+            SalaryCal.Luong selected = DgNhanVien.SelectedItem as SalaryCal.Luong;
 
             if (selected == null)
             {

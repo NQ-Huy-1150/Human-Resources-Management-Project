@@ -17,7 +17,7 @@ namespace LaptopShopApplication.Repository
             {
                 // sửa lại tên phiên local database nếu xung đột
                 // : vd SQLEXPRESS thay cho SQLEXPRESS02
-                string connectionString = "Server=localhost\\SQLEXPRESS02;" +
+                string connectionString = "Server=localhost\\SQLEXPRESS;" +
                                          "Database=HumanResourceManagement;" +
                                          "Integrated Security=true;" +
                                          "TrustServerCertificate=true;";

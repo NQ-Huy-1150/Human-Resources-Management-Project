@@ -37,5 +37,12 @@ namespace layout.domain
                 return total > 480 ? (int)(total - 480) : 0;
             }
         }
+        public int MissingMinutes
+        {
+            get
+            {
+                return 480 - StandardMinutes;
+            }
+        }
     }
 }

@@ -229,7 +229,7 @@
     <Compile Include="view\luong\NhanvienInfo.xaml.cs">
       <DependentUpon>NhanvienInfo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="view\luong\SalaryDay.cs" />
+    <Compile Include="view\luong\SalaryCal.cs" />
     <Compile Include="repository\RecruimentRepository.cs" />
     <Compile Include="repository\MssSQLConnection.cs" />
     <Compile Include="service\DepartmentService.cs" />
