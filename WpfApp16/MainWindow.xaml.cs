@@ -1,79 +1,82 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Windows;
+using Microsoft.Data.SqlClient; // Dùng bản Microsoft người khác vừa cài
 
 namespace WpfApp16
 {
-    // Lớp mô phỏng dữ liệu phòng ban
     public class PhongBan
     {
+        // Phải khớp với cột department_id và department_name trong SQL
         public string ma_phongban { get; set; }
         public string ten_phongban { get; set; }
     }
-
     public partial class MainWindow : Window
     {
-        // ObservableCollection giúp bảng DataGrid tự động cập nhật khi thêm/xóa
         public ObservableCollection<PhongBan> dsPhongBan { get; set; }
+
+        // Đã cập nhật Server: .\SQLEXPRESS2022 và Database: HumanResourceManagement
+        private string connectionString = @"Data Source=.\SQLEXPRESS2022;Initial Catalog=HumanResourceManagement;Integrated Security=True;TrustServerCertificate=True";
 
         public MainWindow()
         {
             InitializeComponent();
-            KhoiTaoDuLieu();
+            LoadDataFromSQL();
         }
 
-        private void KhoiTaoDuLieu()
+        private void LoadDataFromSQL()
         {
-            // Tạo dữ liệu giả ban đầu
-            dsPhongBan = new ObservableCollection<PhongBan>
+            dsPhongBan = new ObservableCollection<PhongBan>();
+            // Truy vấn đúng tên bảng 'departments'
+            string query = "SELECT department_id, department_name FROM departments";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                new PhongBan { ma_phongban = "IT", ten_phongban = "Phòng Công nghệ" },
-                new PhongBan { ma_phongban = "HR", ten_phongban = "Phòng Nhân sự" },
-                new PhongBan { ma_phongban = "KT", ten_phongban = "Phòng Kế toán" }
-            };
-
-            // Gán nguồn dữ liệu cho DataGrid có tên dgPhongBan trong XAML
-            dgPhongBan.ItemsSource = dsPhongBan;
-        }
-
-        // Xử lý sự kiện khi bấm nút "+ Thêm phòng ban"
-        private void BtnAdd_Click(object sender, RoutedEventArgs e)
-        {
-            dsPhongBan.Add(new PhongBan
-            {
-                ma_phongban = "MOI",
-                ten_phongban = "Phòng Ban Mới"
-            });
-        }
-
-        // Xử lý sự kiện khi bấm nút "Sửa" trong từng dòng
-        private void BtnEdit_Click(object sender, RoutedEventArgs e)
-        {
-            var selected = dgPhongBan.SelectedItem as PhongBan;
-            if (selected != null)
-            {
-                MessageBox.Show($"Đang thực hiện sửa cho: {selected.ten_phongban}");
-            }
-        }
-
-        // Xử lý sự kiện khi bấm nút "Xóa" trong từng dòng
-        private void BtnDelete_Click(object sender, RoutedEventArgs e)
-        {
-            var selected = dgPhongBan.SelectedItem as PhongBan;
-            if (selected != null)
-            {
-                var result = MessageBox.Show($"Người khác có chắc muốn xóa {selected.ten_phongban} không?",
-                                           "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Question);
-
-                if (result == MessageBoxResult.Yes)
+                try
                 {
-                    dsPhongBan.Remove(selected);
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        dsPhongBan.Add(new PhongBan
+                        {
+                            // Đọc đúng tên cột trong SQL của người khác
+                            ma_phongban = reader["department_id"].ToString(),
+                            ten_phongban = reader["department_name"].ToString()
+                        });
+                    }
+                    dgPhongBan.ItemsSource = dsPhongBan;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi hệ thống: " + ex.Message);
                 }
             }
         }
 
-        // Các hàm hỗ trợ sự kiện Click từ Menu của trưởng nhóm
+        // Cập nhật hàm Add để đẩy dữ liệu thật vào SQL
+        private void BtnAdd_Click(object sender, RoutedEventArgs e)
+        {
+            string insertQuery = "INSERT INTO departments (department_id, department_name) VALUES ('MKT', N'Marketing')";
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(insertQuery, conn);
+                    cmd.ExecuteNonQuery();
+                    LoadDataFromSQL(); // Refresh lại bảng
+                }
+                catch (Exception ex) { MessageBox.Show(ex.Message); }
+            }
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e) { }
         private void Button_Click_1(object sender, RoutedEventArgs e) { }
-        private void Button_Click_2(object sender, RoutedEventArgs e) { }
+        private void BtnEdit_Click(object sender, RoutedEventArgs e) { }
+        private void BtnDelete_Click(object sender, RoutedEventArgs e) { }
     }
 }
