@@ -1,32 +1,32 @@
 ﻿using layout.domain;
-using layout.repository;
 using layout.service;
 using layout.view.Main_Window;
 using layout.view.nguoidung;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace layout.view.Nguoidung
 {
 
     public partial class Themnguoidung : Page
     {
-        private Nguoidungservice service = new Nguoidungservice();
+        private readonly Nguoidungservice service = new Nguoidungservice();
+        private readonly DepartmentService departmentService = new DepartmentService();
+        private readonly RoleService roleService = new RoleService();
+        private readonly PositionService positionService = new PositionService();
+
         public Themnguoidung()
         {
             InitializeComponent();
+            loadReferenceData();
+        }
+
+        private void loadReferenceData()
+        {
+            cbPhongban.ItemsSource = departmentService.getAllDepartments();
+            cbVaitro.ItemsSource = roleService.getAllRoles().DefaultView;
+            cbChucvu.ItemsSource = positionService.getAllPositionName().DefaultView;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -61,11 +61,13 @@ namespace layout.view.Nguoidung
                 return;
             }
 
-            ComboBoxItem phong = (ComboBoxItem)cbPhongban.SelectedItem;
-            string maphong = phong.Tag.ToString();
-
-            ComboBoxItem role = (ComboBoxItem)cbVaitro.SelectedItem;
-            int vaitro = Convert.ToInt32(role.Tag);
+            string maphong = cbPhongban.SelectedValue.ToString();
+            int vaitro = Convert.ToInt32(cbVaitro.SelectedValue);
+            int? maChucVu = null;
+            if (cbChucvu.SelectedValue != null)
+            {
+                maChucVu = Convert.ToInt32(cbChucvu.SelectedValue);
+            }
 
             NguoiDung nd = new NguoiDung
             {
@@ -75,7 +77,8 @@ namespace layout.view.Nguoidung
                 dia_chi = diachi,
                 so_dien_thoai = sodienthoai,
                 ma_vaitro = vaitro,
-                ma_phongban = maphong
+                ma_phongban = maphong,
+                ma_chucvu = maChucVu
             };
 
             string message;
@@ -108,5 +111,6 @@ namespace layout.view.Nguoidung
                 mainWindow.MainFrame.Navigate(new nguoidungPage());
             }
         }
+
     }
 }

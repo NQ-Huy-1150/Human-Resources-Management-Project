@@ -25,6 +25,12 @@ namespace layout.service
         {
             return repository.getAllRecruitment();
         }
+
+        public bool capnhatNguoidung(DataRowView row)
+        {
+            return repository.updateNguoidung(row);
+        }
+
         //Xóa người dùng
         public bool XoaNguoiDung(int id)
         {

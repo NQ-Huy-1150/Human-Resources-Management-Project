@@ -28,8 +28,10 @@ namespace layout.repository
                 n.password AS mat_khau,
                 n.address AS dia_chi,
                 n.phone_number AS so_dien_thoai,
+                n.role_id AS ma_vaitro,
                 r.role_name AS vai_tro,
-                n.department_id AS ma_phongban
+                n.department_id AS ma_phongban,
+                n.pos_id AS ma_chucvu
             FROM users n
             INNER JOIN roles r ON n.role_id = r.role_id
             ORDER BY n.user_id";
@@ -52,8 +54,10 @@ namespace layout.repository
             n.password AS mat_khau,
             n.address AS dia_chi,
             n.phone_number AS so_dien_thoai,
+            n.role_id AS ma_vaitro,
             r.role_name AS vai_tro,
-            n.department_id AS ma_phongban
+            n.department_id AS ma_phongban,
+            n.pos_id AS ma_chucvu
         FROM users n
         INNER JOIN roles r ON n.role_id = r.role_id
         WHERE n.full_name LIKE @hoten
@@ -92,17 +96,37 @@ namespace layout.repository
                            password=@matkhau,
                            address=@diachi,
                            phone_number=@sodienthoai,
-                           department_id=@maphong
+                           role_id=@vaitro,
+                           department_id=@maphong,
+                           pos_id=@machucvu
                        WHERE user_id=@id";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
+
+                int roleId = 0;
+                object roleValue = row["ma_vaitro"];
+                if (roleValue != DBNull.Value)
+                {
+                    roleId = Convert.ToInt32(roleValue);
+                }
+
+                object posValue = row.Row.Table.Columns.Contains("ma_chucvu") ? row["ma_chucvu"] : DBNull.Value;
 
                 cmd.Parameters.AddWithValue("@hoten", row["ho_ten"]);
                 cmd.Parameters.AddWithValue("@email", row["thu_dien_tu"]);
                 cmd.Parameters.AddWithValue("@matkhau", row["mat_khau"]);
                 cmd.Parameters.AddWithValue("@diachi", row["dia_chi"]);
                 cmd.Parameters.AddWithValue("@sodienthoai", row["so_dien_thoai"]);
+                cmd.Parameters.AddWithValue("@vaitro", roleId);
                 cmd.Parameters.AddWithValue("@maphong", row["ma_phongban"]);
+                if (posValue == DBNull.Value || string.IsNullOrWhiteSpace(Convert.ToString(posValue)))
+                {
+                    cmd.Parameters.AddWithValue("@machucvu", DBNull.Value);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@machucvu", Convert.ToInt32(posValue));
+                }
                 cmd.Parameters.AddWithValue("@id", row["ma_nguoidung"]);
 
                 return cmd.ExecuteNonQuery() > 0;
@@ -142,9 +166,9 @@ namespace layout.repository
 
                 // Thêm người dùng
                 string sql = @"INSERT INTO users
-            (full_name, email, password, address, phone_number, role_id, department_id)
+            (full_name, email, password, address, phone_number, role_id, department_id, pos_id)
             VALUES
-            (@hoten, @email, @matkhau, @diachi, @sodienthoai, @vaitro, @phongban)";
+            (@hoten, @email, @matkhau, @diachi, @sodienthoai, @vaitro, @phongban, @machucvu)";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@hoten", obj.ho_ten);
@@ -154,6 +178,14 @@ namespace layout.repository
                 cmd.Parameters.AddWithValue("@sodienthoai", obj.so_dien_thoai);
                 cmd.Parameters.AddWithValue("@vaitro", obj.ma_vaitro);
                 cmd.Parameters.AddWithValue("@phongban", obj.ma_phongban);
+                if (obj.ma_chucvu.HasValue)
+                {
+                    cmd.Parameters.AddWithValue("@machucvu", obj.ma_chucvu.Value);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("@machucvu", DBNull.Value);
+                }
 
                 int result = cmd.ExecuteNonQuery();
 

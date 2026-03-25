@@ -23,11 +23,18 @@ namespace layout.view.tuyendung
     /// </summary>
     public partial class createRecruitment : Page
     {
-        DepartmentService service = new DepartmentService();
-        RecruitmentService reService = new RecruitmentService();
+        private readonly DepartmentService service = new DepartmentService();
+        private readonly PositionService positionService = new PositionService();
+        private readonly RecruitmentService reService = new RecruitmentService();
+
         public createRecruitment()
         {
             InitializeComponent();
+            loadComboboxData();
+        }
+
+        private void loadComboboxData()
+        {
             DataTable data = service.getAllDepartmentName();
             List<string> departName = new List<string>();
             foreach (DataRow row in data.Rows)
@@ -36,6 +43,15 @@ namespace layout.view.tuyendung
                 departName.Add(name);
             }
             departmentNameCBX.ItemsSource = departName;
+
+            DataTable positionData = positionService.getAllPositionName();
+            List<string> positionName = new List<string>();
+            foreach (DataRow row in positionData.Rows)
+            {
+                string name = row["pos_name"].ToString();
+                positionName.Add(name);
+            }
+            positionInput.ItemsSource = positionName;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -45,7 +61,11 @@ namespace layout.view.tuyendung
 
         private void createBtn(object sender, RoutedEventArgs e)
         {
-            createRecruit();
+            if (!createRecruit())
+            {
+                return;
+            }
+
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
@@ -62,23 +82,48 @@ namespace layout.view.tuyendung
             }
         }
 
-        private void createRecruit()
+        private bool createRecruit()
         {
+            if (string.IsNullOrWhiteSpace(departmentNameCBX.Text) ||
+                string.IsNullOrWhiteSpace(positionInput.Text) ||
+                string.IsNullOrWhiteSpace(incomeInput.Text) ||
+                string.IsNullOrWhiteSpace(quantityInput.Text) ||
+                !date.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin tuyển dụng.");
+                return false;
+            }
+
             string id = service.getIdByName(departmentNameCBX.Text);
             if (id.Equals("None"))
             {
-                return;
+                MessageBox.Show("Phòng ban không hợp lệ.");
+                return false;
             }
+
+            if (!float.TryParse(incomeInput.Text, out float income))
+            {
+                MessageBox.Show("Mức lương dự kiến không hợp lệ.");
+                return false;
+            }
+
+            if (!int.TryParse(quantityInput.Text, out int quantity))
+            {
+                MessageBox.Show("Số lượng hồ sơ không hợp lệ.");
+                return false;
+            }
+
             Recruitment re = new Recruitment();
             re.departmentId = id;
             re.position = positionInput.Text;
-            re.estimateIncome = float.Parse(incomeInput.Text);
-            re.subDeadline = Convert.ToDateTime(date.Text);
+            re.estimateIncome = income;
+            re.subDeadline = date.SelectedDate.Value;
             re.condition = conditionInput.Text;
             re.status = "Đang hoạt động";
-            re.quantity = Convert.ToInt32(quantityInput.Text);
+            re.quantity = quantity;
             re.description = descInput.Text;
             reService.getCreateRecruitment(re);
+            return true;
         }
 
 

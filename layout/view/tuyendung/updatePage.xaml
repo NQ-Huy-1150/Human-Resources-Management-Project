@@ -34,7 +34,7 @@
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,0,0">
                         <TextBlock Text="Vị trí tuyển dụng :" FontSize="14" Width="160" />
-                        <TextBox x:Name="positionInput" Width="200" />
+                        <ComboBox x:Name="positionInput" Width="200" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,0,0">

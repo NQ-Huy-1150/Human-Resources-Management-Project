@@ -12,6 +12,19 @@ namespace layout.repository
     public class RoleRepository
     {
         MssSQLConnection conn = new MssSQLConnection();
+
+        public DataTable findAllRoles()
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                string sql = "select role_id, role_name from roles order by role_id";
+                SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
+                DataTable data = new DataTable();
+                adapter.Fill(data);
+                return data;
+            }
+        }
+
         public int findByName(string name)
         {
             int id = 0;

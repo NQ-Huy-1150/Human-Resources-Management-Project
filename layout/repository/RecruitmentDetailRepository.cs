@@ -38,6 +38,7 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
+                connection.Open();
                 string sql = "select id, full_name, email, recruit_status from recruitment_details where recruit_id = @recruitId";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 adapter.SelectCommand.Parameters.AddWithValue("@recruitId", recruitId);
@@ -66,6 +67,7 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
+                connection.Open();
                 string sql = "select * from recruitment_details where id = @id";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 adapter.SelectCommand.Parameters.AddWithValue("@id", id);
@@ -121,29 +123,13 @@ namespace layout.repository
         public string getStatusFromLookUpId(string id)
         {
             string temp = "";
-            if (string.IsNullOrWhiteSpace(id))
-            {
-                return temp;
-            }
-
-            string normalizedId = id.Trim();
-            if (normalizedId.StartsWith("UV-", StringComparison.OrdinalIgnoreCase))
-            {
-                normalizedId = normalizedId.Substring(3);
-            }
-
-            if (!int.TryParse(normalizedId, out int candidateId))
-            {
-                return temp;
-            }
-
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
-                string sql = "Select recruit_status from recruitment_details where id = @id";
+                string sql = "Select recruit_status from recruitment_details where lookup_id = @id";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.Parameters.AddWithValue("@id", candidateId);
+                cmd.Parameters.AddWithValue("@id", id);
                 object rs = cmd.ExecuteScalar();
                 if (rs != null)
                 {

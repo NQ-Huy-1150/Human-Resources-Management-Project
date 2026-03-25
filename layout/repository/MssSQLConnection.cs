@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LaptopShopApplication.Repository
 {
-    internal class MssSQLConnection
+    public class MssSQLConnection
     {
         public SqlConnection dbConnection()
         {

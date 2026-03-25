@@ -24,8 +24,10 @@ namespace layout.view.tuyendung
     /// </summary>
     public partial class updatePage : Page
     {
-        DepartmentService service = new DepartmentService();
-        RecruitmentService reService = new RecruitmentService();
+        private readonly DepartmentService service = new DepartmentService();
+        private readonly PositionService positionService = new PositionService();
+        private readonly RecruitmentService reService = new RecruitmentService();
+
         public updatePage(Recruitment re)
         {
             InitializeComponent();
@@ -68,11 +70,25 @@ namespace layout.view.tuyendung
                 departName.Add(name);
             }
             departmentNameCBX.ItemsSource = departName;
+
+            DataTable positionData = positionService.getAllPositionName();
+            List<string> positionName = new List<string>();
+            foreach (DataRow row in positionData.Rows)
+            {
+                string name = row["pos_name"].ToString();
+                positionName.Add(name);
+            }
+            positionInput.ItemsSource = positionName;
+
             string depart = service.fetchById(recruitment.departmentId);
             departmentNameCBX.SelectedItem = depart;
 
             hiddenId.Text = Convert.ToString(recruitment.id);        
-            positionInput.Text = recruitment.position;
+            positionInput.SelectedItem = recruitment.position;
+            if (positionInput.SelectedItem == null)
+            {
+                positionInput.Text = recruitment.position;
+            }
             incomeInput.Text = Convert.ToString(recruitment.estimateIncome);
             conditionInput.Text = recruitment.condition;
             date.Text = Convert.ToString(recruitment.subDeadline);
@@ -87,6 +103,13 @@ namespace layout.view.tuyendung
             {
                 return;
             }
+
+            if (string.IsNullOrWhiteSpace(positionInput.Text))
+            {
+                MessageBox.Show("Vui lòng chọn vị trí tuyển dụng.");
+                return;
+            }
+
             Recruitment re = new Recruitment();
             re.id = Convert.ToInt32(hiddenId.Text);
             re.departmentId = id;

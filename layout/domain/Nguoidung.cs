@@ -23,5 +23,7 @@ namespace layout.domain
         public int ma_vaitro { get; set; }
 
         public string ma_phongban { get; set; }
+
+        public int? ma_chucvu { get; set; }
     }
 }

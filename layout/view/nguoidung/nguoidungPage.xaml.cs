@@ -1,22 +1,10 @@
-﻿using layout.repository;
-using layout.service;
+﻿using layout.service;
 using layout.view.Main_Window;
 using layout.view.Nguoidung;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace layout.view.nguoidung
 {
@@ -25,22 +13,30 @@ namespace layout.view.nguoidung
     /// </summary>
     public partial class nguoidungPage : Page
     {
-        NguoidungRepository repo = new NguoidungRepository();
-        Nguoidungservice service = new Nguoidungservice();
+        private readonly Nguoidungservice service = new Nguoidungservice();
+
         public nguoidungPage()
         {
             InitializeComponent();
-            LoadNguoiDung();
+            loadNguoiDung();
             NguoidungGrid.AutoGeneratingColumn += NguoidungGrid_AutoGeneratingColumn;
         }
+
         private void NguoidungGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             if (e.PropertyName == "mat_khau")
             {
                 e.Cancel = true; // Không tạo cột này
+                return;
+            }
+
+            if (e.PropertyName == "ma_nguoidung" || e.PropertyName == "vai_tro")
+            {
+                e.Column.IsReadOnly = true;
             }
         }
-        private void LoadNguoiDung()
+
+        private void loadNguoiDung()
         {
             DataTable data = service.getAllNguoidung();
             NguoidungGrid.ItemsSource = data.DefaultView;
@@ -58,20 +54,25 @@ namespace layout.view.nguoidung
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            DataRowView row = (DataRowView)NguoidungGrid.SelectedItem;
+            DataRowView row = NguoidungGrid.SelectedItem as DataRowView;
 
             if (row != null)
             {
-                bool result = repo.updateNguoidung(row);
+                bool result = service.capnhatNguoidung(row);
 
                 if (result)
                 {
                     MessageBox.Show("Cập nhật thành công");
+                    loadNguoiDung();
                 }
                 else
                 {
                     MessageBox.Show("Cập nhật thất bại");
                 }
+            }
+            else
+            {
+                MessageBox.Show("Vui lòng chọn người dùng cần cập nhật.");
             }
 
         }
@@ -97,7 +98,7 @@ namespace layout.view.nguoidung
                     if (ok)
                     {
                         // Load lại DataGrid
-                        NguoidungGrid.ItemsSource = service.getAllNguoidung().DefaultView;
+                        loadNguoiDung();
                     }
                 }
             }

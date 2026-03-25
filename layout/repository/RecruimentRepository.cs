@@ -38,6 +38,7 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
+                connection.Open();
                 string sql = "select id, departmentId, position, sub_deadline, quantity, status from recruitments";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 DataTable data = new DataTable();
@@ -49,6 +50,7 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
+                connection.Open();
                 string sql = "select * from recruitments where id = @id";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 adapter.SelectCommand.Parameters.AddWithValue("@id", id);
@@ -117,6 +119,7 @@ namespace layout.repository
         {
             using (SqlConnection connection = conn.dbConnection())
             {
+                connection.Open();
                 string sql = "select r.id, d.department_name as ten_phongban, r.position, r.estimateIncome from recruitments r join departments d on r.departmentId = d.department_id";
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
                 DataTable data = new DataTable();

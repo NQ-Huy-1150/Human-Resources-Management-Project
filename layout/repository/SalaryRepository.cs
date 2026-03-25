@@ -1,4 +1,5 @@
-﻿    using LaptopShopApplication.Repository;
+﻿using LaptopShopApplication.Repository;
+using layout.domain;
 using layout.luong;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace layout.repository
 {
@@ -14,9 +16,9 @@ namespace layout.repository
     {
         MssSQLConnection conn = new MssSQLConnection();
 
-        public List<SalaryDay.Luong> getAllSalary()
+        public List<SalaryCal.Luong> getAllSalary()
         {
-            List<SalaryDay.Luong> salaryList = new List<SalaryDay.Luong>();
+            List<SalaryCal.Luong> salaryList = new List<SalaryCal.Luong>();
 
             try
             {
@@ -28,7 +30,8 @@ namespace layout.repository
                     p.payroll_id   AS PayrollId,
                     p.user_id      AS UserId,
                     u.full_name    AS FullName,
-                    p.base_salary  AS BaseSalary,
+                    pos.pos_name     AS PosName,
+                    pos.base_salary  AS BaseSalary,
                     p.allowance    AS Allowance,
                     p.bonus        AS Bonus,
                     p.deduction    AS Deduction,
@@ -37,6 +40,7 @@ namespace layout.repository
                     p.net_salary   AS NetSalary
                 FROM payroll p
                 INNER JOIN users u ON u.user_id = p.user_id
+                LEFT  JOIN positions pos ON pos.pos_id = u.pos_id
                 ORDER BY p.payroll_id ASC";
 
                     SqlCommand cmd = new SqlCommand(sql, connection);
@@ -44,18 +48,19 @@ namespace layout.repository
 
                     while (reader.Read())
                     {
-                        SalaryDay.Luong salary = new SalaryDay.Luong
+                        SalaryCal.Luong salary = new SalaryCal.Luong
                         {
                             PayrollId = reader["PayrollId"] != DBNull.Value ? Convert.ToInt32(reader["PayrollId"]) : 0,
                             UserId = reader["UserId"] != DBNull.Value ? Convert.ToInt32(reader["UserId"]) : 0,
                             FullName = reader["FullName"] != DBNull.Value ? reader["FullName"].ToString() : "N/A",
+                            PosName = reader["PosName"] != DBNull.Value ? reader["PosName"].ToString() : "N/A",
                             BaseSalary = reader["BaseSalary"] != DBNull.Value ? Convert.ToDouble(reader["BaseSalary"]) : 0,
                             Allowance = reader["Allowance"] != DBNull.Value ? Convert.ToDouble(reader["Allowance"]) : 0,
                             Bonus = reader["Bonus"] != DBNull.Value ? Convert.ToDouble(reader["Bonus"]) : 0,
                             Deduction = reader["Deduction"] != DBNull.Value ? Convert.ToDouble(reader["Deduction"]) : 0,
                             Month = reader["Month"] != DBNull.Value ? Convert.ToInt32(reader["Month"]) : 0,
                             Year = reader["Year"] != DBNull.Value ? Convert.ToInt32(reader["Year"]) : 0,
-                            NetSalary = reader["NetSalary"] != DBNull.Value ? Convert.ToDouble(reader["NetSalary"]) : 0
+                            NetSalary = reader["NetSalary"] != DBNull.Value ? Convert.ToDouble(reader["NetSalary"]) : 0,
                         };
                         salaryList.Add(salary);
                     }
@@ -69,7 +74,7 @@ namespace layout.repository
 
             return salaryList;
         }
-        public bool UpdateSalary(int id, double luongCoBan, double troCap, double thuong, double khoanTru)
+        public bool UpdateSalary(int id, double allowance, double bonus, double deduction)
         {
             try
             {
@@ -77,18 +82,25 @@ namespace layout.repository
                 {
                     connection.Open();
                     string sql = @"UPDATE payroll 
-                           SET base_salary = @LuongCoBan, 
-                               allowance   = @TroCap, 
-                               bonus       = @Thuong,
-                               deduction   = @KhoanTru
+                           SET allowance   = @Allowance, 
+                               bonus       = @Bonus,
+                               deduction   = @Deduction,
+                               net_salary  = (
+                                    SELECT pos.base_salary 
+                                    FROM users u 
+                                    INNER JOIN positions pos ON pos.pos_id = u.pos_id
+                                    WHERE u.user_id = (SELECT user_id FROM payroll WHERE payroll_id = @Id)
+                                    ) + @Allowance + @Bonus - @Deduction
                            WHERE payroll_id = @Id";
 
                     SqlCommand cmd = new SqlCommand(sql, connection);
-                    cmd.Parameters.AddWithValue("@LuongCoBan", luongCoBan);
-                    cmd.Parameters.AddWithValue("@TroCap", troCap);
-                    cmd.Parameters.AddWithValue("@Thuong", thuong);
-                    cmd.Parameters.AddWithValue("@KhoanTru", khoanTru);
+
+                    cmd.Parameters.AddWithValue("@Allowance", allowance);
+                    cmd.Parameters.AddWithValue("@Bonus", bonus);
+                    cmd.Parameters.AddWithValue("@Deduction", deduction);
                     cmd.Parameters.AddWithValue("@Id", id);
+
+
                     cmd.ExecuteNonQuery();
                     return true;
                 }
@@ -97,6 +109,27 @@ namespace layout.repository
             {
                 System.Windows.MessageBox.Show("Lỗi UpdateSalary: " + ex.Message, "Lỗi DB");
                 return false;
+            }
+        }
+        public void createSalary(Payroll payroll)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "insert into payroll (user_id, allowance, bonus, deduction, net_salary, month, year) " +
+                    "values (@id, @allow, @bonus, @deduct, @net, @month, @year)";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+
+                cmd.Parameters.AddWithValue("@id", payroll.userId);
+                cmd.Parameters.AddWithValue("@allow", payroll.userId);
+                cmd.Parameters.AddWithValue("@bonus", payroll.userId);
+                cmd.Parameters.AddWithValue("@deduct", payroll.userId);
+                cmd.Parameters.AddWithValue("@net", payroll.userId);
+                cmd.Parameters.AddWithValue("@month", payroll.userId);
+                cmd.Parameters.AddWithValue("@year", payroll.userId);
+
+                cmd.ExecuteNonQuery();
             }
         }
     }

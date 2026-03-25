@@ -68,6 +68,7 @@ namespace layout.view.Main_Window
                     this.Close(); // Đóng LoginWindow và cập nhật HomePageWindow đang mở
                 }
             }
+            else MessageBox.Show("Vui lòng kiểm tra lại tài khoản hoặc mật khẩu !");
         }
         private NguoiDung convertDataTableToObject(string email)
         {

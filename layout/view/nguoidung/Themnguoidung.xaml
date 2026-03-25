@@ -19,6 +19,7 @@
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="80"/>
         </Grid.RowDefinitions>
 
@@ -53,21 +54,18 @@
 
         <!-- Phòng ban -->
         <TextBlock Text="Phòng ban:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"/>
-        <ComboBox x:Name="cbPhongban" Grid.Row="6" Grid.Column="1" Height="30">
-            <ComboBoxItem Content="HR" Tag="HR"/>
-            <ComboBoxItem Content="IT" Tag="IT"/>
-            <ComboBoxItem Content="KT" Tag="KT"/>
-        </ComboBox>
+        <ComboBox x:Name="cbPhongban" Grid.Row="6" Grid.Column="1" Height="30" DisplayMemberPath="department_name" SelectedValuePath="department_id"/>
 
         <!-- Vai trò -->
         <TextBlock Text="Vai trò:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"/>
-        <ComboBox x:Name="cbVaitro" Grid.Row="7" Grid.Column="1" Height="30">
-            <ComboBoxItem Content="Quản trị viên" Tag="1"/>
-            <ComboBoxItem Content="Nhân viên" Tag="2"/>
-        </ComboBox>
+        <ComboBox x:Name="cbVaitro" Grid.Row="7" Grid.Column="1" Height="30" DisplayMemberPath="role_name" SelectedValuePath="role_id"/>
+
+        <!-- Chức vụ -->
+        <TextBlock Text="Chức vụ:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center"/>
+        <ComboBox x:Name="cbChucvu" Grid.Row="8" Grid.Column="1" Height="30" DisplayMemberPath="pos_name" SelectedValuePath="pos_id"/>
 
         <!-- Buttons -->
-        <StackPanel Grid.Row="8"
+        <StackPanel Grid.Row="9"
                     Grid.ColumnSpan="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center"
