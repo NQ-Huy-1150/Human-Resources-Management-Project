@@ -67,8 +67,6 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-
-                    <DataGridTextColumn Header="Ghi Chú" Binding="{Binding ghi_chu}" Width="1.5*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

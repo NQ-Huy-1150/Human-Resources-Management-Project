@@ -3,6 +3,7 @@ using layout.service;
 using layout.view.Main_Window;
 using layout.view.nguoidung;
 using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,6 +16,7 @@ namespace layout.view.Nguoidung
         private readonly DepartmentService departmentService = new DepartmentService();
         private readonly RoleService roleService = new RoleService();
         private readonly PositionService positionService = new PositionService();
+        private readonly SalaryService salaryService = new SalaryService();
 
         public Themnguoidung()
         {
@@ -43,6 +45,20 @@ namespace layout.view.Nguoidung
                 string.IsNullOrEmpty(diachi) || string.IsNullOrEmpty(sodienthoai))
             {
                 MessageBox.Show("Vui lòng điền đầy đủ thông tin");
+                return;
+            }
+
+            if (!email.Contains("@") || !email.Contains("."))
+            {
+                MessageBox.Show("Email thiếu ký tự @ hoặc dấu chấm.");
+                return;
+            }
+
+
+            if (matkhau.Length < 4)
+            {
+                MessageBox.Show("Mật khẩu phải có ít nhất 4 ký tự.");
+                txtMatkhau.Focus();
                 return;
             }
 
@@ -84,10 +100,14 @@ namespace layout.view.Nguoidung
             string message;
             bool ok = service.themnguoidung(nd, out message);
 
-            MessageBox.Show(message);
-
             if (ok)
             {
+                if (nd.ma_chucvu.HasValue)
+                {
+                    addUserToSalaryTable(nd.thu_dien_tu, nd.ma_chucvu.Value);
+                }
+
+                MessageBox.Show(message);
                 var mainWindow = Window.GetWindow(this) as MainWindow;
                 if (mainWindow != null)
                 {
@@ -96,10 +116,30 @@ namespace layout.view.Nguoidung
             }
             else
             {
+                MessageBox.Show(message);
                 txtEmail.Focus();
                 txtEmail.SelectAll();
             }
 
+        }
+
+        private void addUserToSalaryTable(string email, int positionId)
+        {
+            int userId = service.getUserIdFromEmail(email);
+            if (userId != -1)
+            {
+                Payroll payroll = new Payroll();
+                payroll.userId = userId;
+                payroll.netSalary = positionService.getBaseSalary(positionId);
+                int currentMonth = DateTime.Now.Month;
+                payroll.month = currentMonth;
+                int currentYear = DateTime.Now.Year;
+                payroll.year = currentYear;
+                payroll.deduction = 0;
+                payroll.bonus = 0;
+                payroll.allowance = 0;
+                salaryService.createSalary(payroll);
+            }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

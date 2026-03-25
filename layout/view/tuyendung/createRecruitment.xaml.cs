@@ -88,6 +88,8 @@ namespace layout.view.tuyendung
                 string.IsNullOrWhiteSpace(positionInput.Text) ||
                 string.IsNullOrWhiteSpace(incomeInput.Text) ||
                 string.IsNullOrWhiteSpace(quantityInput.Text) ||
+                string.IsNullOrWhiteSpace(conditionInput.Text) ||
+                string.IsNullOrWhiteSpace(descInput.Text) ||
                 !date.SelectedDate.HasValue)
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ thông tin tuyển dụng.");
@@ -107,9 +109,27 @@ namespace layout.view.tuyendung
                 return false;
             }
 
+            if (income <= 0)
+            {
+                MessageBox.Show("Mức lương dự kiến phải lớn hơn 0.");
+                return false;
+            }
+
             if (!int.TryParse(quantityInput.Text, out int quantity))
             {
                 MessageBox.Show("Số lượng hồ sơ không hợp lệ.");
+                return false;
+            }
+
+            if (quantity <= 0)
+            {
+                MessageBox.Show("Số lượng hồ sơ phải lớn hơn 0.");
+                return false;
+            }
+
+            if (date.SelectedDate.Value.Date < DateTime.Today)
+            {
+                MessageBox.Show("Hạn nộp hồ sơ phải từ hôm nay trở đi.");
                 return false;
             }
 

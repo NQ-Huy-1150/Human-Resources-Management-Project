@@ -18,7 +18,7 @@ namespace layout.repository
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
-                string sql = @"SELECT u.full_name, a.check_in, a.check_out, a.loai_ca, a.ghi_chu
+                string sql = @"SELECT u.full_name, a.check_in, a.check_out, a.loai_ca
                                FROM attendance a
                                INNER JOIN users u ON a.user_id = u.user_id
                                ORDER BY a.check_in DESC";
@@ -34,7 +34,6 @@ namespace layout.repository
                             check_in = (DateTime)reader["check_in"],
                             check_out = reader["check_out"] as DateTime?,
                             loai_ca = reader["loai_ca"] == DBNull.Value ? null : reader["loai_ca"].ToString(),
-                            ghi_chu = reader["ghi_chu"] == DBNull.Value ? null : reader["ghi_chu"].ToString()
                         });
                     }
                 }
@@ -50,7 +49,7 @@ namespace layout.repository
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
-                string sql = @"SELECT attendance_id, check_in, check_out, loai_ca, ghi_chu
+                string sql = @"SELECT attendance_id, check_in, check_out, loai_ca
                                FROM attendance
                                WHERE user_id = @uid
                                  AND CAST(check_in AS DATE) = CAST(GETDATE() AS DATE)
@@ -69,8 +68,7 @@ namespace layout.repository
                                 attendance_id = (int)reader["attendance_id"],
                                 check_in = (DateTime)reader["check_in"],
                                 check_out = reader["check_out"] as DateTime?,
-                                loai_ca = reader["loai_ca"] == DBNull.Value ? null : reader["loai_ca"].ToString(),
-                                ghi_chu = reader["ghi_chu"] == DBNull.Value ? null : reader["ghi_chu"].ToString()
+                                loai_ca = reader["loai_ca"] == DBNull.Value ? null : reader["loai_ca"].ToString()
                             });
                         }
                     }
@@ -83,22 +81,52 @@ namespace layout.repository
         public bool checkIn(int userId)
         {
             using (SqlConnection connection = conn.dbConnection())
-            using (SqlCommand cmd = new SqlCommand("INSERT INTO attendance (check_in, user_id) VALUES (GETDATE(), @uid)", connection))
             {
                 connection.Open();
-                cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
-                return cmd.ExecuteNonQuery() > 0;
+
+                string checkSql = @"SELECT COUNT(*) FROM attendance
+                                    WHERE user_id = @uid
+                                      AND CAST(check_in AS DATE) = CAST(GETDATE() AS DATE)
+                                      AND check_out IS NULL";
+
+                using (SqlCommand checkCmd = new SqlCommand(checkSql, connection))
+                {
+                    checkCmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
+                    int openedShift = (int)checkCmd.ExecuteScalar();
+                    if (openedShift > 0)
+                    {
+                        return false;
+                    }
+                }
+
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO attendance (check_in, user_id) VALUES (GETDATE(), @uid)", connection))
+                {
+                    cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
+                    return cmd.ExecuteNonQuery() > 0;
+                }
             }
         }
 
         public bool checkOut(int userId)
         {
             using (SqlConnection connection = conn.dbConnection())
-            using (SqlCommand cmd = new SqlCommand("UPDATE attendance SET check_out = GETDATE() WHERE user_id = @uid AND check_out IS NULL", connection))
             {
                 connection.Open();
-                cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
-                return cmd.ExecuteNonQuery() > 0;
+
+                string sql = @"UPDATE attendance
+                               SET check_out = GETDATE()
+                               WHERE attendance_id = (
+                                   SELECT TOP 1 attendance_id
+                                   FROM attendance
+                                   WHERE user_id = @uid AND check_out IS NULL
+                                   ORDER BY check_in DESC
+                               )";
+
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
+                    return cmd.ExecuteNonQuery() > 0;
+                }
             }
         }
     }

@@ -59,9 +59,15 @@ namespace layout.view.chamcong
 
         private void btnVao_Click(object sender, RoutedEventArgs e)
         {
-            attendanceService.checkIn(currentUserId);
-            LoadData();
-            MessageBox.Show("Vào ca thành công!");
+            if (attendanceService.checkIn(currentUserId))
+            {
+                LoadData();
+                MessageBox.Show("Vào ca thành công!");
+            }
+            else
+            {
+                MessageBox.Show("Bạn đang trong ca làm hoặc đã vào ca chưa kết thúc.");
+            }
         }
 
         private void btnRa_Click(object sender, RoutedEventArgs e)
@@ -70,6 +76,10 @@ namespace layout.view.chamcong
             {
                 LoadData();
                 MessageBox.Show("Ra ca thành công!");
+            }
+            else
+            {
+                MessageBox.Show("Không tìm thấy ca đang mở để ra ca.");
             }
         }
     }

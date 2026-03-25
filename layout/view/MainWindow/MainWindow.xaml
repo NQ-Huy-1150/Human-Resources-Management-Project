@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:layout.view.Main_Window"
         xmlns:sidebar="clr-namespace:layout.view.Bars"
         mc:Ignorable="d"
-        Title="Phần mềm Quản lý Nhân sự" Height="600" Width="1000">
+        Title="Phần mềm Quản lý Nhân sự" Height="700" Width="1000">
     <Grid>
         <!-- Chia màn hình làm 2 cột: Cột trái cho Menu, Cột phải cho Nội dung -->
         <Grid.ColumnDefinitions>

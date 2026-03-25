@@ -8,7 +8,6 @@ namespace layout.domain
         public DateTime check_in { get; set; }
         public DateTime? check_out { get; set; }
         public string loai_ca { get; set; }
-        public string ghi_chu { get; set; }
 
         public string Status
         {

@@ -202,6 +202,25 @@ namespace layout.repository
             }
             
         }
+
+        public int getUserIdFromEmail(string email)
+        {
+            int temp = -1;
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "Select user_id from users where email = @email";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@email", email);
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    temp = Convert.ToInt32(rs);
+                }
+            }
+            return temp;
+        }
         public bool isEmailAndPasswordExisted(string email, string pass)
         {
             bool flag = false;
@@ -294,6 +313,24 @@ namespace layout.repository
                 }
             }
             return roleId;
+        }
+        public int getUserPositionId(int userId)
+        {
+            int positionId = -1;
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "Select position_id from users where user_id = @userId";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@userId", userId);
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    positionId = Convert.ToInt32(rs);
+                }
+            }
+            return positionId;
         }
     }
 }

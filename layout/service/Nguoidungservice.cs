@@ -58,5 +58,13 @@ namespace layout.service
         {
             return repository.getUserRoleId(userId);
         }
+        public int getUserIdFromEmail(string email)
+        {
+            return repository.getUserIdFromEmail(email);
+        }
+        public int getPositionId(int userId)
+        {
+            return repository.getUserPositionId(userId);
+        } 
     }
 }

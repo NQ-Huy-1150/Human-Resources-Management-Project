@@ -85,12 +85,12 @@ namespace layout.repository
                            SET allowance   = @Allowance, 
                                bonus       = @Bonus,
                                deduction   = @Deduction,
-                               net_salary  = (
+                               net_salary  = ISNULL((
                                     SELECT pos.base_salary 
                                     FROM users u 
                                     INNER JOIN positions pos ON pos.pos_id = u.pos_id
                                     WHERE u.user_id = (SELECT user_id FROM payroll WHERE payroll_id = @Id)
-                                    ) + @Allowance + @Bonus - @Deduction
+                                    ), 0) + @Allowance + @Bonus - @Deduction
                            WHERE payroll_id = @Id";
 
                     SqlCommand cmd = new SqlCommand(sql, connection);
@@ -116,18 +116,30 @@ namespace layout.repository
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
+
+                string checkSql = "select count(*) from payroll where user_id = @id and month = @month and year = @year";
+                SqlCommand checkCmd = new SqlCommand(checkSql, connection);
+                checkCmd.Parameters.AddWithValue("@id", payroll.userId);
+                checkCmd.Parameters.AddWithValue("@month", payroll.month);
+                checkCmd.Parameters.AddWithValue("@year", payroll.year);
+                int existed = (int)checkCmd.ExecuteScalar();
+                if (existed > 0)
+                {
+                    return;
+                }
+
                 string sql = "insert into payroll (user_id, allowance, bonus, deduction, net_salary, month, year) " +
                     "values (@id, @allow, @bonus, @deduct, @net, @month, @year)";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
 
                 cmd.Parameters.AddWithValue("@id", payroll.userId);
-                cmd.Parameters.AddWithValue("@allow", payroll.userId);
-                cmd.Parameters.AddWithValue("@bonus", payroll.userId);
-                cmd.Parameters.AddWithValue("@deduct", payroll.userId);
-                cmd.Parameters.AddWithValue("@net", payroll.userId);
-                cmd.Parameters.AddWithValue("@month", payroll.userId);
-                cmd.Parameters.AddWithValue("@year", payroll.userId);
+                cmd.Parameters.AddWithValue("@allow", payroll.allowance);
+                cmd.Parameters.AddWithValue("@bonus", payroll.bonus);
+                cmd.Parameters.AddWithValue("@deduct", payroll.deduction);
+                cmd.Parameters.AddWithValue("@net", payroll.netSalary);
+                cmd.Parameters.AddWithValue("@month", payroll.month);
+                cmd.Parameters.AddWithValue("@year", payroll.year);
 
                 cmd.ExecuteNonQuery();
             }

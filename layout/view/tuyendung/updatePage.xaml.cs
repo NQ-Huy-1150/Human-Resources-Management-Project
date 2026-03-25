@@ -44,7 +44,11 @@ namespace layout.view.tuyendung
         }
         private void updateBtn(object sender, RoutedEventArgs e)
         {
-            updateRecruit();
+            if (!updateRecruit())
+            {
+                return;
+            }
+
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
             {
@@ -96,18 +100,32 @@ namespace layout.view.tuyendung
             statusCBX.SelectedItem = recruitment.status;
             descInput.Text = recruitment.description;
         }
-        private void updateRecruit()
+        private bool updateRecruit()
         {
+            if (string.IsNullOrWhiteSpace(departmentNameCBX.Text) ||
+                string.IsNullOrWhiteSpace(positionInput.Text) ||
+                string.IsNullOrWhiteSpace(incomeInput.Text) ||
+                string.IsNullOrWhiteSpace(quantityInput.Text) ||
+                string.IsNullOrWhiteSpace(conditionInput.Text) ||
+                string.IsNullOrWhiteSpace(descInput.Text) ||
+                string.IsNullOrWhiteSpace(statusCBX.Text) ||
+                !date.SelectedDate.HasValue)
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin tuyển dụng.");
+                return false;
+            }
+
             string id = service.getIdByName(departmentNameCBX.Text);
             if (id.Equals("None"))
             {
-                return;
+                MessageBox.Show("Phòng ban không hợp lệ.");
+                return false;
             }
 
             if (string.IsNullOrWhiteSpace(positionInput.Text))
             {
                 MessageBox.Show("Vui lòng chọn vị trí tuyển dụng.");
-                return;
+                return false;
             }
 
             Recruitment re = new Recruitment();
@@ -121,6 +139,7 @@ namespace layout.view.tuyendung
             re.quantity = Convert.ToInt32(quantityInput.Text);
             re.description = descInput.Text;
             reService.getUpdate(re);
+            return true;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -8,7 +8,6 @@ namespace layout.domain
         public DateTime check_in { get; set; }
         public DateTime? check_out { get; set; }
         public string loai_ca { get; set; }
-        public string ghi_chu { get; set; }
 
         public string TimeRange
         {
@@ -42,6 +41,14 @@ namespace layout.domain
             get
             {
                 return 480 - StandardMinutes;
+            }
+        }
+        public string StatusDisplay
+        {
+            get
+            {
+                if (!check_out.HasValue) return "Đang làm việc";
+                return OvertimeMinutes > 0 ? "Tăng ca" : "Bình thường";
             }
         }
     }
