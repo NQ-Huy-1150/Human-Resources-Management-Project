@@ -1,9 +1,6 @@
 ﻿using layout.domain;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace layout.luong
 {
@@ -11,6 +8,10 @@ namespace layout.luong
     {
         public class Luong
         {
+            private const int WorkingDays = 26;
+            private const int MinutesPerDay = 480;
+            private const int TotalWorkingMinutes = WorkingDays * MinutesPerDay;
+
             public int PayrollId { get; set; }
             public int UserId { get; set; }
             public string Name { get; set; }
@@ -22,43 +23,40 @@ namespace layout.luong
             public double Deduction { get; set; }
             public int Month { get; set; }
             public int Year { get; set; }
-
             public List<AttendanceAdminRecord> Attendances { get; set; }
             public double NetSalary { get; set; }
 
-            public void AddOvertimeToBonus()
+            private double GetSalaryPerMinute()
             {
+                return BaseSalary / TotalWorkingMinutes;
+            }
+
+            private void SumAttendanceMinutes(out int totalMissing, out int totalOvertime)
+            {
+                totalMissing = 0;
+                totalOvertime = 0;
 
                 if (Attendances == null) return;
 
-                double salaryPerMinute = BaseSalary / 26 / 480;
-                double overtimePay = Attendances.Sum(a => a.OvertimeMinutes) * salaryPerMinute;
-
-                Bonus += overtimePay;
-                RecalculateFromAttendance();
-
-            }
-
-            public void RecalculateFromAttendance()
-            {
-                if (Attendances == null || Attendances.Count == 0)
+                foreach (AttendanceAdminRecord record in Attendances)
                 {
-                    Deduction = 0;
-                    NetSalary = BaseSalary + Allowance + Bonus;
-                    return;
+                    totalMissing += record.MissingMinutes;
+                    totalOvertime += record.OvertimeMinutes;
                 }
-
-                int workingDays = 26;
-                int minutesPerDay = 480;
-
-                double salaryPerMinute = BaseSalary / workingDays / minutesPerDay;
-
-                int totalMissingMinutes = Attendances.Sum(a => 480 - a.StandardMinutes);
-
-                Deduction = totalMissingMinutes * salaryPerMinute;
-                NetSalary = BaseSalary + Allowance + Bonus - Deduction;
             }
 
+            public void Calculate()
+            {
+                int totalMissing;
+                int totalOvertime;
+                SumAttendanceMinutes(out totalMissing, out totalOvertime);
+
+                double salaryPerMinute = GetSalaryPerMinute();
+                double overtimePay = totalOvertime * salaryPerMinute;
+
+                Deduction = totalMissing * salaryPerMinute;
+                NetSalary = BaseSalary + Allowance + Bonus + overtimePay - Deduction;
+            }
         }
     }
 }

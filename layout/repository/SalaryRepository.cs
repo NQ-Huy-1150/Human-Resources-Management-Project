@@ -48,7 +48,7 @@ namespace layout.repository
 
                     while (reader.Read())
                     {
-                        SalaryCal.Luong salary = new SalaryCal.Luong
+                        salaryList.Add(new SalaryCal.Luong
                         {
                             PayrollId = reader["PayrollId"] != DBNull.Value ? Convert.ToInt32(reader["PayrollId"]) : 0,
                             UserId = reader["UserId"] != DBNull.Value ? Convert.ToInt32(reader["UserId"]) : 0,
@@ -61,10 +61,16 @@ namespace layout.repository
                             Month = reader["Month"] != DBNull.Value ? Convert.ToInt32(reader["Month"]) : 0,
                             Year = reader["Year"] != DBNull.Value ? Convert.ToInt32(reader["Year"]) : 0,
                             NetSalary = reader["NetSalary"] != DBNull.Value ? Convert.ToDouble(reader["NetSalary"]) : 0,
-                        };
-                        salaryList.Add(salary);
+                        });
                     }
                     reader.Close();
+
+                    foreach (SalaryCal.Luong salary in salaryList)
+                    {
+                        salary.Attendances = GetAttendanceByUserAndPeriod(connection, salary.UserId, salary.Month, salary.Year);
+                        salary.Calculate();
+                        UpdateCalculatedSalary(connection, salary);
+                    }
                 }
             }
             catch (Exception ex)
@@ -74,6 +80,56 @@ namespace layout.repository
 
             return salaryList;
         }
+
+        private List<AttendanceAdminRecord> GetAttendanceByUserAndPeriod(SqlConnection connection, int userId, int month, int year)
+        {
+            List<AttendanceAdminRecord> attendances = new List<AttendanceAdminRecord>();
+
+            string sql = @"SELECT check_in, check_out, loai_ca
+                           FROM attendance
+                           WHERE user_id = @uid
+                             AND MONTH(check_in) = @month
+                             AND YEAR(check_in) = @year";
+
+            using (SqlCommand cmd = new SqlCommand(sql, connection))
+            {
+                cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
+                cmd.Parameters.Add("@month", SqlDbType.Int).Value = month;
+                cmd.Parameters.Add("@year", SqlDbType.Int).Value = year;
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        attendances.Add(new AttendanceAdminRecord
+                        {
+                            check_in = (DateTime)reader["check_in"],
+                            check_out = reader["check_out"] as DateTime?,
+                            loai_ca = reader["loai_ca"] == DBNull.Value ? null : reader["loai_ca"].ToString()
+                        });
+                    }
+                }
+            }
+
+            return attendances;
+        }
+
+        private void UpdateCalculatedSalary(SqlConnection connection, SalaryCal.Luong salary)
+        {
+            string sql = @"UPDATE payroll
+                           SET deduction = @deduction,
+                               net_salary = @net
+                           WHERE payroll_id = @id";
+
+            using (SqlCommand cmd = new SqlCommand(sql, connection))
+            {
+                cmd.Parameters.Add("@deduction", SqlDbType.Float).Value = salary.Deduction;
+                cmd.Parameters.Add("@net", SqlDbType.Float).Value = salary.NetSalary;
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = salary.PayrollId;
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public bool UpdateSalary(int id, double allowance, double bonus, double deduction)
         {
             try
