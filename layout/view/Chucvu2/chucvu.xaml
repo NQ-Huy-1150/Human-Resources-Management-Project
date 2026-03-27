@@ -1,0 +1,58 @@
+﻿<Page x:Class="layout.view.Chucvu2.chucvu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:layout.view.Chucvu2"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="chucvu">
+
+    <Border Background="#F8F9FA">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,15,0,10">
+                <Button Content="Hệ thống" Height="25" BorderThickness="0" Background="Transparent" FontStyle="Italic" Foreground="#7F8C8D"/>
+                <TextBlock Text="/" Margin="5,4,5,0" FontSize="14" Foreground="Gray"/>
+                <TextBlock Text="Quản lý chức vụ" Margin="5,4,5,0" FontStyle="Italic" Foreground="#2C3E50" FontWeight="SemiBold"/>
+            </StackPanel>
+
+            <Border Grid.Row="1" Background="White" Margin="20,0,20,15" Padding="15" CornerRadius="5" BorderBrush="#D1D9E0" BorderThickness="1">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Tên chức vụ:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="#34495E"/>
+                    <TextBox x:Name="txtId" Width="120" Height="28" VerticalContentAlignment="Center" Margin="0,0,30,0"/>
+
+                    <TextBlock Text="Lương cơ bản:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="#34495E"/>
+                    <TextBox x:Name="txtName" Width="250" Height="28" VerticalContentAlignment="Center" Margin="0,0,30,0"/>
+
+                    <Button Content="Làm mới" Click="btnClear_Click" Width="80" Height="28" Background="#95A5A6" Foreground="White" BorderThickness="0"/>
+                </StackPanel>
+            </Border>
+
+            <Rectangle Grid.Row="2" Fill="#D1D9E0" Margin="20,0"/>
+
+            <DataGrid x:Name="dgDepartments" Grid.Row="3" Margin="20" AutoGenerateColumns="False" 
+                  IsReadOnly="True" RowHeight="40" Background="White" BorderBrush="#D1D9E0"
+                  SelectionChanged="dgDepartments_SelectionChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Mã chức vụ" Binding="{Binding pos_id}" Width="*"/>
+                    <DataGridTextColumn Header="Tên chức vụ" Binding="{Binding pos_name}" Width="2*"/>
+                    <DataGridTextColumn Header="Lương cơ bản" Binding="{Binding base_salary}" Width="2*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,20,20">
+                <Button Content="Thêm mới" Click="btnAdd_Click" Width="100" Height="30" Margin="5" Background="#27AE60" Foreground="White" BorderThickness="0"/>
+                <Button Content="Cập nhật" Click="btnUpdate_Click" Width="100" Height="30" Margin="5" Background="#F39C12" Foreground="White" BorderThickness="0"/>
+                <Button Content="Xóa" Click="btnDelete_Click" Width="100" Height="30" Margin="5" Background="#E74C3C" Foreground="White" BorderThickness="0"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Page>

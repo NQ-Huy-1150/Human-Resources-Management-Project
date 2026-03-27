@@ -3,6 +3,7 @@ using layout.view.Department;
 using layout.view.Main_Window;
 using layout.view.nguoidung;
 using layout.luong;
+using layout.view.Chucvu2;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -27,6 +28,7 @@ namespace layout.view.Bars
             usersBtn.Background = Brushes.Transparent;
             salaryBtn.Background = Brushes.Transparent;
             departBtn.Background = Brushes.Transparent;
+            posBtn.Background = Brushes.Transparent;
         }
 
         private void SetActiveButton(Button activeButton)
@@ -121,6 +123,15 @@ namespace layout.view.Bars
         public void setUserId(int userId)
         {
             this.userId = userId;
+        }
+        private void posBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                SetActiveButton(posBtn); // Làm nổi bật nút Chức vụ
+                mainWindow.MainFrame.Navigate(new chucvu()); // Điều hướng đến trang chucvu
+            }
         }
     }
 }
