@@ -19,7 +19,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,15,0,10">
-                <Button Content="Hệ thống" Height="25" BorderThickness="0" Background="Transparent" FontStyle="Italic" Foreground="#7F8C8D"/>
+                <Button Content="Quản lý nhân sự" Height="25" Click="OpenDashboard_Click" BorderThickness="0" Background="Transparent" FontStyle="Italic" Foreground="#7F8C8D"/>
                 <TextBlock Text="/" Margin="5,4,5,0" FontSize="14" Foreground="Gray"/>
                 <TextBlock Text="Quản lý phòng ban" Margin="5,4,5,0" FontStyle="Italic" Foreground="#2C3E50" FontWeight="SemiBold"/>
             </StackPanel>

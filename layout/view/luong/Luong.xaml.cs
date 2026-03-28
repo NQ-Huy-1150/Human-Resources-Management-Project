@@ -1,8 +1,11 @@
-﻿using layout.repository;
+﻿using layout.domain;
+using layout.repository;
+using layout.view.Main_Window;
 using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Data;
 
 namespace layout.luong
 {
@@ -22,11 +25,11 @@ namespace layout.luong
             try
             {
                 SalaryRepository salaryRepository = new SalaryRepository();
-                List<SalaryCal.Luong> salaryList = salaryRepository.getAllSalary();
+                DataTable data = salaryRepository.getAllPayRoll();
 
-                DgNhanVien.ItemsSource = salaryList;
+                DgNhanVien.ItemsSource = data.DefaultView;
 
-                if (salaryList == null || salaryList.Count == 0)
+                if (data == null || data.Rows.Count == 0)
                 {
                     MessageBox.Show("Không có dữ liệu lương.", "Thông Báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -44,7 +47,7 @@ namespace layout.luong
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            SalaryCal.Luong selected = DgNhanVien.SelectedItem as SalaryCal.Luong;
+            DataRowView selected = DgNhanVien.SelectedItem as DataRowView;
 
             if (selected == null)
             {
@@ -52,7 +55,25 @@ namespace layout.luong
                 return;
             }
 
-            NavigationService.Navigate(new NhanvienInfo(selected));
+            int payrollId = Convert.ToInt32(selected["payroll_id"]);
+            int userId = Convert.ToInt32(selected["user_id"]);
+            string fullName = selected["full_name"].ToString();
+            float baseSalary = Convert.ToSingle(selected["base_salary"]);
+
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainFrame.Navigate(new NhanvienInfo(payrollId, userId, fullName, baseSalary));
+            }
+        }
+
+        private void OpenDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainFrame.Navigate(new AdminDashboardPage());
+            }
         }
     }
 }

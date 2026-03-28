@@ -130,7 +130,7 @@ namespace layout.view.Nguoidung
             {
                 Payroll payroll = new Payroll();
                 payroll.userId = userId;
-                payroll.netSalary = positionService.getBaseSalary(positionId);
+                payroll.netSalary = 0;
                 int currentMonth = DateTime.Now.Month;
                 payroll.month = currentMonth;
                 int currentYear = DateTime.Now.Year;
@@ -148,6 +148,24 @@ namespace layout.view.Nguoidung
             if (mainWindow != null)
             {
                 
+                mainWindow.MainFrame.Navigate(new nguoidungPage());
+            }
+        }
+
+        private void OpenDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainFrame.Navigate(new AdminDashboardPage());
+            }
+        }
+
+        private void BackToUsers_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
                 mainWindow.MainFrame.Navigate(new nguoidungPage());
             }
         }

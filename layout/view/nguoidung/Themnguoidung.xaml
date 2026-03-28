@@ -8,9 +8,10 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="Themnguoidung">
 
-    <Grid Margin="40">
+    <Grid Margin="30">
 
         <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
@@ -28,44 +29,52 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,0,0,5">
+            <Button Content="Quản lý nhân sự" Height="25" Click="OpenDashboard_Click" BorderThickness="0" Background="Transparent" FontStyle="Italic" Foreground="#7F8C8D"/>
+            <TextBlock Text="/" Margin="5,4,5,0" FontSize="14" Foreground="Gray"/>
+            <Button Content="Người dùng" Height="25" Click="BackToUsers_Click" BorderThickness="0" Background="Transparent" FontStyle="Italic" Foreground="#7F8C8D"/>
+            <TextBlock Text="/" Margin="5,4,5,0" FontSize="14" Foreground="Gray"/>
+            <TextBlock Text="Thêm người dùng" Margin="5,4,5,0" FontStyle="Italic" />
+        </StackPanel>
+
         <!-- Họ tên -->
-        <TextBlock Text="Họ tên:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-        <TextBox x:Name="txtHoten" Grid.Row="0" Grid.Column="1" Height="30"/>
+        <TextBlock Text="Họ tên:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="txtHoten" Grid.Row="1" Grid.Column="1" Height="30"/>
 
         <!-- Email -->
-        <TextBlock Text="Email:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-        <TextBox x:Name="txtEmail" Grid.Row="1" Grid.Column="1" Height="30"/>
+        <TextBlock Text="Email:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="txtEmail" Grid.Row="2" Grid.Column="1" Height="30"/>
 
         <!-- Mật khẩu -->
-        <TextBlock Text="Mật khẩu:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
-        <PasswordBox x:Name="txtMatkhau" Grid.Row="2" Grid.Column="1" Height="30"/>
+        <TextBlock Text="Mật khẩu:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
+        <PasswordBox x:Name="txtMatkhau" Grid.Row="3" Grid.Column="1" Height="30"/>
 
         <!-- Nhập lại mật khẩu -->
-        <TextBlock Text="Nhập lại mật khẩu:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center"/>
-        <PasswordBox x:Name="txtMatkhau2" Grid.Row="3" Grid.Column="1" Height="30"/>
+        <TextBlock Text="Nhập lại mật khẩu:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
+        <PasswordBox x:Name="txtMatkhau2" Grid.Row="4" Grid.Column="1" Height="30"/>
 
         <!-- Địa chỉ -->
-        <TextBlock Text="Địa chỉ:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center"/>
-        <TextBox x:Name="txtDiachi" Grid.Row="4" Grid.Column="1" Height="30"/>
+        <TextBlock Text="Địa chỉ:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="txtDiachi" Grid.Row="5" Grid.Column="1" Height="30"/>
 
         <!-- Số điện thoại -->
-        <TextBlock Text="Số điện thoại:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center"/>
-        <TextBox x:Name="txtSodienthoai" Grid.Row="5" Grid.Column="1" Height="30"/>
+        <TextBlock Text="Số điện thoại:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"/>
+        <TextBox x:Name="txtSodienthoai" Grid.Row="6" Grid.Column="1" Height="30"/>
 
         <!-- Phòng ban -->
-        <TextBlock Text="Phòng ban:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center"/>
-        <ComboBox x:Name="cbPhongban" Grid.Row="6" Grid.Column="1" Height="30" DisplayMemberPath="department_name" SelectedValuePath="department_id"/>
+        <TextBlock Text="Phòng ban:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"/>
+        <ComboBox x:Name="cbPhongban" Grid.Row="7" Grid.Column="1" Height="30" DisplayMemberPath="department_name" SelectedValuePath="department_id"/>
 
         <!-- Vai trò -->
-        <TextBlock Text="Vai trò:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center"/>
-        <ComboBox x:Name="cbVaitro" Grid.Row="7" Grid.Column="1" Height="30" DisplayMemberPath="role_name" SelectedValuePath="role_id"/>
+        <TextBlock Text="Vai trò:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center"/>
+        <ComboBox x:Name="cbVaitro" Grid.Row="8" Grid.Column="1" Height="30" DisplayMemberPath="role_name" SelectedValuePath="role_id"/>
 
         <!-- Chức vụ -->
-        <TextBlock Text="Chức vụ:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center"/>
-        <ComboBox x:Name="cbChucvu" Grid.Row="8" Grid.Column="1" Height="30" DisplayMemberPath="pos_name" SelectedValuePath="pos_id"/>
+        <TextBlock Text="Chức vụ:" Grid.Row="9" Grid.Column="0" VerticalAlignment="Center"/>
+        <ComboBox x:Name="cbChucvu" Grid.Row="9" Grid.Column="1" Height="30" DisplayMemberPath="pos_name" SelectedValuePath="pos_id"/>
 
         <!-- Buttons -->
-        <StackPanel Grid.Row="9"
+        <StackPanel Grid.Row="10"
                     Grid.ColumnSpan="2"
                     Orientation="Horizontal"
                     HorizontalAlignment="Center"

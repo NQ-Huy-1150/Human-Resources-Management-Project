@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -55,8 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="domain\AttendanceAdminRecord.cs" />
-    <Compile Include="domain\AttendanceUserRecord.cs" />
+    <Compile Include="domain\Attendance.cs" />
     <Compile Include="domain\Candidate.cs" />
     <Compile Include="domain\Department.cs" />
     <Compile Include="domain\Nguoidung.cs" />
@@ -114,7 +113,6 @@
     <Compile Include="view\luong\NhanvienInfo.xaml.cs">
       <DependentUpon>NhanvienInfo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="view\luong\SalaryCal.cs" />
     <Compile Include="view\MainWindow\HomePageWindow.xaml.cs">
       <DependentUpon>HomePageWindow.xaml</DependentUpon>
     </Compile>
@@ -124,12 +122,17 @@
     <Compile Include="view\MainWindow\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="view\nguoidung\DeleteNguoidungPage.xaml.cs">
+      <DependentUpon>DeleteNguoidungPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="view\nguoidung\nguoidungPage.xaml.cs">
       <DependentUpon>nguoidungPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\nguoidung\Themnguoidung.xaml.cs">
       <DependentUpon>Themnguoidung.xaml</DependentUpon>
     </Compile>
+    <Compile Include="view\nguoidung\UpdateNguoidungPage.xaml.cs" />
+    <Compile Include="view\nguoidung\UserDetailPage.xaml.cs" />
     <Compile Include="view\tuyendung\deletePage.xaml.cs">
       <DependentUpon>deletePage.xaml</DependentUpon>
     </Compile>
@@ -216,6 +219,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="view\nguoidung\DeleteNguoidungPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="view\nguoidung\nguoidungPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -223,6 +229,12 @@
     <Page Include="view\nguoidung\Themnguoidung.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="view\nguoidung\UpdateNguoidungPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="view\nguoidung\UserDetailPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="view\tuyendung\createRecruitment.xaml">
       <SubType>Designer</SubType>
@@ -249,7 +261,6 @@
     <Compile Include="view\luong\Luong.xaml.cs">
       <DependentUpon>Luong.xaml</DependentUpon>
     </Compile>
-    <Compile Include="view\luong\SalaryDay.cs" />
     <Compile Include="repository\RecruimentRepository.cs" />
     <Compile Include="repository\MssSQLConnection.cs" />
     <Compile Include="service\DepartmentService.cs" />

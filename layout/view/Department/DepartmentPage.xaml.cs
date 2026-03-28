@@ -1,5 +1,6 @@
 ﻿using layout.domain;
 using layout.service;
+using layout.view.Main_Window;
 using System.Windows;
 using System.Windows.Controls;
 using DepartmentModel = layout.domain.Department;
@@ -130,6 +131,15 @@ namespace layout.view.Department
             txtName.Text = "";
             txtId.IsReadOnly = false;
             dgDepartments.SelectedItem = null;
+        }
+
+        private void OpenDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainFrame.Navigate(new AdminDashboardPage());
+            }
         }
     }
 }

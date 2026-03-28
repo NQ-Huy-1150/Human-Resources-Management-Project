@@ -4,6 +4,7 @@ using layout.view.Main_Window;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -38,6 +39,11 @@ namespace layout.view.CandidateView.UserView
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (!isValidInput())
+            {
+                return;
+            }
+
             create();
             if (string.IsNullOrEmpty(value))
             {
@@ -63,12 +69,12 @@ namespace layout.view.CandidateView.UserView
         private void create()
         {
             Candidate candidate = new Candidate();
-            candidate.fullName = name.Text;
-            candidate.email = emailInput.Text;
-            candidate.phone = phone.Text;
-            candidate.address = address.Text;
-            candidate.yearOfExp = Convert.ToInt32(exp.Text);
-            candidate.edu_level = edu.Text;
+            candidate.fullName = name.Text.Trim();
+            candidate.email = emailInput.Text.Trim();
+            candidate.phone = phone.Text.Trim();
+            candidate.address = address.Text.Trim();
+            candidate.yearOfExp = Convert.ToInt32(exp.Text.Trim());
+            candidate.edu_level = edu.Text.Trim();
             candidate.recruitId = Convert.ToInt32(recruitId.Text);
             string temp = GenCodeForTrackingPurposeOnly();
             value = temp;
@@ -76,6 +82,43 @@ namespace layout.view.CandidateView.UserView
             // default value
             candidate.status = "Chờ xét duyệt";
             service.getCreateRecruitment(candidate);
+        }
+
+        private bool isValidInput()
+        {
+            if (string.IsNullOrWhiteSpace(name.Text) ||
+                string.IsNullOrWhiteSpace(emailInput.Text) ||
+                string.IsNullOrWhiteSpace(phone.Text) ||
+                string.IsNullOrWhiteSpace(address.Text) ||
+                string.IsNullOrWhiteSpace(exp.Text) ||
+                string.IsNullOrWhiteSpace(edu.Text))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin ứng viên.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            string email = emailInput.Text.Trim();
+            if (!Regex.IsMatch(email, @"^[^\s@]+@[^\s@]+\.[^\s@]+$"))
+            {
+                MessageBox.Show("Email không đúng định dạng.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            string phoneNumber = phone.Text.Trim();
+            if (!Regex.IsMatch(phoneNumber, @"^\d{8,15}$"))
+            {
+                MessageBox.Show("Số điện thoại chỉ gồm số và dài từ 8 đến 15 ký tự.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            int yearOfExp;
+            if (!int.TryParse(exp.Text.Trim(), out yearOfExp) || yearOfExp < 0)
+            {
+                MessageBox.Show("Số năm kinh nghiệm phải là số nguyên >= 0.", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            return true;
         }
         private string GenCodeForTrackingPurposeOnly()
         {

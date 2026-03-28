@@ -9,16 +9,23 @@
     <Grid Background="#F4F6F9" Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Thống kê nhanh"
+        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+            <TextBlock Text="Quản lý nhân sự" FontStyle="Italic" Foreground="#7F8C8D"/>
+            <TextBlock Text="/" Margin="6,0,6,0" Foreground="Gray"/>
+            <TextBlock Text="Dashboard" FontStyle="Italic" Foreground="#2C3E50" FontWeight="SemiBold"/>
+        </StackPanel>
+
+        <TextBlock Grid.Row="1" Text="Thống kê nhanh"
                    FontSize="22"
                    FontWeight="Bold"
                    Foreground="#2C3E50"/>
 
-        <UniformGrid Grid.Row="2" Columns="3" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+        <UniformGrid Grid.Row="3" Columns="3" HorizontalAlignment="Stretch" VerticalAlignment="Top">
             <Border Margin="8"
                     Padding="20"
                     BorderBrush="#D0D7DE"
@@ -38,7 +45,7 @@
                     Background="White"
                     CornerRadius="8">
                 <StackPanel>
-                    <TextBlock Text="Tổng tiền lương" FontSize="16" FontWeight="SemiBold" Foreground="#34495E"/>
+                    <TextBlock Text="Tổng lương tháng hiện tại" FontSize="16" FontWeight="SemiBold" Foreground="#34495E"/>
                     <TextBlock x:Name="totalSalaryText" Text="0 VNĐ" FontSize="30" FontWeight="Bold" Margin="0,14,0,0" Foreground="#1F2937" TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>

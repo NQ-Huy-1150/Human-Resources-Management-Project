@@ -1,6 +1,8 @@
 ﻿using layout.domain;
 using layout.repository;
+using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace layout.service
 {
@@ -8,12 +10,12 @@ namespace layout.service
     {
         private readonly AttendanceRepository repository = new AttendanceRepository();
 
-        public List<AttendanceAdminRecord> getAllAttendanceForAdmin()
+        public DataTable getAllAttendanceForAdmin()
         {
             return repository.getAllAttendanceForAdmin();
         }
 
-        public List<AttendanceUserRecord> getTodayAttendanceByUser(int userId)
+        public List<Attendance> getTodayAttendanceByUser(int userId)
         {
             return repository.getTodayAttendanceByUser(userId);
         }
@@ -23,9 +25,17 @@ namespace layout.service
             return repository.checkIn(userId);
         }
 
-        public bool checkOut(int userId)
+        public bool checkOut(int userId, DateTime time)
         {
-            return repository.checkOut(userId);
+            return repository.checkOut(userId, time);
+        }
+        public DateTime getCheckIn(int userid)
+        {
+            return repository.getTodayCheckIn(userid);
+        }
+        public void updateShiftType(int userId)
+        {
+            repository.updateShiftType(userId);
         }
     }
 }

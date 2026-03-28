@@ -45,6 +45,16 @@ namespace layout.view.Bars
             }
         }
 
+        private void openDashboardBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                ResetMenuButtonBackground();
+                mainWindow.MainFrame.Navigate(new AdminDashboardPage());
+            }
+        }
+
         private void TuyenDungPage(object sender, RoutedEventArgs e)
         {
             var mainWindow = Window.GetWindow(this) as MainWindow;
