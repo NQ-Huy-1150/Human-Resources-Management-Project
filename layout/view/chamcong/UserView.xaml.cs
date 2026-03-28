@@ -163,7 +163,14 @@ namespace layout.view.chamcong
                     dailySalary = 0;
                 }
                 payroll.deduction += deduction;
-                payroll.netSalary += dailySalary;
+                if (payroll.netSalary <= 0 && deduction > 0)
+                {
+                    payroll.netSalary = 0;
+                }
+                else
+                {
+                    payroll.netSalary += dailySalary;
+                }
             }
             salaryService.UpdateSalary(payroll);
         }
@@ -176,10 +183,10 @@ namespace layout.view.chamcong
                 {
                     payroll.id = Convert.ToInt32(row["payroll_id"].ToString());
                     payroll.userId = Convert.ToInt32(row["user_id"].ToString());
-                    payroll.allowance = float.Parse(row["allowance"].ToString());
-                    payroll.bonus = float.Parse(row["bonus"].ToString());
-                    payroll.deduction = float.Parse(row["deduction"].ToString());
-                    payroll.netSalary = float.Parse(row["net_salary"].ToString());
+                    payroll.allowance = row["allowance"] != DBNull.Value ? Convert.ToSingle(row["allowance"]) : 0;
+                    payroll.bonus = row["bonus"] != DBNull.Value ? Convert.ToSingle(row["bonus"]) : 0;
+                    payroll.deduction = row["deduction"] != DBNull.Value ? Convert.ToSingle(row["deduction"]) : 0;
+                    payroll.netSalary = row["net_salary"] != DBNull.Value ? Convert.ToSingle(row["net_salary"]) : 0;
                 }
                 return payroll;
         }

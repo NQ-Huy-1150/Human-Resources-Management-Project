@@ -75,12 +75,32 @@ namespace layout.repository
         public bool deleteNguoidung(int id)
         {
             using (SqlConnection connection = conn.dbConnection())
-            using (SqlCommand cmd = new SqlCommand("DELETE FROM users WHERE user_id=@id", connection))
             {
                 connection.Open();
-                cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    SqlCommand deleteAttendanceCmd = new SqlCommand("DELETE FROM attendance WHERE user_id=@id", connection, transaction);
+                    deleteAttendanceCmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                    deleteAttendanceCmd.ExecuteNonQuery();
 
-                return cmd.ExecuteNonQuery() > 0;
+                    SqlCommand deletePayrollCmd = new SqlCommand("DELETE FROM payroll WHERE user_id=@id", connection, transaction);
+                    deletePayrollCmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                    deletePayrollCmd.ExecuteNonQuery();
+
+                    SqlCommand deleteUserCmd = new SqlCommand("DELETE FROM users WHERE user_id=@id", connection, transaction);
+                    deleteUserCmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                    int affectedRows = deleteUserCmd.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    return affectedRows > 0;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+
             }
         }
 
