@@ -11,7 +11,7 @@ namespace layout.luong
     /// </summary>
     public partial class NhanvienInfo : Page
     {
-        private SalaryCal.Luong _currentSalary;
+        private SalaryCal.Luong currentSalary;
 
         public NhanvienInfo()
         {
@@ -20,27 +20,27 @@ namespace layout.luong
 
         public NhanvienInfo(SalaryCal.Luong salary) : this()
         {
-            _currentSalary = salary;
+            currentSalary = salary;
             LoadData();
         }
 
         private void LoadData()
         {
-            if (_currentSalary == null) return;
+            if (currentSalary == null) return;
 
             // Thông tin nhân viên
-            TbId.Text = _currentSalary.UserId.ToString();
-            TbTenNV.Text = _currentSalary.FullName;
+            TbId.Text = currentSalary.UserId.ToString();
+            TbTenNV.Text = currentSalary.FullName;
 
             // Thông tin lương
-            TbIdLuong.Text = _currentSalary.PayrollId.ToString();
-            TbLuongCoBan.Text = _currentSalary.BaseSalary.ToString("N0");
-            TbTroCap.Text = _currentSalary.Allowance.ToString("N0");
-            TbThuong.Text = _currentSalary.Bonus.ToString("N0");
+            TbIdLuong.Text = currentSalary.PayrollId.ToString();
+            TbLuongCoBan.Text = currentSalary.BaseSalary.ToString("N0");
+            TbTroCap.Text = currentSalary.Allowance.ToString("N0");
+            TbThuong.Text = currentSalary.Bonus.ToString("N0");
             TbMuon.Text = "0";
-            TbKhoanTru.Text = _currentSalary.Deduction.ToString("N0");
-            TbThangNam.Text = $"{_currentSalary.Month}/{_currentSalary.Year}";
-            TbThucLinh.Text = _currentSalary.NetSalary.ToString("N0");
+            TbKhoanTru.Text = currentSalary.Deduction.ToString("N0");
+            TbThangNam.Text = $"{currentSalary.Month}/{currentSalary.Year}";
+            TbThucLinh.Text = currentSalary.NetSalary.ToString("N0");
         }
 
         private void BtnBangLuong_Click(object sender, RoutedEventArgs e)
@@ -50,7 +50,7 @@ namespace layout.luong
 
         private void BtnUpd_Click(object sender, RoutedEventArgs e)
         {
-            if (_currentSalary == null)
+            if (currentSalary == null)
             {
                 MessageBox.Show("Không có dữ liệu lương để sửa", "Sửa Lương",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -74,17 +74,17 @@ namespace layout.luong
             if (confirm != MessageBoxResult.Yes) return;
 
             SalaryRepository repo = new SalaryRepository();
-            if (repo.UpdateSalary(_currentSalary.PayrollId, troCap, thuong, khoanTru))
+            if (repo.UpdateSalary(currentSalary.PayrollId, troCap, thuong, khoanTru))
             {
 
-                _currentSalary.Allowance = troCap;
-                _currentSalary.Bonus = thuong;
-                _currentSalary.Deduction = khoanTru;
-                _currentSalary.NetSalary = _currentSalary.BaseSalary + troCap + thuong - khoanTru;
+                currentSalary.Allowance = troCap;
+                currentSalary.Bonus = thuong;
+                currentSalary.Deduction = khoanTru;
+                currentSalary.NetSalary = currentSalary.BaseSalary + troCap + thuong - khoanTru;
 
 
                 // Cập nhật lại Thực Lĩnh
-                TbThucLinh.Text = _currentSalary.NetSalary.ToString("N0");
+                TbThucLinh.Text = currentSalary.NetSalary.ToString("N0");
                 TbKhoanTru.Text = khoanTru.ToString("N0");
 
                 MessageBox.Show("Cập nhật thành công!", "Thành Công",

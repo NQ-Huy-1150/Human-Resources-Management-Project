@@ -18,8 +18,8 @@ namespace layout.repository
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
-                string sql = "Insert into recruitment_details (recruit_id,full_name,email,address,phone_number,edu_level,year_of_exp,recruit_status)" +
-                    "values (@id,@name,@email,@address,@phone,@edu,@year,@status); SELECT CAST(SCOPE_IDENTITY() AS INT);";
+                string sql = "Insert into recruitment_details (recruit_id,full_name,email,address,phone_number,edu_level,year_of_exp,recruit_status, lookup_id)" +
+                    "values (@id,@name,@email,@address,@phone,@edu,@year,@status, @lookup); SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@id", candidate.recruitId);
@@ -30,6 +30,7 @@ namespace layout.repository
                 cmd.Parameters.AddWithValue("@edu", candidate.edu_level);
                 cmd.Parameters.AddWithValue("@year", candidate.yearOfExp);
                 cmd.Parameters.AddWithValue("@status", candidate.status);
+                cmd.Parameters.AddWithValue("@lookup", candidate.lookupId);
                 object result = cmd.ExecuteScalar();
                 return result != null ? Convert.ToInt32(result) : 0;
             }
