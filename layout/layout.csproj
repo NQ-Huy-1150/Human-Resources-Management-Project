@@ -60,6 +60,7 @@
     <Compile Include="domain\Department.cs" />
     <Compile Include="domain\Nguoidung.cs" />
     <Compile Include="domain\Payroll.cs" />
+    <Compile Include="domain\Position.cs" />
     <Compile Include="repository\AttendanceRepository.cs" />
     <Compile Include="repository\NguoidungRepository.cs" />
     <Compile Include="repository\PositionRepository.cs" />
@@ -106,6 +107,9 @@
     </Compile>
     <Compile Include="view\chamcong\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="view\Chucvu2\chucvu.xaml.cs">
+      <DependentUpon>chucvu.xaml</DependentUpon>
     </Compile>
     <Compile Include="view\Department\DepartmentPage.xaml.cs">
       <DependentUpon>DepartmentPage.xaml</DependentUpon>
@@ -186,6 +190,10 @@
     <Page Include="view\chamcong\UserView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="view\Chucvu2\chucvu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="view\Department\DepartmentPage.xaml">
       <SubType>Designer</SubType>
