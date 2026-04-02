@@ -34,7 +34,7 @@
                 </StackPanel>
 
                 <TextBlock Text="Mã người dùng:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center"/>
-                <TextBox x:Name="txtId" Grid.Row="1" Grid.Column="1" Height="30" IsReadOnly="True" Background="#F1F3F5"/>
+                <TextBox x:Name="txtPos" Grid.Row="1" Grid.Column="1" Height="30" IsReadOnly="True" Background="#F1F3F5"/>
 
                 <TextBlock Text="Họ tên:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center"/>
                 <TextBox x:Name="txtHoten" Grid.Row="2" Grid.Column="1" Height="30"/>

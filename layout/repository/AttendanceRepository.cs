@@ -134,14 +134,15 @@ namespace layout.repository
                 string sql = "SELECT check_in FROM attendance " +
                              "WHERE user_id = @uid " +
                              "AND CAST(check_in AS DATE) = CAST(GETDATE() AS DATE) " +
-                             "AND check_out IS NULL";
-
-                SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.Parameters.AddWithValue("@uid", userId);
-                object rs = cmd.ExecuteScalar();
-                if (rs != null)
+                             "AND check_out IS NULL";    
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
                 {
-                    checkIn = Convert.ToDateTime(rs);
+                    cmd.Parameters.AddWithValue("@uid", userId);
+                    object rs = cmd.ExecuteScalar();
+                    if (rs != null)
+                    {
+                        checkIn = Convert.ToDateTime(rs);
+                    }
                 }
             }
             return checkIn.Value;

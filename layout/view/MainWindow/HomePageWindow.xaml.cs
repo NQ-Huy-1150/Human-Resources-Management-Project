@@ -34,12 +34,6 @@ namespace layout.view.Main_Window
             this.userId = userId;
             UpdateUser(this.userId);
         }
-        
-        public HomePageWindow(string userName)
-        {
-            InitializeComponent();
-            
-        }
 
         public void UpdateUser(int newUserId)
         {

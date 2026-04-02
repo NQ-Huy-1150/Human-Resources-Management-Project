@@ -28,6 +28,7 @@ namespace layout.view.CandidateView.UserView
         string canPosition = "";
         string value = "";
         RecruitmentDetailService service = new RecruitmentDetailService();
+        PositionService positionService = new PositionService();
         public CreateCandidate(int recruitmentId, string canPosition)
         {
             InitializeComponent();
@@ -76,6 +77,7 @@ namespace layout.view.CandidateView.UserView
             candidate.yearOfExp = Convert.ToInt32(exp.Text.Trim());
             candidate.edu_level = edu.Text.Trim();
             candidate.recruitId = Convert.ToInt32(recruitId.Text);
+            candidate.posId = positionService.getIdFromName(canPosition);
             string temp = GenCodeForTrackingPurposeOnly();
             value = temp;
             candidate.lookupId = value;

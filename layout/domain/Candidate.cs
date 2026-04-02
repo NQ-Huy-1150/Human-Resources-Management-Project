@@ -19,5 +19,6 @@ namespace layout.domain
         public int yearOfExp { get; set; }
         public string status { get; set; }
         public string lookupId { get; set; }
+        public int posId { get; set; }
     }
 }

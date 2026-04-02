@@ -40,5 +40,9 @@ namespace layout.service
             // Có thể thêm logic kiểm tra nghiệp vụ tại đây trước khi xóa
             return repo.deletePosition(id);
         }
+        public int getIdFromName(string name)
+        {
+            return repo.getPositionIdFromName(name);
+        }
     }
 }

@@ -54,6 +54,12 @@ namespace layout.view.Nguoidung
                 return;
             }
 
+            if (!Regex.IsMatch(sodienthoai, @"^\d{8,15}$"))
+            {
+                MessageBox.Show("Số điện thoại chỉ gồm số và dài từ 8 đến 15 ký tự.");
+                return;
+            }
+
 
             if (matkhau.Length < 4)
             {

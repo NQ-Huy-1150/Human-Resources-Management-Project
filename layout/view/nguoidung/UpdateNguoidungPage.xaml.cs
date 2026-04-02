@@ -40,7 +40,7 @@ namespace layout.view.Nguoidung
             }
 
             DataRow row = data.Rows[0];
-            txtId.Text = Convert.ToString(row["ma_nguoidung"]);
+            txtPos.Text = Convert.ToString(row["ma_nguoidung"]);
             txtHoten.Text = Convert.ToString(row["ho_ten"]);
             txtEmail.Text = Convert.ToString(row["thu_dien_tu"]);
             txtMatkhau.Text = Convert.ToString(row["mat_khau"]);
@@ -85,7 +85,13 @@ namespace layout.view.Nguoidung
                 return;
             }
 
-            int userId = Convert.ToInt32(txtId.Text);
+            if (!Regex.IsMatch(soDienThoai, @"^\d{8,15}$"))
+            {
+                MessageBox.Show("Số điện thoại chỉ gồm số và dài từ 8 đến 15 ký tự.");
+                return;
+            }
+
+            int userId = Convert.ToInt32(txtPos.Text);
             int roleId = Convert.ToInt32(cbVaitro.SelectedValue);
             string departmentId = Convert.ToString(cbPhongban.SelectedValue);
             int? posId = null;

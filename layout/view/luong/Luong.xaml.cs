@@ -1,5 +1,5 @@
 ﻿using layout.domain;
-using layout.repository;
+using layout.service;
 using layout.view.Main_Window;
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,8 @@ namespace layout.luong
     /// </summary>
     public partial class Luong : Page
     {
+        private readonly SalaryService salaryService = new SalaryService();
+
         public Luong()
         {
             InitializeComponent();
@@ -24,15 +26,14 @@ namespace layout.luong
         {
             try
             {
-                SalaryRepository salaryRepository = new SalaryRepository();
-                DataTable data = salaryRepository.getAllPayRoll();
-
-                DgNhanVien.ItemsSource = data.DefaultView;
+                DataTable data = salaryService.getAllPayRoll();
 
                 if (data == null || data.Rows.Count == 0)
                 {
                     MessageBox.Show("Không có dữ liệu lương.", "Thông Báo", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
+
+                DgNhanVien.ItemsSource = data.DefaultView;
             }
             catch (Exception ex)
             {

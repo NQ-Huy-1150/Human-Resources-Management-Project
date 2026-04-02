@@ -23,13 +23,13 @@ namespace layout.view.Nguoidung
             if (data.Rows.Count == 0)
             {
                 txtUserId.Text = Convert.ToString(userId);
-                txtName.Text = "";
+                txtBaseSalary.Text = "";
                 return;
             }
 
             DataRow row = data.Rows[0];
             txtUserId.Text = Convert.ToString(row["ma_nguoidung"]);
-            txtName.Text = Convert.ToString(row["ho_ten"]);
+            txtBaseSalary.Text = Convert.ToString(row["ho_ten"]);
         }
 
         private void Delete_Click(object sender, RoutedEventArgs e)

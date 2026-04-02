@@ -95,6 +95,7 @@ namespace layout.view.CandidateView.HRView
                 nguoi.ho_ten = can.fullName;
                 nguoi.ma_vaitro = roleService.getRoleId("Nhân viên");
                 nguoi.so_dien_thoai = can.phone;
+                nguoi.ma_chucvu = can.posId;
                 string text = "";
                 nguoidungservice.themnguoidung(nguoi, out text);
                 if (!string.IsNullOrEmpty(text) && !text.Contains("thành công")) 

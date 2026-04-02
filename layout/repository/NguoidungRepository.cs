@@ -15,7 +15,7 @@ namespace layout.repository
     {
         MssSQLConnection conn = new MssSQLConnection();
         //Hiển thị toàn bộ người dùng
-        public DataTable getAllRecruitment()
+        public DataTable getAllUsers()
         {
             using (SqlConnection connection = conn.dbConnection())
             {

@@ -2,6 +2,7 @@ using LaptopShopApplication.Repository;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Markup;
 
 namespace layout.repository
 {
@@ -60,6 +61,28 @@ namespace layout.repository
                 }
             }
             return temp;
+        }
+        public int getPositionIdFromName(string name)
+        {
+            int id = 0;
+
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+
+                string sql = "Select pos_id from positions where pos_name = @name";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@name", name);
+
+                object rs = cmd.ExecuteScalar();
+
+                if (rs != null)
+                {
+                    id = Convert.ToInt32(rs);
+                }
+            }
+            return id;
         }
         // Thêm vào trong class PositionRepository
         public DataTable getAllPosition()

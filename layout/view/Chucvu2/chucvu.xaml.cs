@@ -31,24 +31,21 @@ namespace layout.view.Chucvu2
             }
         }
 
-        // 2. Đổ dữ liệu từ dòng được chọn lên các TextBox
         private void dgDepartments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (dgDepartments.SelectedItem is DataRowView row)
             {
-                // Khớp với XAML của bạn: txtId chứa Tên, txtName chứa Lương
-                txtId.Text = row["pos_name"].ToString();
-                txtName.Text = row["base_salary"].ToString();
+                txtPos.Text = row["pos_name"].ToString();
+                txtBaseSalary.Text = row["base_salary"].ToString();
             }
         }
 
-        // 3. Xử lý Thêm mới
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             if (ValidateInput())
             {
-                string posName = txtId.Text.Trim();
-                float salary = float.Parse(txtName.Text.Trim());
+                string posName = txtPos.Text.Trim();
+                float salary = float.Parse(txtBaseSalary.Text.Trim());
 
                 if (positionService.insertPosition(posName, salary))
                 {
@@ -71,8 +68,8 @@ namespace layout.view.Chucvu2
                 if (ValidateInput())
                 {
                     int id = Convert.ToInt32(row["pos_id"]);
-                    string posName = txtId.Text.Trim();
-                    float salary = float.Parse(txtName.Text.Trim());
+                    string posName = txtPos.Text.Trim();
+                    float salary = float.Parse(txtBaseSalary.Text.Trim());
 
                     if (positionService.updatePosition(id, posName, salary))
                     {
@@ -125,21 +122,21 @@ namespace layout.view.Chucvu2
 
         private void ClearFields()
         {
-            txtId.Clear();
-            txtName.Clear();
+            txtPos.Clear();
+            txtBaseSalary.Clear();
             dgDepartments.SelectedItem = null;
         }
 
         // 7. Kiểm tra dữ liệu hợp lệ
         private bool ValidateInput()
         {
-            if (string.IsNullOrWhiteSpace(txtId.Text))
+            if (string.IsNullOrWhiteSpace(txtPos.Text))
             {
                 MessageBox.Show("Vui lòng nhập Tên chức vụ.", "Dữ liệu thiếu", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 
-            if (!float.TryParse(txtName.Text, out float salary) || salary < 0)
+            if (!float.TryParse(txtBaseSalary.Text, out float salary) || salary < 0)
             {
                 MessageBox.Show("Lương cơ bản phải là số dương hợp lệ.", "Dữ liệu sai", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;

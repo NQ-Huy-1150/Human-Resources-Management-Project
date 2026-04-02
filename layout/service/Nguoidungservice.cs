@@ -23,7 +23,7 @@ namespace layout.service
         //Lấy tất cả người dùng
         public DataTable getAllNguoidung()
         {
-            return repository.getAllRecruitment();
+            return repository.getAllUsers();
         }
 
         public DataTable getNguoidungById(int id)
