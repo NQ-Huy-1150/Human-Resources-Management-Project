@@ -29,14 +29,14 @@ namespace layout.view.Department
         {
             return new DepartmentModel
             {
-                department_id = txtPos.Text.Trim(),
-                department_name = txtBaseSalary.Text.Trim()
+                department_id = txtId.Text.Trim(),
+                department_name = txtName.Text.Trim()
             };
         }
 
         private bool isValidInput()
         {
-            if (!string.IsNullOrWhiteSpace(txtPos.Text) && !string.IsNullOrWhiteSpace(txtBaseSalary.Text))
+            if (!string.IsNullOrWhiteSpace(txtId.Text) && !string.IsNullOrWhiteSpace(txtName.Text))
             {
                 return true;
             }
@@ -49,10 +49,10 @@ namespace layout.view.Department
         {
             if (dgDepartments.SelectedItem is DepartmentModel selected)
             {
-                txtPos.Text = selected.department_id;
-                txtBaseSalary.Text = selected.department_name;
+                txtId.Text = selected.department_id;
+                txtName.Text = selected.department_name;
 
-                txtPos.IsReadOnly = true;
+                txtId.IsReadOnly = true;
             }
         }
 
@@ -127,9 +127,9 @@ namespace layout.view.Department
 
         private void clearInputs()
         {
-            txtPos.Text = "";
-            txtBaseSalary.Text = "";
-            txtPos.IsReadOnly = false;
+            txtId.Text = "";
+            txtName.Text = "";
+            txtId.IsReadOnly = false;
             dgDepartments.SelectedItem = null;
         }
 

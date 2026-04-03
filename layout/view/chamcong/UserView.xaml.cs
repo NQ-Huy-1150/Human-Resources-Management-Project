@@ -145,6 +145,12 @@ namespace layout.view.chamcong
             }
             // get current payroll
             Payroll payroll = convertDataTableToObject(currentUserId);
+            // noti when smt **up
+            if (payroll.id == 0)
+            {
+                MessageBox.Show("Lỗi: không tìm thấy bảng lương tháng này.");
+                return;
+            }
             if (workTime > MinutesPerDay)
             {
                 int overTime = workTime - MinutesPerDay;

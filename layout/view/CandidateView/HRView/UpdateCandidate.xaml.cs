@@ -124,6 +124,7 @@ namespace layout.view.CandidateView.HRView
                 can.edu_level = row["edu_level"].ToString();
                 can.yearOfExp = Convert.ToInt32(row["year_of_exp"].ToString());
                 can.status = row["recruit_status"].ToString();
+                can.posId = row["pos_id"] != DBNull.Value ? Convert.ToInt32(row["pos_id"]) : 0;
             }
             return can;
         }

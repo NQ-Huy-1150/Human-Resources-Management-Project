@@ -15,10 +15,10 @@ namespace layout.luong
     /// </summary>
     public partial class NhanvienInfo : Page
     {
-        private Payroll _payroll;
-        private int _userId;
-        private string _fullName;
-        private float _baseSalary;
+        private Payroll payroll;
+        private int userId;
+        private string fullName;
+        private float baseSalary;
 
         public NhanvienInfo()
         {
@@ -27,33 +27,33 @@ namespace layout.luong
 
         public NhanvienInfo(int payrollId, int userId, string fullName, float baseSalary) : this()
         {
-            _userId = userId;
-            _fullName = fullName;
-            _baseSalary = baseSalary;
+            this.userId = userId;
+            this.fullName = fullName;
+            this.baseSalary = baseSalary;
 
             SalaryService salaryService = new SalaryService();
-            _payroll = salaryService.getPayRollById(payrollId);
+            this.payroll = salaryService.getPayRollById(payrollId);
 
-            LoadData();
+            loadData();
         }
 
-        private void LoadData()
+        private void loadData()
         {
-            if (_payroll == null || _payroll.id == 0) return;
+            if (payroll == null || payroll.id == 0) return;
 
             // Thông tin nhân viên
-            TbId.Text = _userId.ToString();
-            TbTenNV.Text = _fullName;
+            TbId.Text = userId.ToString();
+            TbTenNV.Text = fullName;
 
             // Thông tin lương
-            TbIdLuong.Text = _payroll.id.ToString();
-            TbLuongCoBan.Text = _baseSalary.ToString("N0");
-            TbTroCap.Text = _payroll.allowance.ToString("N0");
-            TbThuong.Text = _payroll.bonus.ToString("N0");
+            TbIdLuong.Text = payroll.id.ToString();
+            TbLuongCoBan.Text = baseSalary.ToString("N0");
+            TbTroCap.Text = payroll.allowance.ToString("N0");
+            TbThuong.Text = payroll.bonus.ToString("N0");
             TbMuon.Text = "0";
-            TbKhoanTru.Text = _payroll.deduction.ToString("N0");
-            TbThangNam.Text = $"{_payroll.month}/{_payroll.year}";
-            TbThucLinh.Text = _payroll.netSalary.ToString("N0");
+            TbKhoanTru.Text = payroll.deduction.ToString("N0");
+            TbThangNam.Text = $"{payroll.month}/{payroll.year}";
+            TbThucLinh.Text = payroll.netSalary.ToString("N0");
         }
 
         private void BtnBangLuong_Click(object sender, RoutedEventArgs e)
@@ -67,7 +67,7 @@ namespace layout.luong
 
         private void BtnUpd_Click(object sender, RoutedEventArgs e)
         {
-            if (_payroll == null || _payroll.id == 0)
+            if (payroll == null || payroll.id == 0)
             {
                 MessageBox.Show("Không có dữ liệu lương để sửa", "Sửa Lương",
                     MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -90,18 +90,28 @@ namespace layout.luong
 
             if (confirm != MessageBoxResult.Yes) return;
 
-            float newNetSalary = _baseSalary + troCap + thuong - khoanTru;
+            // lương tích luỹ cơ bản khi không có bất cứ khoản trừ, thưởng nào
+            float attendanceSalary = payroll.netSalary
+                                     - payroll.allowance
+                                     - payroll.bonus
+                                     + payroll.deduction;
 
-            _payroll.allowance = troCap;
-            _payroll.bonus = thuong;
-            _payroll.deduction = khoanTru;
-            _payroll.netSalary = newNetSalary;
+            // cập nhật các khoản trừ, thưởng mới
+            float newNetSalary = attendanceSalary + troCap + thuong - khoanTru;
+            if (newNetSalary < 0) newNetSalary = 0;
+
+            payroll.allowance = troCap;
+            payroll.bonus = thuong;
+            payroll.deduction = khoanTru;
+            payroll.netSalary = newNetSalary;
 
             SalaryService salaryService = new SalaryService();
-            if (salaryService.UpdateSalary(_payroll))
+            if (salaryService.UpdateSalary(payroll))
             {
-                // Cập nhật lại Thực Lĩnh
-                TbThucLinh.Text = _payroll.netSalary.ToString("N0");
+                // Cập nhật lại UI
+                TbThucLinh.Text = payroll.netSalary.ToString("N0");
+                TbTroCap.Text = troCap.ToString("N0");
+                TbThuong.Text = thuong.ToString("N0");
                 TbKhoanTru.Text = khoanTru.ToString("N0");
 
                 MessageBox.Show("Cập nhật thành công!", "Thành Công",
