@@ -15,7 +15,7 @@
                 </StackPanel>
 
                 <Rectangle Height="2" Margin="10,40,10,0" Fill="LightGray" VerticalAlignment="Top"/>
-                <Label Content="Bạn chắc chắn muốn xóa người dùng này?" HorizontalAlignment="Left" Height="37" Margin="10,51,0,0" VerticalAlignment="Top" Width="350" FontSize="18" Foreground="Red" FontWeight="Bold"/>
+                <Label Content="Bạn chắc chắn muốn xóa người dùng này?" HorizontalAlignment="Left" Height="37" Margin="10,51,0,0" VerticalAlignment="Top" Width="368" FontSize="18" Foreground="Red" FontWeight="Bold"/>
                 <Rectangle Height="2" Margin="10,83,10,0" Fill="LightGray" VerticalAlignment="Top"/>
 
                 <StackPanel Orientation="Vertical" Margin="10,95,10,10" VerticalAlignment="Top" HorizontalAlignment="Center">

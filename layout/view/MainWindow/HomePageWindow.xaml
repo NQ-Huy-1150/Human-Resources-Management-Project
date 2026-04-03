@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:layout.view.Main_Window"
         xmlns:topbar="clr-namespace:layout.view.Bars"
         mc:Ignorable="d"
-        Title="HomePageWindow" Height="550" Width="1000">
+        Title="Trang chủ" Height="550" Width="1000">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>

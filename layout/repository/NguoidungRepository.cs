@@ -30,9 +30,10 @@ namespace layout.repository
                 n.role_id AS ma_vaitro,
                 r.role_name AS vai_tro,
                 n.department_id AS ma_phongban,
-                n.pos_id AS ma_chucvu
+                pos_name AS ten_chucvu
             FROM users n
             INNER JOIN roles r ON n.role_id = r.role_id
+            join positions on positions.pos_id = n.pos_id
             ORDER BY n.user_id";
 
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);

@@ -36,7 +36,7 @@
                             <DataGridTextColumn Header="SĐT" Binding="{Binding so_dien_thoai}" Width="120"/>
                             <DataGridTextColumn Header="Vai trò" Binding="{Binding vai_tro}" Width="110"/>
                             <DataGridTextColumn Header="Phòng ban" Binding="{Binding ma_phongban}" Width="100"/>
-                            <DataGridTextColumn Header="Chức vụ" Binding="{Binding ma_chucvu}" Width="100"/>
+                            <DataGridTextColumn Header="Chức vụ" Binding="{Binding ten_chucvu}" Width="100"/>
                             <DataGridTemplateColumn Header="Chức năng" Width="*">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>

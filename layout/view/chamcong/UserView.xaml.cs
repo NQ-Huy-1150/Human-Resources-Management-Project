@@ -161,7 +161,7 @@ namespace layout.view.chamcong
             else
             {
                 int missingMinutes = MinutesPerDay - workTime;
-                // phạt 3k6 mỗi phút muộn
+                // phạt 3k6 mỗi phút muộn hoặc thiếu 
                 float deduction = missingMinutes * 3600;
                 float dailySalary = salaryPerDay - deduction;
                 if (dailySalary < 0)
