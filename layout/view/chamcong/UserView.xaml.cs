@@ -18,8 +18,8 @@ namespace layout.view.chamcong
         private int currentUserId;
         private DateTime checkInTime;
         private const int WorkingDays = 26;
-        private const int MinutesPerDay = 3;
-        private const int breakTime = 1;
+        private const int MinutesPerDay = 480;
+        private const int breakTime = 60;
         public UserView(int userId)
         {
             InitializeComponent();
