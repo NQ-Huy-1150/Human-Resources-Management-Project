@@ -45,7 +45,6 @@ namespace layout
             {
                 mainWindow.MainFrame.Navigate(new AdminDashboardPage());
             }
-
         }
 
         private void CreateBtn(object sender, RoutedEventArgs e)
@@ -55,7 +54,6 @@ namespace layout
             {
                 mainWindow.MainFrame.Navigate(new createRecruitment());
             }
-
         }
 
         private void deleteBnt(object sender, RoutedEventArgs e)

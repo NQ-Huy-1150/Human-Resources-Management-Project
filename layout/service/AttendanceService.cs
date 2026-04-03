@@ -33,5 +33,10 @@ namespace layout.service
         {
             repository.updateShiftType(userId);
         }
+
+        public int getWorkingDaysInMonth(int userId, int month, int year)
+        {
+            return repository.getWorkingDaysInMonth(userId, month, year);
+        }
     }
 }

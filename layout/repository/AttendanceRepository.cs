@@ -147,5 +147,38 @@ namespace layout.repository
                 }
             }
         }
+
+        public int getWorkingDaysInMonth(int userId, int month, int year)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+
+                DateTime startDate = new DateTime(year, month, 1);
+                DateTime endDate = startDate.AddMonths(1);
+
+                string sql = @"SELECT COUNT(*)
+                               FROM attendance
+                               WHERE user_id = @uid
+                                 AND check_out IS NOT NULL
+                                 AND check_in >= @startDate
+                                 AND check_in < @endDate";
+
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
+                    cmd.Parameters.Add("@startDate", SqlDbType.DateTime).Value = startDate;
+                    cmd.Parameters.Add("@endDate", SqlDbType.DateTime).Value = endDate;
+
+                    object rs = cmd.ExecuteScalar();
+                    if (rs != null)
+                    {
+                        return Convert.ToInt32(rs);
+                    }
+                }
+            }
+
+            return 0;
+        }
     }
 }

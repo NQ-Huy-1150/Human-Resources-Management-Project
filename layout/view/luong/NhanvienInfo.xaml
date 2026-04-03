@@ -75,7 +75,7 @@
                         <TextBlock Grid.Column="0" Grid.Row="1" Text="Thưởng:" FontWeight="Bold" Margin="0,10,10,10" Foreground="#555"/>
                         <TextBox x:Name="TbThuong" Grid.Column="1" Grid.Row="1" Text="-" Margin="0,10,20,10" Foreground="#333"/>
 
-                        <TextBlock Grid.Column="2" Grid.Row="1" Text="Muộn (phút):" FontWeight="Bold" Margin="0,10,10,10" Foreground="#555"/>
+                        <TextBlock Grid.Column="2" Grid.Row="1" Text="Số ngày công:" FontWeight="Bold" Margin="0,10,10,10" Foreground="#555"/>
                         <TextBlock x:Name="TbMuon" Grid.Column="3" Grid.Row="1" Text="-" Margin="0,10,0,10" Foreground="#333"/>
 
                         <TextBlock Grid.Column="0" Grid.Row="2" Text="Khoản Trừ:" FontWeight="Bold" Margin="0,10,10,10" Foreground="#555"/>

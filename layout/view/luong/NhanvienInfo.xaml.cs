@@ -19,6 +19,7 @@ namespace layout.luong
         private int userId;
         private string fullName;
         private float baseSalary;
+        private readonly AttendanceService attendanceService = new AttendanceService();
 
         public NhanvienInfo()
         {
@@ -50,7 +51,8 @@ namespace layout.luong
             TbLuongCoBan.Text = baseSalary.ToString("N0");
             TbTroCap.Text = payroll.allowance.ToString("N0");
             TbThuong.Text = payroll.bonus.ToString("N0");
-            TbMuon.Text = "0";
+            int workingDays = attendanceService.getWorkingDaysInMonth(userId, payroll.month, payroll.year);
+            TbMuon.Text = workingDays.ToString();
             TbKhoanTru.Text = payroll.deduction.ToString("N0");
             TbThangNam.Text = $"{payroll.month}/{payroll.year}";
             TbThucLinh.Text = payroll.netSalary.ToString("N0");
