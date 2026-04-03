@@ -124,29 +124,6 @@ namespace layout.repository
                 }
             }
         }
-        public DateTime getTodayCheckIn(int userId)
-        {
-            DateTime? checkIn = null;
-
-            using (SqlConnection connection = conn.dbConnection())
-            {
-                connection.Open();
-                string sql = "SELECT check_in FROM attendance " +
-                             "WHERE user_id = @uid " +
-                             "AND CAST(check_in AS DATE) = CAST(GETDATE() AS DATE) " +
-                             "AND check_out IS NULL";    
-                using (SqlCommand cmd = new SqlCommand(sql, connection))
-                {
-                    cmd.Parameters.AddWithValue("@uid", userId);
-                    object rs = cmd.ExecuteScalar();
-                    if (rs != null)
-                    {
-                        checkIn = Convert.ToDateTime(rs);
-                    }
-                }
-            }
-            return checkIn.Value;
-        }
         public void updateShiftType(int userId)
         {
             using (SqlConnection connection = conn.dbConnection())

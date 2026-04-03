@@ -29,10 +29,6 @@ namespace layout.service
         {
             return repository.checkOut(userId, time);
         }
-        public DateTime getCheckIn(int userid)
-        {
-            return repository.getTodayCheckIn(userid);
-        }
         public void updateShiftType(int userId)
         {
             repository.updateShiftType(userId);
