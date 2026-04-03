@@ -95,6 +95,7 @@ namespace layout.view.CandidateView.HRView
                 nguoi.ho_ten = can.fullName;
                 nguoi.ma_vaitro = roleService.getRoleId("Nhân viên");
                 nguoi.so_dien_thoai = can.phone;
+                nguoi.ma_chucvu = can.posId;
                 string text = "";
                 nguoidungservice.themnguoidung(nguoi, out text);
                 if (!string.IsNullOrEmpty(text) && !text.Contains("thành công")) 
@@ -123,6 +124,7 @@ namespace layout.view.CandidateView.HRView
                 can.edu_level = row["edu_level"].ToString();
                 can.yearOfExp = Convert.ToInt32(row["year_of_exp"].ToString());
                 can.status = row["recruit_status"].ToString();
+                can.posId = row["pos_id"] != DBNull.Value ? Convert.ToInt32(row["pos_id"]) : 0;
             }
             return can;
         }

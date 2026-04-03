@@ -34,12 +34,12 @@
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,0,0">
                         <TextBlock Text="Vị trí tuyển dụng :" FontSize="14" Width="160" />
-                        <ComboBox x:Name="positionInput" Width="200" />
+                        <ComboBox x:Name="positionInput" Width="200" SelectionChanged="positionInput_SelectionChanged" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,0,0">
-                        <TextBlock Text="Mức lương dự kiến :" FontSize="14" Width="160" />
-                        <TextBox x:Name="incomeInput" Width="200" />
+                        <TextBlock Text="Mức lương theo vị trí :" FontSize="14" Width="160" />
+                        <TextBox x:Name="incomeInput" Width="200" IsReadOnly="True" Background="#F1F3F5" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,15,0,0">

@@ -28,16 +28,15 @@ namespace layout.view.tuyendung
         {
             InitializeComponent();
             recruitId.Text = Convert.ToString(id);
-            var mainWindow = Window.GetWindow(this) as MainWindow;
-            if (mainWindow != null)
-            {
-                mainWindow.MainFrame.Navigate(new Tuyendung());
-            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainFrame.Navigate(new AdminDashboardPage());
+            }
         }
         private void deleteBtn(object sender, RoutedEventArgs e)
         {

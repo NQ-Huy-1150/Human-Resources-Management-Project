@@ -63,14 +63,30 @@ namespace layout.view.CandidateView.HRView
             int id = getIdFromSelectedRow();
             if (id == -1)
             {
+                MessageBox.Show("Vui lòng chọn ứng viên cần xóa!");
                 return;
             }
+
             Candidate candidate = convertDataTableToObject(id);
-            if (candidate.status.Equals("Loại") || candidate.status.Equals("Huỷ đơn"))
+            if (candidate.status.Equals("Loại") || candidate.status.Equals("Huỷ đơn") || candidate.status.Equals("Đã nhận việc"))
             {
-                Debug.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>> XOA THANH CONG");
+                var result = MessageBox.Show(
+                    $"Bạn có chắc muốn xóa ứng viên {candidate.fullName} không?",
+                    "Xác nhận xóa",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    detailService.getDelete(id);
+                    tableData.ItemsSource = detailService.fetchAllRecruitment(recruitId).DefaultView;
+                    MessageBox.Show("Xóa ứng viên thành công!");
+                }
             }
-            else Debug.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>> KHONG THE XOA UNG VIEN DANG XET DUYET");
+            else
+            {
+                MessageBox.Show("Không thể xóa ứng viên đang xét duyệt!");
+            }
         }
 
         private void updateBnt(object sender, RoutedEventArgs e)

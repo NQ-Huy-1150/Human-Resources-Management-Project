@@ -1,7 +1,5 @@
-using layout.repository;
 using layout.service;
 using System;
-using System.Linq;
 using System.Windows.Controls;
 
 namespace layout.view.Main_Window
@@ -10,7 +8,7 @@ namespace layout.view.Main_Window
     {
         private readonly Nguoidungservice nguoidungService = new Nguoidungservice();
         private readonly RecruitmentDetailService recruitmentDetailService = new RecruitmentDetailService();
-        private readonly SalaryRepository salaryRepository = new SalaryRepository();
+        private readonly SalaryService salaryService = new SalaryService();
 
         public AdminDashboardPage()
         {
@@ -23,7 +21,7 @@ namespace layout.view.Main_Window
             try
             {
                 int employeeCount = nguoidungService.getAllNguoidung().Rows.Count;
-                double totalSalary = salaryRepository.getAllSalary().Sum(s => s.NetSalary);
+                float totalSalary = salaryService.getTotalSalaryCurrentMonth();
                 int recruitmentProfileCount = recruitmentDetailService.getTotalRecruitmentProfileCount();
 
                 employeeCountText.Text = employeeCount.ToString("N0");

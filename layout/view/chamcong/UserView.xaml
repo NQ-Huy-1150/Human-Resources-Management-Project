@@ -33,20 +33,9 @@
             <DataGrid x:Name="dgLichSu" Height="250" AutoGenerateColumns="False" IsReadOnly="True" 
                       Background="White" RowHeight="38" BorderBrush="#D1D9E0">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Giờ vào" Binding="{Binding check_in, StringFormat='HH:mm:ss'}" Width="*"/>
-                    <DataGridTextColumn Header="Giờ ra" Binding="{Binding check_out, StringFormat='HH:mm:ss'}" Width="*"/>
-                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding Status}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Status}" Value="Đang làm việc">
-                                        <Setter Property="Foreground" Value="#27AE60"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn Header="Giờ vào" Binding="{Binding checkIn, StringFormat='HH:mm:ss'}" Width="*"/>
+                    <DataGridTextColumn Header="Giờ ra" Binding="{Binding checkOut, StringFormat='HH:mm:ss'}" Width="*"/>
+                    <DataGridTextColumn Header="Trạng thái" Binding="{Binding status}" Width="*">
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>

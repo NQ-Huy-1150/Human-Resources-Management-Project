@@ -1,53 +1,28 @@
 ﻿using layout.domain;
 using layout.service;
-using layout.view.Main_Window;
 using System.Windows;
 using System.Windows.Controls;
-using DepartmentModel = layout.domain.Department;
 
-namespace layout.view.Department
+namespace layout.view.phongban
 {
-    /// <summary>
-    /// Interaction logic for DepartmentPage.xaml
-    /// </summary>
     public partial class DepartmentPage : Page
     {
-        private readonly DepartmentService service = new DepartmentService();
+        private readonly SuperDepartmentService _service = new SuperDepartmentService();
 
         public DepartmentPage()
         {
             InitializeComponent();
-            loadData();
+            LoadData(); 
         }
 
-        private void loadData()
+        private void LoadData()
         {
-            dgDepartments.ItemsSource = service.getAllDepartments();
-        }
-
-        private DepartmentModel getDepartmentFromInput()
-        {
-            return new DepartmentModel
-            {
-                department_id = txtId.Text.Trim(),
-                department_name = txtName.Text.Trim()
-            };
-        }
-
-        private bool isValidInput()
-        {
-            if (!string.IsNullOrWhiteSpace(txtId.Text) && !string.IsNullOrWhiteSpace(txtName.Text))
-            {
-                return true;
-            }
-
-            MessageBox.Show("Vui lòng nhập đầy đủ Mã và Tên phòng ban!");
-            return false;
+            dgDepartments.ItemsSource = _service.getAllDepartments();
         }
 
         private void dgDepartments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (dgDepartments.SelectedItem is DepartmentModel selected)
+            if (dgDepartments.SelectedItem is Department selected)
             {
                 txtId.Text = selected.department_id;
                 txtName.Text = selected.department_name;
@@ -58,16 +33,23 @@ namespace layout.view.Department
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            if (!isValidInput())
+            if (string.IsNullOrWhiteSpace(txtId.Text) || string.IsNullOrWhiteSpace(txtName.Text))
             {
+                MessageBox.Show("Vui lòng nhập đầy đủ Mã và Tên phòng ban!");
                 return;
             }
 
-            if (service.addDepartment(getDepartmentFromInput()))
+            var dept = new Department
+            {
+                department_id = txtId.Text.Trim(),
+                department_name = txtName.Text.Trim()
+            };
+
+            if (_service.addDepartment(dept))
             {
                 MessageBox.Show("Thêm phòng ban mới thành công!");
-                clearInputs();
-                loadData();
+                ClearInputs();
+                LoadData();
             }
             else
             {
@@ -77,15 +59,16 @@ namespace layout.view.Department
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            if (!isValidInput())
+            var dept = new Department
             {
-                return;
-            }
+                department_id = txtId.Text.Trim(),
+                department_name = txtName.Text.Trim()
+            };
 
-            if (service.updateDepartment(getDepartmentFromInput()))
+            if (_service.updateDepartment(dept))
             {
                 MessageBox.Show("Cập nhật thông tin thành công!");
-                loadData();
+                LoadData();
             }
             else
             {
@@ -93,20 +76,21 @@ namespace layout.view.Department
             }
         }
 
+        // 5. Nút Xóa
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (dgDepartments.SelectedItem is DepartmentModel selected)
+            if (dgDepartments.SelectedItem is Department selected)
             {
                 var result = MessageBox.Show($"Bạn có chắc muốn xóa phòng {selected.department_name} không?",
                                            "Xác nhận xóa", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    if (service.deleteDepartment(selected.department_id))
+                    if (_service.deleteDepartment(selected.department_id))
                     {
                         MessageBox.Show("Đã xóa phòng ban!");
-                        clearInputs();
-                        loadData();
+                        ClearInputs();
+                        LoadData();
                     }
                     else
                     {
@@ -122,24 +106,15 @@ namespace layout.view.Department
 
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
-            clearInputs();
+            ClearInputs();
         }
 
-        private void clearInputs()
+        private void ClearInputs()
         {
             txtId.Text = "";
             txtName.Text = "";
-            txtId.IsReadOnly = false;
+            txtId.IsReadOnly = false; 
             dgDepartments.SelectedItem = null;
-        }
-
-        private void OpenDashboard_Click(object sender, RoutedEventArgs e)
-        {
-            var mainWindow = Window.GetWindow(this) as MainWindow;
-            if (mainWindow != null)
-            {
-                mainWindow.MainFrame.Navigate(new AdminDashboardPage());
-            }
         }
     }
 }

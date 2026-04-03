@@ -78,6 +78,17 @@ namespace layout.repository
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
+                string checkSql = "SELECT COUNT(*) FROM users WHERE department_id = @id";
+                using (SqlCommand checkCmd = new SqlCommand(checkSql, connection))
+                {
+                    checkCmd.Parameters.Add("@id", SqlDbType.VarChar).Value = departmentId;
+                    int userCount = Convert.ToInt32(checkCmd.ExecuteScalar());
+                    if (userCount > 0)
+                    {
+                        return false;
+                    }
+                }
+
                 string sql = "DELETE FROM departments WHERE department_id = @id";
 
                 using (SqlCommand cmd = new SqlCommand(sql, connection))

@@ -23,12 +23,17 @@ namespace layout.service
         //Lấy tất cả người dùng
         public DataTable getAllNguoidung()
         {
-            return repository.getAllRecruitment();
+            return repository.getAllUsers();
         }
 
-        public bool capnhatNguoidung(DataRowView row)
+        public DataTable getNguoidungById(int id)
         {
-            return repository.updateNguoidung(row);
+            return repository.getNguoidungById(id);
+        }
+
+        public bool capnhatNguoidungFromForm(int userId, string hoTen, string email, string matKhau, string diaChi, string soDienThoai, int roleId, string departmentId, int? posId)
+        {
+            return repository.updateNguoidungFromForm(userId, hoTen, email, matKhau, diaChi, soDienThoai, roleId, departmentId, posId);
         }
 
         //Xóa người dùng

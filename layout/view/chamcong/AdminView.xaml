@@ -12,7 +12,7 @@
             </Grid.RowDefinitions>
 
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="20,15,0,10">
-                <Button Content="Quản lý nhân sự" Height="25" BorderThickness="0" Background="Transparent" FontStyle="Italic" Foreground="#7F8C8D"/>
+                <Button Content="Quản lý nhân sự" Height="25" Click="OpenDashboard_Click" BorderThickness="0" Background="Transparent" FontStyle="Italic" Foreground="#7F8C8D"/>
                 <TextBlock Text="/" Margin="5,4,5,0" FontSize="14" Foreground="Gray"/>
                 <TextBlock Text="Lịch sử chấm công toàn hệ thống" Margin="5,4,5,0" FontStyle="Italic" Foreground="#2C3E50" FontWeight="SemiBold"/>
             </StackPanel>
@@ -23,49 +23,10 @@
                       IsReadOnly="True" RowHeight="40" Background="White" BorderBrush="#D1D9E0">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Nhân Viên" Binding="{Binding full_name}" Width="1.5*"/>
-                    <DataGridTextColumn Header="Ngày" Binding="{Binding check_in, StringFormat='dd/MM/yyyy'}" Width="*"/>
-                    <DataGridTextColumn Header="Thời gian" Binding="{Binding TimeRange}" Width="1.2*"/>
-
-                    <DataGridTextColumn Header="Ca Thường (Phút)" Binding="{Binding StandardMinutes}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="#27AE60"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
-                    <DataGridTextColumn Header="Tăng Ca (Phút)" Binding="{Binding OvertimeMinutes}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="FontWeight" Value="Bold"/>
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="Foreground" Value="#7F8C8D"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsOvertime}" Value="True">
-                                        <Setter Property="Foreground" Value="#E74C3C"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
-                    <DataGridTextColumn Header="Trạng Thái" Binding="{Binding StatusDisplay}" Width="*">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="FontWeight" Value="Bold"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding StatusDisplay}" Value="Tăng ca">
-                                        <Setter Property="Foreground" Value="#E74C3C"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding StatusDisplay}" Value="Bình thường">
-                                        <Setter Property="Foreground" Value="#3498DB"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn Header="Thời điểm vào ca " Binding="{Binding check_in}" Width="*"/>
+                    <DataGridTextColumn Header="Thời điểm tan ca" Binding="{Binding check_out}" Width="*"/>
+                    <DataGridTextColumn Header="Loại ca" Binding="{Binding shift_type}" Width="*"/>
+                    <DataGridTextColumn Header="Trạng Thái" Binding="{Binding status}" Width="*">
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>

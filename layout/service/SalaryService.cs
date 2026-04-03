@@ -3,6 +3,7 @@ using layout.luong;
 using layout.repository;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,17 +14,34 @@ namespace layout.service
     {
         private readonly SalaryRepository repo = new SalaryRepository();
 
-        public List<SalaryCal.Luong> getAllSalary()
+        public DataTable getAllPayRoll()
         {
-            return repo.getAllSalary();
+            return repo.getAllPayRoll();
         }
-        public bool UpdateSalary(int id, double allowance, double bonus, double deduction)
+        public Payroll getPayRollById(int payrollId)
         {
-            return repo.UpdateSalary(id, allowance, bonus, deduction);
+            return repo.getPayRollById(payrollId);
+        }
+        public bool UpdateSalary(Payroll payroll)
+        {
+            return repo.UpdateSalary(payroll);
         }
         public void createSalary(Payroll payroll)
         {
             repo.createSalary(payroll);
+        }
+        public DataTable getCurrentMonthAndYearPayRoll(int userId)
+        {
+            return repo.getCurrentMonthAndYearPayRoll(userId);
+        }
+        public bool isPayRollWithCurrentMonthAndYearExisted(int userId)
+        {
+            return repo.isPayRollWithCurrentMonthAndYearExisted(userId);
+        }
+
+        public float getTotalSalaryCurrentMonth()
+        {
+            return repo.getTotalSalaryCurrentMonth();
         }
     }
 }

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Security.RightsManagement;
 
 namespace layout.repository
 {
@@ -11,45 +12,35 @@ namespace layout.repository
     {
         private readonly MssSQLConnection conn = new MssSQLConnection();
 
-        public List<AttendanceAdminRecord> getAllAttendanceForAdmin()
+        public DataTable getAllAttendanceForAdmin()
         {
-            List<AttendanceAdminRecord> list = new List<AttendanceAdminRecord>();
+            DataTable list = new DataTable();
 
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
-                string sql = @"SELECT u.full_name, a.check_in, a.check_out, a.loai_ca
+                string sql = @"SELECT u.full_name, a.check_in, a.check_out, a.shift_type, a.status
                                FROM attendance a
                                INNER JOIN users u ON a.user_id = u.user_id
                                ORDER BY a.check_in DESC";
 
-                using (SqlCommand cmd = new SqlCommand(sql, connection))
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlDataAdapter adapter = new SqlDataAdapter(sql, connection))
                 {
-                    while (reader.Read())
-                    {
-                        list.Add(new AttendanceAdminRecord
-                        {
-                            full_name = reader["full_name"].ToString(),
-                            check_in = (DateTime)reader["check_in"],
-                            check_out = reader["check_out"] as DateTime?,
-                            loai_ca = reader["loai_ca"] == DBNull.Value ? null : reader["loai_ca"].ToString(),
-                        });
-                    }
+                    adapter.Fill(list);
                 }
             }
 
             return list;
         }
 
-        public List<AttendanceUserRecord> getTodayAttendanceByUser(int userId)
+        public List<Attendance> getTodayAttendanceByUser(int userId)
         {
-            List<AttendanceUserRecord> list = new List<AttendanceUserRecord>();
+            List<Attendance> list = new List<Attendance>();
 
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
-                string sql = @"SELECT attendance_id, check_in, check_out, loai_ca
+                string sql = @"SELECT attendance_id, check_in, check_out, shift_type, status
                                FROM attendance
                                WHERE user_id = @uid
                                  AND CAST(check_in AS DATE) = CAST(GETDATE() AS DATE)
@@ -63,12 +54,13 @@ namespace layout.repository
                     {
                         while (reader.Read())
                         {
-                            list.Add(new AttendanceUserRecord
+                            list.Add(new Attendance
                             {
-                                attendance_id = (int)reader["attendance_id"],
-                                check_in = (DateTime)reader["check_in"],
-                                check_out = reader["check_out"] as DateTime?,
-                                loai_ca = reader["loai_ca"] == DBNull.Value ? null : reader["loai_ca"].ToString()
+                                id = (int)reader["attendance_id"],
+                                checkIn = (DateTime)reader["check_in"],
+                                checkOut = reader["check_out"] as DateTime?,
+                                shiftType = reader["shift_type"] == DBNull.Value ? string.Empty : reader["shift_type"].ToString(),
+                                status = reader["status"] == DBNull.Value ? string.Empty : reader["status"].ToString()
                             });
                         }
                     }
@@ -84,10 +76,10 @@ namespace layout.repository
             {
                 connection.Open();
 
-                string checkSql = @"SELECT COUNT(*) FROM attendance
-                                    WHERE user_id = @uid
-                                      AND CAST(check_in AS DATE) = CAST(GETDATE() AS DATE)
-                                      AND check_out IS NULL";
+                string checkSql = "SELECT COUNT(*) FROM attendance " +
+                                  "WHERE user_id = @uid " +
+                                  "AND CAST(check_in AS DATE) = CAST(GETDATE() AS DATE) " +
+                                  "AND check_out IS NULL";
 
                 using (SqlCommand checkCmd = new SqlCommand(checkSql, connection))
                 {
@@ -99,22 +91,23 @@ namespace layout.repository
                     }
                 }
 
-                using (SqlCommand cmd = new SqlCommand("INSERT INTO attendance (check_in, user_id) VALUES (GETDATE(), @uid)", connection))
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO attendance (check_in, user_id, status) VALUES (GETDATE(), @uid, @status)", connection))
                 {
-                    cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
+                    cmd.Parameters.AddWithValue("@uid", userId);
+                    cmd.Parameters.AddWithValue("@status", "Đang làm việc");
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
         }
 
-        public bool checkOut(int userId)
+        public bool checkOut(int userId, DateTime date)
         {
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
 
                 string sql = @"UPDATE attendance
-                               SET check_out = GETDATE()
+                               SET check_out = @date, status = @status
                                WHERE attendance_id = (
                                    SELECT TOP 1 attendance_id
                                    FROM attendance
@@ -124,10 +117,68 @@ namespace layout.repository
 
                 using (SqlCommand cmd = new SqlCommand(sql, connection))
                 {
-                    cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
+                    cmd.Parameters.Add("@date", SqlDbType.DateTime).Value = date;
+                    cmd.Parameters.AddWithValue("@uid", userId);
+                    cmd.Parameters.AddWithValue("@status", "Đã xong ca");
                     return cmd.ExecuteNonQuery() > 0;
                 }
             }
+        }
+        public void updateShiftType(int userId)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+
+                string sql = @"UPDATE attendance
+                               SET shift_type = @type
+                               WHERE attendance_id = (
+                                   SELECT TOP 1 attendance_id
+                                   FROM attendance
+                                    WHERE user_id = @uid
+                                   ORDER BY check_in DESC
+                               )";
+
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.AddWithValue("@uid", userId);
+                    cmd.Parameters.AddWithValue("@type", "Tăng ca");
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public int getWorkingDaysInMonth(int userId, int month, int year)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+
+                DateTime startDate = new DateTime(year, month, 1);
+                DateTime endDate = startDate.AddMonths(1);
+
+                string sql = @"SELECT COUNT(*)
+                               FROM attendance
+                               WHERE user_id = @uid
+                                 AND check_out IS NOT NULL
+                                 AND check_in >= @startDate
+                                 AND check_in < @endDate";
+
+                using (SqlCommand cmd = new SqlCommand(sql, connection))
+                {
+                    cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
+                    cmd.Parameters.Add("@startDate", SqlDbType.DateTime).Value = startDate;
+                    cmd.Parameters.Add("@endDate", SqlDbType.DateTime).Value = endDate;
+
+                    object rs = cmd.ExecuteScalar();
+                    if (rs != null)
+                    {
+                        return Convert.ToInt32(rs);
+                    }
+                }
+            }
+
+            return 0;
         }
     }
 }

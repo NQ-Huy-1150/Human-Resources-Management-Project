@@ -40,7 +40,11 @@ namespace layout
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainFrame.Navigate(new AdminDashboardPage());
+            }
         }
 
         private void CreateBtn(object sender, RoutedEventArgs e)
@@ -50,7 +54,6 @@ namespace layout
             {
                 mainWindow.MainFrame.Navigate(new createRecruitment());
             }
-
         }
 
         private void deleteBnt(object sender, RoutedEventArgs e)

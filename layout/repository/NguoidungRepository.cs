@@ -8,7 +8,6 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace layout.repository
 {
@@ -16,7 +15,7 @@ namespace layout.repository
     {
         MssSQLConnection conn = new MssSQLConnection();
         //Hiển thị toàn bộ người dùng
-        public DataTable getAllRecruitment()
+        public DataTable getAllUsers()
         {
             using (SqlConnection connection = conn.dbConnection())
             {
@@ -76,16 +75,66 @@ namespace layout.repository
         public bool deleteNguoidung(int id)
         {
             using (SqlConnection connection = conn.dbConnection())
-            using (SqlCommand cmd = new SqlCommand("DELETE FROM users WHERE user_id=@id", connection))
             {
                 connection.Open();
-                cmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    SqlCommand deleteAttendanceCmd = new SqlCommand("DELETE FROM attendance WHERE user_id=@id", connection, transaction);
+                    deleteAttendanceCmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                    deleteAttendanceCmd.ExecuteNonQuery();
 
-                return cmd.ExecuteNonQuery() > 0;
+                    SqlCommand deletePayrollCmd = new SqlCommand("DELETE FROM payroll WHERE user_id=@id", connection, transaction);
+                    deletePayrollCmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                    deletePayrollCmd.ExecuteNonQuery();
+
+                    SqlCommand deleteUserCmd = new SqlCommand("DELETE FROM users WHERE user_id=@id", connection, transaction);
+                    deleteUserCmd.Parameters.Add("@id", SqlDbType.Int).Value = id;
+                    int affectedRows = deleteUserCmd.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    return affectedRows > 0;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+
             }
         }
-        //Cập nhật người dùng
-        public bool updateNguoidung(DataRowView row)
+
+        public DataTable getNguoidungById(int id)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                string sql = @"
+            SELECT 
+                n.user_id AS ma_nguoidung,
+                n.full_name AS ho_ten,
+                n.email AS thu_dien_tu,
+                n.password AS mat_khau,
+                n.address AS dia_chi,
+                n.phone_number AS so_dien_thoai,
+                n.role_id AS ma_vaitro,
+                r.role_name AS vai_tro,
+                n.department_id AS ma_phongban,
+                n.pos_id AS ma_chucvu
+            FROM users n
+            INNER JOIN roles r ON n.role_id = r.role_id
+            WHERE n.user_id = @id";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@id", id);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                DataTable data = new DataTable();
+                adapter.Fill(data);
+                return data;
+            }
+        }
+
+        public bool updateNguoidungFromForm(int userId, string hoTen, string email, string matKhau, string diaChi, string soDienThoai, int roleId, string departmentId, int? posId)
         {
             using (SqlConnection connection = conn.dbConnection())
             {
@@ -102,38 +151,26 @@ namespace layout.repository
                        WHERE user_id=@id";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
-
-                int roleId = 0;
-                object roleValue = row["ma_vaitro"];
-                if (roleValue != DBNull.Value)
-                {
-                    roleId = Convert.ToInt32(roleValue);
-                }
-
-                object posValue = row.Row.Table.Columns.Contains("ma_chucvu") ? row["ma_chucvu"] : DBNull.Value;
-
-                cmd.Parameters.AddWithValue("@hoten", row["ho_ten"]);
-                cmd.Parameters.AddWithValue("@email", row["thu_dien_tu"]);
-                cmd.Parameters.AddWithValue("@matkhau", row["mat_khau"]);
-                cmd.Parameters.AddWithValue("@diachi", row["dia_chi"]);
-                cmd.Parameters.AddWithValue("@sodienthoai", row["so_dien_thoai"]);
+                cmd.Parameters.AddWithValue("@hoten", hoTen);
+                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@matkhau", matKhau);
+                cmd.Parameters.AddWithValue("@diachi", diaChi);
+                cmd.Parameters.AddWithValue("@sodienthoai", soDienThoai);
                 cmd.Parameters.AddWithValue("@vaitro", roleId);
-                cmd.Parameters.AddWithValue("@maphong", row["ma_phongban"]);
-                if (posValue == DBNull.Value || string.IsNullOrWhiteSpace(Convert.ToString(posValue)))
+                cmd.Parameters.AddWithValue("@maphong", departmentId);
+                if (posId.HasValue)
                 {
-                    cmd.Parameters.AddWithValue("@machucvu", DBNull.Value);
+                    cmd.Parameters.AddWithValue("@machucvu", posId.Value);
                 }
                 else
                 {
-                    cmd.Parameters.AddWithValue("@machucvu", Convert.ToInt32(posValue));
+                    cmd.Parameters.AddWithValue("@machucvu", DBNull.Value);
                 }
-                cmd.Parameters.AddWithValue("@id", row["ma_nguoidung"]);
+                cmd.Parameters.AddWithValue("@id", userId);
 
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
-        
-
         // Thêm người dùng với kiểm tra trùng lặp email và số điện thoại
         public bool addNguoidung1(NguoiDung obj, out string message)
         {
@@ -320,7 +357,7 @@ namespace layout.repository
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
-                string sql = "Select position_id from users where user_id = @userId";
+                string sql = "Select pos_id from users where user_id = @userId";
 
                 SqlCommand cmd = new SqlCommand(sql, connection);
                 cmd.Parameters.AddWithValue("@userId", userId);

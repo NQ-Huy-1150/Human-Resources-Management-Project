@@ -16,154 +16,97 @@ namespace layout.repository
     {
         MssSQLConnection conn = new MssSQLConnection();
 
-        public List<SalaryCal.Luong> getAllSalary()
+        public DataTable getAllPayRoll()
         {
-            List<SalaryCal.Luong> salaryList = new List<SalaryCal.Luong>();
+            DataTable data = new DataTable();
 
             try
             {
                 using (SqlConnection connection = conn.dbConnection())
                 {
                     connection.Open();
-                    string sql = @"
-                SELECT 
-                    p.payroll_id   AS PayrollId,
-                    p.user_id      AS UserId,
-                    u.full_name    AS FullName,
-                    pos.pos_name     AS PosName,
-                    pos.base_salary  AS BaseSalary,
-                    p.allowance    AS Allowance,
-                    p.bonus        AS Bonus,
-                    p.deduction    AS Deduction,
-                    p.month        AS Month,
-                    p.year         AS Year,
-                    p.net_salary   AS NetSalary
-                FROM payroll p
-                INNER JOIN users u ON u.user_id = p.user_id
-                LEFT  JOIN positions pos ON pos.pos_id = u.pos_id
-                ORDER BY p.payroll_id ASC";
+                    string sql = @"SELECT payroll_id, payroll.user_id, full_name, pos_name, base_salary, net_salary
+                    FROM payroll 
+                    JOIN users on users.user_id = payroll.user_id
+                    JOIN positions on users.pos_id = positions.pos_id
+                    ORDER BY payroll_id ASC";
 
-                    SqlCommand cmd = new SqlCommand(sql, connection);
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(sql, connection))
                     {
-                        salaryList.Add(new SalaryCal.Luong
-                        {
-                            PayrollId = reader["PayrollId"] != DBNull.Value ? Convert.ToInt32(reader["PayrollId"]) : 0,
-                            UserId = reader["UserId"] != DBNull.Value ? Convert.ToInt32(reader["UserId"]) : 0,
-                            FullName = reader["FullName"] != DBNull.Value ? reader["FullName"].ToString() : "N/A",
-                            PosName = reader["PosName"] != DBNull.Value ? reader["PosName"].ToString() : "N/A",
-                            BaseSalary = reader["BaseSalary"] != DBNull.Value ? Convert.ToDouble(reader["BaseSalary"]) : 0,
-                            Allowance = reader["Allowance"] != DBNull.Value ? Convert.ToDouble(reader["Allowance"]) : 0,
-                            Bonus = reader["Bonus"] != DBNull.Value ? Convert.ToDouble(reader["Bonus"]) : 0,
-                            Deduction = reader["Deduction"] != DBNull.Value ? Convert.ToDouble(reader["Deduction"]) : 0,
-                            Month = reader["Month"] != DBNull.Value ? Convert.ToInt32(reader["Month"]) : 0,
-                            Year = reader["Year"] != DBNull.Value ? Convert.ToInt32(reader["Year"]) : 0,
-                            NetSalary = reader["NetSalary"] != DBNull.Value ? Convert.ToDouble(reader["NetSalary"]) : 0,
-                        });
-                    }
-                    reader.Close();
-
-                    foreach (SalaryCal.Luong salary in salaryList)
-                    {
-                        salary.Attendances = GetAttendanceByUserAndPeriod(connection, salary.UserId, salary.Month, salary.Year);
-                        salary.Calculate();
-                        UpdateCalculatedSalary(connection, salary);
+                        adapter.Fill(data);
                     }
                 }
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("Lỗi getAllSalary: " + ex.Message, "Lỗi DB");
+                System.Windows.MessageBox.Show("Lỗi getAllPayRoll: " + ex.Message, "Lỗi DB");
             }
 
-            return salaryList;
+            return data;
         }
 
-        private List<AttendanceAdminRecord> GetAttendanceByUserAndPeriod(SqlConnection connection, int userId, int month, int year)
+
+        public Payroll getPayRollById(int payrollId)
         {
-            List<AttendanceAdminRecord> attendances = new List<AttendanceAdminRecord>();
-
-            string sql = @"SELECT check_in, check_out, loai_ca
-                           FROM attendance
-                           WHERE user_id = @uid
-                             AND MONTH(check_in) = @month
-                             AND YEAR(check_in) = @year";
-
-            using (SqlCommand cmd = new SqlCommand(sql, connection))
+            Payroll payroll = new Payroll();
+            try
             {
-                cmd.Parameters.Add("@uid", SqlDbType.Int).Value = userId;
-                cmd.Parameters.Add("@month", SqlDbType.Int).Value = month;
-                cmd.Parameters.Add("@year", SqlDbType.Int).Value = year;
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlConnection connection = conn.dbConnection())
                 {
-                    while (reader.Read())
+                    connection.Open();
+                    string sql = "Select payroll_id, user_id ,allowance, bonus, deduction, net_salary, month, year from payroll " +
+                                 "where payroll_id = @id";
+
+                    SqlCommand cmd = new SqlCommand(sql, connection);
+                    cmd.Parameters.AddWithValue("@id", payrollId);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        attendances.Add(new AttendanceAdminRecord
+                        if (reader.Read())
                         {
-                            check_in = (DateTime)reader["check_in"],
-                            check_out = reader["check_out"] as DateTime?,
-                            loai_ca = reader["loai_ca"] == DBNull.Value ? null : reader["loai_ca"].ToString()
-                        });
+                            payroll.id = reader["payroll_id"] != DBNull.Value ? Convert.ToInt32(reader["payroll_id"]) : 0;
+                            payroll.userId = reader["user_id"] != DBNull.Value ? Convert.ToInt32(reader["user_id"]) : 0;
+                            payroll.allowance = reader["allowance"] != DBNull.Value ? Convert.ToSingle(reader["allowance"]) : 0;
+                            payroll.bonus = reader["bonus"] != DBNull.Value ? Convert.ToSingle(reader["bonus"]) : 0;
+                            payroll.deduction = reader["deduction"] != DBNull.Value ? Convert.ToSingle(reader["deduction"]) : 0;
+                            payroll.netSalary = reader["net_salary"] != DBNull.Value ? Convert.ToSingle(reader["net_salary"]) : 0;
+                            payroll.month = reader["month"] != DBNull.Value ? Convert.ToInt32(reader["month"]) : 0;
+                            payroll.year = reader["year"] != DBNull.Value ? Convert.ToInt32(reader["year"]) : 0;
+                        }
                     }
                 }
             }
-
-            return attendances;
-        }
-
-        private void UpdateCalculatedSalary(SqlConnection connection, SalaryCal.Luong salary)
-        {
-            string sql = @"UPDATE payroll
-                           SET deduction = @deduction,
-                               net_salary = @net
-                           WHERE payroll_id = @id";
-
-            using (SqlCommand cmd = new SqlCommand(sql, connection))
+            catch (Exception ex)
             {
-                cmd.Parameters.Add("@deduction", SqlDbType.Float).Value = salary.Deduction;
-                cmd.Parameters.Add("@net", SqlDbType.Float).Value = salary.NetSalary;
-                cmd.Parameters.Add("@id", SqlDbType.Int).Value = salary.PayrollId;
-                cmd.ExecuteNonQuery();
+                System.Windows.MessageBox.Show("Lỗi getPayRollById: " + ex.Message, "Lỗi DB");
             }
+            return payroll;
         }
 
-        public bool UpdateSalary(int id, double allowance, double bonus, double deduction)
+        public bool UpdateSalary(Payroll payroll)
         {
             try
             {
                 using (SqlConnection connection = conn.dbConnection())
                 {
                     connection.Open();
-                    string sql = @"UPDATE payroll 
-                           SET allowance   = @Allowance, 
-                               bonus       = @Bonus,
-                               deduction   = @Deduction,
-                               net_salary  = ISNULL((
-                                    SELECT pos.base_salary 
-                                    FROM users u 
-                                    INNER JOIN positions pos ON pos.pos_id = u.pos_id
-                                    WHERE u.user_id = (SELECT user_id FROM payroll WHERE payroll_id = @Id)
-                                    ), 0) + @Allowance + @Bonus - @Deduction
-                           WHERE payroll_id = @Id";
+                    string sql = @"UPDATE payroll SET allowance = @Allowance, bonus = @Bonus,
+                                   deduction = @Deduction, net_salary  = @net
+                                   WHERE payroll_id = @id ";
 
                     SqlCommand cmd = new SqlCommand(sql, connection);
 
-                    cmd.Parameters.AddWithValue("@Allowance", allowance);
-                    cmd.Parameters.AddWithValue("@Bonus", bonus);
-                    cmd.Parameters.AddWithValue("@Deduction", deduction);
-                    cmd.Parameters.AddWithValue("@Id", id);
-
-
+                    cmd.Parameters.AddWithValue("@Allowance", payroll.allowance);
+                    cmd.Parameters.AddWithValue("@Bonus", payroll.bonus);
+                    cmd.Parameters.AddWithValue("@Deduction", payroll.deduction);
+                    cmd.Parameters.AddWithValue("@net", payroll.netSalary);
+                    cmd.Parameters.AddWithValue("@id", payroll.id);
                     cmd.ExecuteNonQuery();
                     return true;
                 }
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show("Lỗi UpdateSalary: " + ex.Message, "Lỗi DB");
+                System.Windows.MessageBox.Show("Lỗi khi update : " + ex.Message, "Lỗi DB");
                 return false;
             }
         }
@@ -199,6 +142,65 @@ namespace layout.repository
 
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        public DataTable getCurrentMonthAndYearPayRoll(int userId)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "Select payroll_id, user_id ,allowance, bonus, deduction, net_salary from payroll " +
+                             "where user_id = @id and month = @month and year = @year";
+
+                SqlDataAdapter adapter = new SqlDataAdapter(sql, connection);
+                adapter.SelectCommand.Parameters.AddWithValue("@id", userId);
+                adapter.SelectCommand.Parameters.AddWithValue("@month", DateTime.Now.Month);
+                adapter.SelectCommand.Parameters.AddWithValue("@year", DateTime.Now.Year);
+                DataTable data = new DataTable();
+                adapter.Fill(data);
+                return data;
+            }
+        }
+        public bool isPayRollWithCurrentMonthAndYearExisted(int userId)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "Select payroll_id from payroll " +
+                             "where user_id = @id and month = @month and year = @year";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@id", userId);
+                cmd.Parameters.AddWithValue("@month", DateTime.Now.Month);
+                cmd.Parameters.AddWithValue("@year", DateTime.Now.Year);
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public float getTotalSalaryCurrentMonth()
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                string sql = "Select ISNULL(SUM(net_salary), 0) from payroll where month = @month and year = @year";
+
+                SqlCommand cmd = new SqlCommand(sql, connection);
+                cmd.Parameters.AddWithValue("@month", DateTime.Now.Month);
+                cmd.Parameters.AddWithValue("@year", DateTime.Now.Year);
+
+                object rs = cmd.ExecuteScalar();
+                if (rs != null)
+                {
+                    return Convert.ToSingle(rs);
+                }
+            }
+
+            return 0;
         }
     }
 }

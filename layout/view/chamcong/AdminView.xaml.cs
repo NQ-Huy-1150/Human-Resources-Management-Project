@@ -4,6 +4,8 @@ using System.Windows;
 using System.Windows.Controls;
 using layout.service;
 using layout.domain;
+using System.Data;
+using layout.view.Main_Window;
 
 namespace layout.view.chamcong
 {
@@ -21,12 +23,21 @@ namespace layout.view.chamcong
         {
             try
             {
-                List<AttendanceAdminRecord> list = attendanceService.getAllAttendanceForAdmin();
-                dgAdmin.ItemsSource = list;
+                DataTable list = attendanceService.getAllAttendanceForAdmin();
+                dgAdmin.ItemsSource = list.DefaultView;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi hiển thị dữ liệu: " + ex.Message);
+            }
+        }
+
+        private void OpenDashboard_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = Window.GetWindow(this) as MainWindow;
+            if (mainWindow != null)
+            {
+                mainWindow.MainFrame.Navigate(new AdminDashboardPage());
             }
         }
     }

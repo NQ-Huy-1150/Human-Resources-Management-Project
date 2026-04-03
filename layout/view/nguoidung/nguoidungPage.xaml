@@ -14,7 +14,7 @@
             <Grid>
                 <!-- Breadcrumb start -->
                 <StackPanel Orientation="Horizontal" Margin="10,10,0,0" VerticalAlignment="Top">
-                    <TextBlock Text="Quản lý nhân sự" FontStyle="Italic" />
+                    <Button Content="Quản lý nhân sự" Height="25" Click="Button_Click_3" BorderThickness="0" Background="Transparent" FontStyle="Italic" Foreground="#7F8C8D"/>
                     <TextBlock Text="/" Margin="5,4,5,0" FontSize="14" Foreground="Gray"/>
                     <TextBlock Text="Người dùng" Margin="5,4,5,0" FontStyle="Italic" />
                 </StackPanel>
@@ -25,12 +25,31 @@
 
                 <StackPanel Orientation="Vertical" Margin="10,90,10,10" VerticalAlignment="Top" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,10" VerticalAlignment="Top" HorizontalAlignment="Right">
-                        <Button Content="Thêm" Width="120" Height="35" Margin="0,0,10,0" Click="Button_Click"/>
-                        <Button Content="Lưu chỉnh sửa" Width="120" Height="35" Margin="0,0,10,0" Click="Button_Click_1"/>
-                        <Button Content="Xóa" Width="120" Height="35" Click="Button_Click_2"/>
+                        <Button Content="Tạo người dùng" Margin="500,0,0,0" Click="Button_Click"/>
                     </StackPanel>
 
-                    <DataGrid x:Name="NguoidungGrid" AutoGenerateColumns="True" CanUserAddRows="False"/>
+                    <DataGrid x:Name="NguoidungGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Mã" Binding="{Binding ma_nguoidung}" Width="80"/>
+                            <DataGridTextColumn Header="Họ tên" Binding="{Binding ho_ten}" Width="160"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding thu_dien_tu}" Width="170"/>
+                            <DataGridTextColumn Header="SĐT" Binding="{Binding so_dien_thoai}" Width="120"/>
+                            <DataGridTextColumn Header="Vai trò" Binding="{Binding vai_tro}" Width="110"/>
+                            <DataGridTextColumn Header="Phòng ban" Binding="{Binding ma_phongban}" Width="100"/>
+                            <DataGridTextColumn Header="Chức vụ" Binding="{Binding ma_chucvu}" Width="100"/>
+                            <DataGridTemplateColumn Header="Chức năng" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="Xem" Click="btnDetail" Padding="5,1" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                            <Button Content="Cập nhật" Click="btnUpdate" Padding="5,1" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                            <Button Content="Xóa" Click="btnDelete" Padding="5,1" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </StackPanel>
             </Grid>
         </ScrollViewer>

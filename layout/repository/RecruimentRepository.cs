@@ -64,11 +64,26 @@ namespace layout.repository
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
-                string sql = "Delete from recruitments where id = @id";
+                SqlTransaction transaction = connection.BeginTransaction();
+                try
+                {
+                    string deleteDetailSql = "Delete from recruitment_details where recruit_id = @id";
+                    SqlCommand deleteDetailCmd = new SqlCommand(deleteDetailSql, connection, transaction);
+                    deleteDetailCmd.Parameters.AddWithValue("@id", id);
+                    deleteDetailCmd.ExecuteNonQuery();
 
-                SqlCommand cmd = new SqlCommand(sql, connection);
-                cmd.Parameters.AddWithValue("@id", id);
-                cmd.ExecuteNonQuery();
+                    string deleteRecruitmentSql = "Delete from recruitments where id = @id";
+                    SqlCommand deleteRecruitmentCmd = new SqlCommand(deleteRecruitmentSql, connection, transaction);
+                    deleteRecruitmentCmd.Parameters.AddWithValue("@id", id);
+                    deleteRecruitmentCmd.ExecuteNonQuery();
+
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
         }
         public void updateRecruitment(Recruitment recruitment)
