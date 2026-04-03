@@ -25,7 +25,7 @@ namespace layout.repository
                 using (SqlConnection connection = conn.dbConnection())
                 {
                     connection.Open();
-                    string sql = @"SELECT payroll_id, payroll.user_id, full_name, pos_name, base_salary
+                    string sql = @"SELECT payroll_id, payroll.user_id, full_name, pos_name, base_salary, net_salary
                     FROM payroll 
                     JOIN users on users.user_id = payroll.user_id
                     JOIN positions on users.pos_id = positions.pos_id

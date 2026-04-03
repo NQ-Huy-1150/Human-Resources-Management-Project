@@ -68,7 +68,7 @@ namespace layout.view.CandidateView.HRView
             }
 
             Candidate candidate = convertDataTableToObject(id);
-            if (candidate.status.Equals("Loại") || candidate.status.Equals("Huỷ đơn"))
+            if (candidate.status.Equals("Loại") || candidate.status.Equals("Huỷ đơn") || candidate.status.Equals("Đã nhận việc"))
             {
                 var result = MessageBox.Show(
                     $"Bạn có chắc muốn xóa ứng viên {candidate.fullName} không?",

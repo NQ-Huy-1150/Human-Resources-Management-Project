@@ -27,6 +27,7 @@
                     <DataGridTextColumn Header="Tên NV" Binding="{Binding full_name}" Width="130" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Chức vụ" Binding="{Binding pos_name}" Width="100" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Lương cơ bản" Binding="{Binding base_salary}" Width="150" IsReadOnly="True" Foreground="#1B5E20" FontWeight="Bold"/>
+                    <DataGridTextColumn Header="Lương thực lĩnh" Binding="{Binding net_salary}" Width="*" IsReadOnly="True" Foreground="Red"  FontWeight="Bold"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
