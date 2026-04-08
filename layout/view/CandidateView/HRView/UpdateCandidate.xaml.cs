@@ -65,7 +65,12 @@ namespace layout.view.CandidateView.HRView
         private void updateBtn(object sender, RoutedEventArgs e)
         {
             string status = statusCBX.Text;
-            TurnCandidateInToEmployee(status, this.id);
+            bool isValid = TurnCandidateInToEmployee(status, this.id);
+            if (!isValid)
+            {
+                return;
+            }
+
             service.getUpdateStatus(this.id, status);
             var mainWindow = Window.GetWindow(this) as MainWindow;
             if (mainWindow != null)
@@ -82,32 +87,45 @@ namespace layout.view.CandidateView.HRView
                 mainWindow.MainFrame.Navigate(new CandidatePage(this.recruitId, departId));
             }
         }
-        private void TurnCandidateInToEmployee(string status, int id)
+        private bool TurnCandidateInToEmployee(string status, int id)
         {
-            if (status.Equals("Đã nhận việc"))
+            if (!status.Equals("Đã nhận việc"))
             {
-                Candidate can = convertDataTableToObject(id);
-                NguoiDung nguoi = new NguoiDung();
-                nguoi.ma_phongban = departId;
-                nguoi.mat_khau = autoGenFirstTimePassword();
-                nguoi.thu_dien_tu = can.email;
-                nguoi.dia_chi = can.address;
-                nguoi.ho_ten = can.fullName;
-                nguoi.ma_vaitro = roleService.getRoleId("Nhân viên");
-                nguoi.so_dien_thoai = can.phone;
-                nguoi.ma_chucvu = can.posId;
-                string text = "";
-                nguoidungservice.themnguoidung(nguoi, out text);
-                if (!string.IsNullOrEmpty(text) && !text.Contains("thành công")) 
-                {
-                    MessageBox.Show("Có lỗi khi tạo tài khoản nhân viên: " + text, "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-                else
-                {
-                    MessageBox.Show($"Chuyển ứng viên thành nhân viên thành công.\nMật khẩu mới: {nguoi.mat_khau}", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+                return true;
             }
-            else return;
+
+            Candidate can = convertDataTableToObject(id);
+            if (nguoidungservice.isEmailExisted(can.email))
+            {
+                MessageBox.Show("Email đã tồn tại trong hệ thống người dùng. Không thể chuyển ứng viên thành nhân viên.", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            if (nguoidungservice.isPhoneNumberExisted(can.phone))
+            {
+                MessageBox.Show("Số điện thoại đã tồn tại trong hệ thống người dùng. Không thể chuyển ứng viên thành nhân viên.", "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            NguoiDung nguoi = new NguoiDung();
+            nguoi.ma_phongban = departId;
+            nguoi.mat_khau = autoGenFirstTimePassword();
+            nguoi.thu_dien_tu = can.email;
+            nguoi.dia_chi = can.address;
+            nguoi.ho_ten = can.fullName;
+            nguoi.ma_vaitro = roleService.getRoleId("Nhân viên");
+            nguoi.so_dien_thoai = can.phone;
+            nguoi.ma_chucvu = can.posId;
+            string text = "";
+            bool created = nguoidungservice.themnguoidung(nguoi, out text);
+            if (!created)
+            {
+                MessageBox.Show("Có lỗi khi tạo tài khoản nhân viên: " + text, "Cảnh báo", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            MessageBox.Show($"Chuyển ứng viên thành nhân viên thành công.\nMật khẩu mới: {nguoi.mat_khau}", "Thông báo", MessageBoxButton.OK, MessageBoxImage.Information);
+            return true;
         }
         private Candidate convertDataTableToObject(int id)
         {

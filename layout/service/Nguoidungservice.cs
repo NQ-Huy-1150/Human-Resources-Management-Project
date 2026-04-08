@@ -36,6 +36,21 @@ namespace layout.service
             return repository.updateNguoidungFromForm(userId, hoTen, email, matKhau, diaChi, soDienThoai, roleId, departmentId, posId);
         }
 
+        public bool isEmailExisted(string email)
+        {
+            return repository.isEmailExisted(email);
+        }
+
+        public bool isPhoneNumberExisted(string soDienThoai)
+        {
+            return repository.isPhoneNumberExisted(soDienThoai);
+        }
+
+        public bool isPhoneNumberExistedForOtherUser(int userId, string soDienThoai)
+        {
+            return repository.isPhoneNumberExistedForOtherUser(userId, soDienThoai);
+        }
+
         //Xóa người dùng
         public bool XoaNguoiDung(int id)
         {

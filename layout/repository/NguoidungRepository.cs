@@ -172,6 +172,34 @@ namespace layout.repository
                 return cmd.ExecuteNonQuery() > 0;
             }
         }
+
+        public bool isEmailExisted(string email)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                return isEmailExisted(connection, email);
+            }
+        }
+
+        public bool isPhoneNumberExisted(string soDienThoai)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                return isPhoneNumberExisted(connection, soDienThoai);
+            }
+        }
+
+        public bool isPhoneNumberExistedForOtherUser(int userId, string soDienThoai)
+        {
+            using (SqlConnection connection = conn.dbConnection())
+            {
+                connection.Open();
+                return isPhoneNumberExisted(connection, soDienThoai, userId);
+            }
+        }
+
         // Thêm người dùng với kiểm tra trùng lặp email và số điện thoại
         public bool addNguoidung1(NguoiDung obj, out string message)
         {
@@ -180,23 +208,13 @@ namespace layout.repository
             using (SqlConnection connection = conn.dbConnection())
             {
                 connection.Open();
-                // Check email tồn tại
-                string checkEmailSql = "SELECT COUNT(*) FROM users WHERE email = @email";
-                SqlCommand checkEmailCmd = new SqlCommand(checkEmailSql, connection);
-                checkEmailCmd.Parameters.AddWithValue("@email", obj.thu_dien_tu);
-                int emailCount = (int)checkEmailCmd.ExecuteScalar();
-                if (emailCount > 0)
+                if (isEmailExisted(connection, obj.thu_dien_tu))
                 {
                     message = "Email đã tồn tại. Vui lòng nhập lại.";
                     return false;
                 }
 
-                // Check số điện thoại tồn tại
-                string checkPhoneSql = "SELECT COUNT(*) FROM users WHERE phone_number = @sodienthoai";
-                SqlCommand checkPhoneCmd = new SqlCommand(checkPhoneSql, connection);
-                checkPhoneCmd.Parameters.AddWithValue("@sodienthoai", obj.so_dien_thoai);
-                int phoneCount = (int)checkPhoneCmd.ExecuteScalar();
-                if (phoneCount > 0)
+                if (isPhoneNumberExisted(connection, obj.so_dien_thoai))
                 {
                     message = "Số điện thoại đã tồn tại. Vui lòng nhập lại.";
                     return false;
@@ -239,6 +257,38 @@ namespace layout.repository
                 }
             }
             
+        }
+
+        private bool isEmailExisted(SqlConnection connection, string email)
+        {
+            string sql = "SELECT COUNT(*) FROM users WHERE email = @email";
+            SqlCommand cmd = new SqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@email", email);
+
+            return (int)cmd.ExecuteScalar() > 0;
+        }
+
+        private bool isPhoneNumberExisted(SqlConnection connection, string soDienThoai)
+        {
+            return isPhoneNumberExisted(connection, soDienThoai, null);
+        }
+
+        private bool isPhoneNumberExisted(SqlConnection connection, string soDienThoai, int? excludeUserId)
+        {
+            string sql = "SELECT COUNT(*) FROM users WHERE phone_number = @sodienthoai";
+            if (excludeUserId.HasValue)
+            {
+                sql += " AND user_id <> @userId";
+            }
+
+            SqlCommand cmd = new SqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@sodienthoai", soDienThoai);
+            if (excludeUserId.HasValue)
+            {
+                cmd.Parameters.AddWithValue("@userId", excludeUserId.Value);
+            }
+
+            return (int)cmd.ExecuteScalar() > 0;
         }
 
         public int getUserIdFromEmail(string email)

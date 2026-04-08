@@ -92,6 +92,12 @@ namespace layout.view.Nguoidung
             }
 
             int userId = Convert.ToInt32(txtPos.Text);
+            if (service.isPhoneNumberExistedForOtherUser(userId, soDienThoai))
+            {
+                MessageBox.Show("Số điện thoại đã tồn tại. Vui lòng nhập lại.");
+                return;
+            }
+
             int roleId = Convert.ToInt32(cbVaitro.SelectedValue);
             string departmentId = Convert.ToString(cbPhongban.SelectedValue);
             int? posId = null;

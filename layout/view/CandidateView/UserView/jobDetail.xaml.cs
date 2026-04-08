@@ -30,7 +30,7 @@ namespace layout.view.CandidateView.UserView
             hiddenId.Text = Convert.ToString(recruitment.id);
             departmentId.Text = recruitment.departmentId;
             position.Text = recruitment.position;
-            income.Text = Convert.ToString(recruitment.estimateIncome);
+            income.Text = recruitment.estimateIncome.ToString("N0");
             condition.Text = recruitment.condition;
             dateShow.Text = Convert.ToString(recruitment.subDeadline);
             quantity.Text = Convert.ToString(Convert.ToString(recruitment.quantity));
@@ -48,10 +48,15 @@ namespace layout.view.CandidateView.UserView
 
         private void createBtn(object sender, RoutedEventArgs e)
         {
+            if(!status.Text.Equals("Đang hoạt động"))
+            {
+                MessageBox.Show("Hiện tại đơn này không khả dụng, vui lòng quay lại vào thời điểm khác !");
+                return;
+            }
             var mainWindow = Window.GetWindow(this) as HomePageWindow;
             if (mainWindow != null)
             {
-                mainWindow.HomeFrame.Navigate(new CreateCandidate(Convert.ToInt32(hiddenId.Text),position.Text));
+                mainWindow.HomeFrame.Navigate(new CreateCandidate(Convert.ToInt32(hiddenId.Text), position.Text));
             }
         }
 
